@@ -1,0 +1,22 @@
+{
+  "version": "0.0.0",
+  "keywords": [
+    "fabrix"
+  ],
+  "main": "index.js",
+  "dependencies": {
+    "spool-router": "^3",
+    "fabrix": "^3"
+  },
+  "devDependencies": {
+    "mocha": "^3",
+    "supertest": "^3",
+    "spool-repl": "^3"
+  },
+  "scripts": {
+    "test": "nyc mocha"
+  },
+  "engines": {
+    "node": ">= 7.6.0"
+  }
+}

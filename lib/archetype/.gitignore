@@ -1,0 +1,10 @@
+# node/npm
+node_modules/
+npm-debug.log
+.npm
+
+# fabrix
+.tmp/
+
+# other
+*.sw*

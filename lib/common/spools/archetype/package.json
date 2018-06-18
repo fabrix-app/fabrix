@@ -1,0 +1,24 @@
+{
+  "version": "0.0.0",
+  "main": "index.js",
+  "keywords": [
+    "spool",
+    "fabrix",
+    "trailjs"
+  ],
+  "dependencies": {
+    "spool": "next"
+  },
+  "devDependencies": {
+    "lodash": "^4.11.1",
+    "fabrix": "next",
+    "mocha": "^3",
+    "smokesignals": "next"
+  },
+  "scripts": {
+    "test": "nyc mocha"
+  },
+  "engines": {
+    "node": ">= 7.6.0"
+  }
+}

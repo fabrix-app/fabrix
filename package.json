@@ -1,0 +1,111 @@
+{
+  "name": "@fabrix/fabrix",
+  "version": "1.0.0-alpha.1",
+  "description": "Strongly Typed Modern Web Application Framework for Node.js",
+  "keywords": [
+    "framework",
+    "platform",
+    "microservices",
+    "ecosystem",
+    "rest",
+    "api",
+    "rails",
+    "grails",
+    "sails",
+    "fabrix",
+    "fabrix",
+    "typescript",
+    "server",
+    "graphql"
+  ],
+  "scripts": {
+    "build": "tsc -p ./lib/tsconfig.release.json",
+    "lint": "tslint -p ./lib",
+    "watch": "tsc -w -p ./lib/tsconfig.release.json",
+    "test": "npm run clean && npm run build && nyc mocha",
+    "test-performance": "mocha test-performance",
+    "prepublishOnly": "npm run compile",
+    "compile": "npm run clean && npm run build",
+    "clean": "rm -rf dist",
+    "ci": "cd .. && ci"
+  },
+  "main": "dist/index",
+  "typings": "dist/index",
+  "files": [
+    "dist/index.js",
+    "dist/index.d.ts",
+    "dist/lib",
+    "dist/archetype"
+  ],
+  "pre-commit": [
+    "test"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fabrix-app/fabrix.git"
+  },
+  "author": "Fabrix-app Team <hello@fabrix.app>",
+  "contributors": [
+    {
+      "name": "Scott Wyatt",
+      "email": "scottwyatt86@gmail.com",
+      "url": "https://github.com/scott-wyatt"
+    },
+    {
+      "name": "Travis Webb",
+      "email": "me@traviswebb.com",
+      "url": "https://github.com/tjwebb"
+    },
+    {
+      "name": "Konstantin Zolotarev",
+      "url": "https://github.com/konstantinzolotarev"
+    },
+    {
+      "name": "Weyland Joyner",
+      "url": "https://github.com/weyj4"
+    },
+    {
+      "name": "Jimmy Aumard",
+      "url": "https://github.com/jaumard"
+    },
+    {
+      "name": "Robert Rossmann",
+      "url": "https://github.com/Alaneor"
+    },
+    {
+      "name": "Mike Hostetler",
+      "email": "mike@epicfirm.com"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fabrix-app/fabrix/issues"
+  },
+  "homepage": "https://fabrix.app",
+  "dependencies": {
+    "lodash": "^4.17.10",
+    "lodash.merge": "4.6.0",
+    "mkdirp": "0.5.1"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.109",
+    "@types/mkdirp": "^0.5.2",
+    "@types/node": "~10.3.2",
+    "mocha": "^5",
+    "nyc": "^12.0.2",
+    "pre-commit": "^1.1.3",
+    "proxyquire": "^1.7.11",
+    "rimraf": "~2.6.2",
+    "smokesignals": "^3",
+    "tslib": "~1.9.0",
+    "tslint": "~5.10.0",
+    "tslint-microsoft-contrib": "~5.0.3",
+    "tsutils": "~2.27.1",
+    "typescript": "~2.8.1"
+  },
+  "engines": {
+    "node": ">= 7.6.0 =< 10.0.0",
+    "npm": ">= 3.10.0"
+  },
+  "runkitExample": "test/runkitExample.js"
+}
