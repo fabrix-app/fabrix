@@ -1,4 +1,4 @@
-const FabrixApp = require('fabrix')
+const FabrixApp = require('@fabrix/fabrix').FabrixApp
 const app = new FabrixApp({
   api: {
     controllers: {

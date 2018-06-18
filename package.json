@@ -1,6 +1,6 @@
 {
   "name": "@fabrix/fabrix",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "Strongly Typed Modern Web Application Framework for Node.js",
   "keywords": [
     "framework",
@@ -12,7 +12,7 @@
     "rails",
     "grails",
     "sails",
-    "fabrix",
+    "trails",
     "fabrix",
     "typescript",
     "server",
@@ -31,12 +31,7 @@
   },
   "main": "dist/index",
   "typings": "dist/index",
-  "files": [
-    "dist/index.js",
-    "dist/index.d.ts",
-    "dist/lib",
-    "dist/archetype"
-  ],
+  "files": ["dist"],
   "pre-commit": [
     "test"
   ],
@@ -84,7 +79,6 @@
   "homepage": "https://fabrix.app",
   "dependencies": {
     "lodash": "^4.17.10",
-    "lodash.merge": "4.6.0",
     "mkdirp": "0.5.1"
   },
   "devDependencies": {

@@ -106,8 +106,8 @@ Fabrix would not have been possible without the substantial work done by the [Tr
 
 <img src="http://cdn.fabrix.app/art/backgrounds/fabrix-day.png">
 
-[npm-image]: https://img.shields.io/npm/v/fabrix.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/fabrix
+[npm-image]: https://img.shields.io/npm/v/@fabrix/fabrix.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/@fabrix/fabrix
 [ci-image]: https://img.shields.io/travis/fabrix-app/fabrix.svg?style=flat-square&label=Linux%20/%20OSX
 [ci-url]: https://travis-ci.org/fabrix-app/fabrix
 [appveyor-image]: https://img.shields.io/appveyor/ci/fabrix-app/fabrix/master.svg?style=flat-square&label=Windows
