@@ -73,16 +73,16 @@ describe('spool', () => {
     })
   })
   describe('#defaultLifecycle', () => {
-    it('is a convenience method that should show the spool.defaultLifecycle', () => {
+    it('is a static and not accessible', () => {
       const app = new Fabrix(testApp)
-      assert(new Testspool(app).defaultLifecycle)
+      assert(!new Testspool(app).defaultLifecycle)
     })
   })
   describe('#lifecycle', () => {
     it('is a convenience method that should show the spool.lifecycle', () => {
       const app = new Fabrix(testApp)
       const spool = new Testspool(app)
-      assert.deepEqual(spool.lifecycle, spool.defaultLifecycle)
+      assert.deepEqual(spool.lifecycle, Testspool.defaultLifecycle)
     })
   })
 })

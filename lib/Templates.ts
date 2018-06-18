@@ -1,3 +1,5 @@
+// tslint:disable no-trailing-whitespace
+
 import { FabrixApp } from './index'
 
 export const Templates = {
@@ -17,7 +19,7 @@ export const Templates = {
         Basic Info
           Application       : ${app.pkg.name || 'UNNAMED'}
           Base URL          : ${baseUrl}
-          Version           : ${app.pkg.version || 'NA'}
+          Version           : ${app.pkg.version || 'N/A'}
           Environment       : ${app.env.NODE_ENV || 'UNKNOWN'}`
       )
     }

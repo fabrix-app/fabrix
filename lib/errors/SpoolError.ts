@@ -1,6 +1,5 @@
 export class SpoolError extends Error {
-  constructor (spool: any, error: Error, stage: string) {
-    spool|| (spool= { constructor: { }})
+  constructor (spool: any = { constructor: { }}, error: Error, stage: string) {
     super(`
       ${spool.name} spool failed in the "${stage}" stage.
       ${error}

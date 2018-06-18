@@ -1,6 +1,5 @@
 export class GraphCompletenessError extends RangeError {
-  constructor (spool: any, stageName: string, eventName: string) {
-    spool|| (spool= { })
+  constructor (spool: any = { }, stageName: string, eventName: string) {
     super(`
       The spool "${spool.name}" cannot load.
 

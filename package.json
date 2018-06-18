@@ -1,6 +1,6 @@
 {
   "name": "@fabrix/fabrix",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "description": "Strongly Typed Modern Web Application Framework for Node.js",
   "keywords": [
     "framework",
@@ -22,7 +22,7 @@
     "build": "tsc -p ./lib/tsconfig.release.json",
     "lint": "tslint -p ./lib",
     "watch": "tsc -w -p ./lib/tsconfig.release.json",
-    "test": "npm run clean && npm run build && nyc mocha",
+    "test": "npm run clean && npm run lint && npm run build && nyc mocha",
     "test-performance": "mocha test-performance",
     "prepublishOnly": "npm run compile",
     "compile": "npm run clean && npm run build",
@@ -31,7 +31,9 @@
   },
   "main": "dist/index",
   "typings": "dist/index",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "pre-commit": [
     "test"
   ],
@@ -82,6 +84,7 @@
     "mkdirp": "0.5.1"
   },
   "devDependencies": {
+    "@fabrix/lint": "^1.0.0-alpha.3",
     "@types/lodash": "^4.14.109",
     "@types/mkdirp": "^0.5.2",
     "@types/node": "~10.3.2",

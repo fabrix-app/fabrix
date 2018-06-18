@@ -1,3 +1,5 @@
+// tslint:disable no-unused-expression
+
 import { FabrixApp} from '../index'
 import { EventEmitter } from 'events'
 import { enumerable, writable } from './'

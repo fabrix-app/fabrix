@@ -13,7 +13,7 @@ export const Pathfinder = {
    * the lifecycle paths for all spools and all stages are valid.
    */
   isComplete (spools: Spool[]): boolean {
-    return spools.every(spool=> {
+    return spools.every(spool => {
       return Pathfinder.isLifecycleValid(spool, spools)
     })
   },

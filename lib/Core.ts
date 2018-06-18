@@ -201,9 +201,9 @@ export const Core = {
     app: FabrixApp,
     spools: Spool[]
   ) {
-    const validatedEvents = spools.map(spool=> `spool:${spool.name}:validated`)
-    const configuredEvents = spools.map(spool=> `spool:${spool.name}:configured`)
-    const initializedEvents = spools.map(spool=> `spool:${spool.name}:initialized`)
+    const validatedEvents = spools.map(spool => `spool:${spool.name}:validated`)
+    const configuredEvents = spools.map(spool => `spool:${spool.name}:configured`)
+    const initializedEvents = spools.map(spool => `spool:${spool.name}:initialized`)
 
     app.after(configuredEvents).then(async () => {
       await this.createDefaultPaths(app)

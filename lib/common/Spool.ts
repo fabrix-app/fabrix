@@ -14,6 +14,34 @@ export class Spool {
   private _config: ISpoolConfig
   private _pkg: any // IPkg
   private _api: IApi
+
+  /**
+   * Return the type of this Spool. By default, this 'misc'.
+   * This method can be overridden for spools by declaring a 'type' getter
+   * in the extending spool class or by using a spool template such as:
+   * webserver, datastore, etc.
+   */
+  static get type (): string {
+    return 'misc'
+  }
+
+  /**
+   * The Spool lifecycle. At each stage (configure, initialize) define
+   * preconditions ("listen") and post-conditions ("emit") of the spool.
+   */
+  static get defaultLifecycle (): ILifecycle {
+    return {
+      configure: {
+        listen: [ ],
+        emit: [ ]
+      },
+      initialize: {
+        listen: [ ],
+        emit: [ ]
+      }
+    }
+  }
+
   /**
    * @constructor
    * @param app FabrixApp instance
@@ -43,7 +71,7 @@ export class Spool {
 
     this._app = app
     this._api = api
-    this._config = defaultsDeep({}, config, {lifecycle: this.defaultLifecycle})
+    this._config = defaultsDeep({}, config, {lifecycle: Spool.defaultLifecycle})
     this._pkg = Object.freeze(pkg)
     this.app.emit(`spool:${this.name}:constructed`, this)
   }
@@ -125,36 +153,11 @@ export class Spool {
   }
 
   /**
-   * Return the type of this Spool. By default, this 'misc'.
-   * This method can be overridden for spools by declaring a 'type' getter
-   * in the extending spool class or by using a spool template such as:
-   * webserver, datastore, etc.
-   */
-  get type (): string {
-    return 'misc'
-  }
-
-  /**
    * The final Spool lifecycle merged with the configured lifecycle
    */
   get lifecycle (): ILifecycle {
     return this._config.lifecycle
   }
 
-  /**
-   * The Spool lifecycle. At each stage (configure, initialize) define
-   * preconditions ("listen") and post-conditions ("emit") of the spool.
-   */
-  get defaultLifecycle (): ILifecycle {
-    return {
-      configure: {
-        listen: [ ],
-        emit: [ ]
-      },
-      initialize: {
-        listen: [ ],
-        emit: [ ]
-      }
-    }
-  }
+
 }

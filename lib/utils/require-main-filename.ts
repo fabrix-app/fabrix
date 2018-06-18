@@ -1,17 +1,21 @@
 export function main (_require = require) {
-  const main = _require.main
-  if (main && isIISNode(main)) return handleIISNode(main)
-  else return main ? main.filename : process.cwd()
+  const reqMain = _require.main
+  if (reqMain && isIISNode(reqMain)) {
+    return handleIISNode(reqMain)
+  }
+  else {
+    return reqMain ? reqMain.filename : process.cwd()
+  }
 }
 
-function isIISNode (main: any) {
-  return /\\iisnode\\/.test(main.filename)
+function isIISNode (reqMain: any) {
+  return /\\iisnode\\/.test(reqMain.filename)
 }
 
-function handleIISNode (main: any) {
-  if (!main.children.length) {
-    return main.filename
+function handleIISNode (reqMain: any) {
+  if (!reqMain.children.length) {
+    return reqMain.filename
   } else {
-    return main.children[0].filename
+    return reqMain.children[0].filename
   }
 }

@@ -1,9 +1,7 @@
-// const merge = require('lodash.merge')
 import { merge } from 'lodash'
 import { resolve, dirname } from 'path'
 import { IllegalAccessError } from './errors'
 import { requireMainFilename } from './utils'
-
 
 const ConfigurationProxyHandler: ProxyHandler<Configuration> = {
   get (target: any, key: string) {
@@ -20,6 +18,51 @@ const ConfigurationProxyHandler: ProxyHandler<Configuration> = {
 export class Configuration extends Map<any, any> {
   public immutable: boolean
   public env: {}
+
+  /**
+   * Flattens configuration tree
+   */
+  static flattenTree (tree = { }) {
+    const toReturn: {[key: string]: any} = { }
+
+    Object.entries(tree).forEach(([ k, v ]) => {
+      if (typeof v === 'object' && v !== null) {
+        const flatObject = Configuration.flattenTree(v)
+        Object.keys(flatObject).forEach(flatKey => {
+          toReturn[`${k}.${flatKey}`] = flatObject[flatKey]
+        })
+      }
+      toReturn[k] = v
+    })
+    return toReturn
+  }
+
+  /**
+   * Copy and merge the provided configuration into a new object, decorated with
+   * necessary default and environment-specific values.
+   */
+  static buildConfig (initialConfig: {env?: {[key: string]: any}} = { }, nodeEnv?: string) {
+    const root = resolve(dirname(requireMainFilename()))
+    const temp = resolve(root, '.tmp')
+    const envConfig = initialConfig.env && initialConfig.env[nodeEnv] || { }
+
+    const configTemplate = {
+      main: {
+        maxListeners: 128,
+        spools: [ ],
+        paths: {
+          root: root,
+          temp: temp,
+          sockets: resolve(temp, 'sockets'),
+          logs: resolve(temp, 'log')
+        },
+        freezeConfig: true,
+        createPaths: true
+      }
+    }
+
+    return merge(configTemplate, initialConfig, envConfig, { env: nodeEnv })
+  }
 
   constructor (
     configTree: {[key: string]: any} = { },
@@ -75,51 +118,6 @@ export class Configuration extends Map<any, any> {
    */
   unfreeze () {
     this.immutable = false
-  }
-
-  /**
-   * Flattens configuration tree
-   */
-  static flattenTree (tree = { }) {
-    const toReturn: {[key: string]: any} = { }
-
-    Object.entries(tree).forEach(([ k, v ]) => {
-      if (typeof v === 'object' && v !== null) {
-        const flatObject = Configuration.flattenTree(v)
-        Object.keys(flatObject).forEach(flatKey => {
-          toReturn[`${k}.${flatKey}`] = flatObject[flatKey]
-        })
-      }
-      toReturn[k] = v
-    })
-    return toReturn
-  }
-
-  /**
-   * Copy and merge the provided configuration into a new object, decorated with
-   * necessary default and environment-specific values.
-   */
-  static buildConfig (initialConfig: {env?: {[key: string]: any}} = { }, nodeEnv?: string) {
-    const root = resolve(dirname(requireMainFilename()))
-    const temp = resolve(root, '.tmp')
-    const envConfig = initialConfig.env && initialConfig.env[nodeEnv] || { }
-
-    const configTemplate = {
-      main: {
-        maxListeners: 128,
-        spools: [ ],
-        paths: {
-          root: root,
-          temp: temp,
-          sockets: resolve(temp, 'sockets'),
-          logs: resolve(temp, 'log')
-        },
-        freezeConfig: true,
-        createPaths: true
-      }
-    }
-
-    return merge(configTemplate, initialConfig, envConfig, { env: nodeEnv })
   }
 }
 
