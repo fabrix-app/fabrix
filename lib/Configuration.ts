@@ -96,12 +96,13 @@ export class Configuration extends Map<any, any> {
   /**
     * Merge tree into this configuration. Return overwritten keys
    */
-  merge (configTree: {[key: string]: any}) {
+  merge (configTree: {[key: string]: any}, configAction = 'hold') {
     const configEntries = Object.entries(Configuration.flattenTree(configTree))
     return configEntries.map(([ key, value ]) => {
       const hasKey = this.has(key)
-      this.set(key, value)
-
+      if (!hasKey || configAction === 'hold') {
+        this.set(key, value)
+      }
       return { hasKey, key }
     })
   }

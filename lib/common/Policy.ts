@@ -1,11 +1,14 @@
+// tslint:disable no-unused-expression
+
 import { FabrixApp } from '../index'
 import { EventEmitter } from 'events'
 import { enumerable, writable } from './'
+import { FabrixGeneric } from './Generic'
 
 /**
  * Fabrix Policy Class.
  */
-export class FabrixPolicy {
+export class FabrixPolicy extends FabrixGeneric {
   private _app: FabrixApp
 
 
@@ -16,6 +19,8 @@ export class FabrixPolicy {
   }
 
   constructor (app: FabrixApp) {
+    super(app)
+
     if (!(app instanceof EventEmitter)) {
       throw new Error('The "app" argument must be of type EventEmitter')
     }

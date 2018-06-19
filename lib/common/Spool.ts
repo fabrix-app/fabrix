@@ -1,7 +1,7 @@
 // tslint:disable no-unused-expression
 
 import { EventEmitter } from 'events'
-import { defaultsDeep } from 'lodash'
+import { defaultsDeep, omit } from 'lodash'
 import { writable, enumerable, configurable, IApi, IPkg, ISpoolConfig, ILifecycle } from './index'
 import { FabrixApp } from '../index'
 
@@ -14,6 +14,20 @@ export class Spool {
   private _config: ISpoolConfig
   private _pkg: any // IPkg
   private _api: IApi
+  private _lifecycle: ILifecycle
+  private _spoolConfigKeys = ['lifecycle', 'spool']
+
+  /**
+   * Return the action for the config file of this spool into the app.config
+   * replaceable: allow config provided by spool to be overridden by app.config
+   * hold: do not allow config provided by spool to be overridden by app.config
+   * merge: attempt to deep merge config provided by spool with app.config TODO
+   * This method can be overridden for spools by declaring a 'configAction' getter
+   * in the extending spool class.
+   */
+  static get configAction (): string {
+    return 'replaceable'
+  }
 
   /**
    * Return the type of this Spool. By default, this 'misc'.
@@ -42,6 +56,13 @@ export class Spool {
     }
   }
 
+  static configuredSpoolLifecycle (config) {
+    const level1 = config.lifecycle || {}
+    const level2 = config.spool && config.spool.lifecycle ? config.spool.lifecycle : {}
+    const level3 = Spool.defaultLifecycle
+    return defaultsDeep({}, level1, level2, level3)
+  }
+
   /**
    * @constructor
    * @param app FabrixApp instance
@@ -60,7 +81,7 @@ export class Spool {
       pkg = null,
       config = { },
       api = { }
-    }: { pkg: any, config: ISpoolConfig, api: IApi }
+    }: { pkg?: any, config?: ISpoolConfig, api?: IApi }
   ) {
     if (!(app instanceof EventEmitter)) {
       throw new Error('The "app" argument must be of type EventEmitter')
@@ -70,9 +91,15 @@ export class Spool {
     }
 
     this._app = app
-    this._api = api
-    this._config = defaultsDeep({}, config, {lifecycle: Spool.defaultLifecycle})
     this._pkg = Object.freeze(pkg)
+    this._api = api
+
+    /**
+     * Config will pollute the app.config, "lifecycle" and "spool" are spool specific
+     * configuration arguments and should be omitted from config
+     */
+    this._config = omit(config, this._spoolConfigKeys)
+    this._lifecycle = Spool.configuredSpoolLifecycle(config)
     this.app.emit(`spool:${this.name}:constructed`, this)
   }
 
@@ -149,14 +176,16 @@ export class Spool {
    * which do not follow the "spool-" prefix naming convention.
    */
   get name (): string {
-    return this.pkg.name.replace(/(^@fabrix\/)?spool\-|trailpack\-/, '')
+    return this.pkg.name
+      ? this.pkg.name.replace(/(^@fabrix\/)?spool\-|trailpack\-/, '')
+      : this.constructor.name.toLowerCase().replace(/Spool$/, '')
   }
 
   /**
    * The final Spool lifecycle merged with the configured lifecycle
    */
   get lifecycle (): ILifecycle {
-    return this._config.lifecycle
+    return this._lifecycle
   }
 
 

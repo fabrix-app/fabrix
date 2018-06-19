@@ -1,5 +1,6 @@
 import { FabrixApp } from '../../index'
 import { Spool } from '../'
+import { FabrixModel } from '../Model'
 
 /**
  * Datastore Spool
@@ -24,7 +25,7 @@ export class DatastoreSpool extends Spool {
    */
   async initialize (): Promise<any> {
     Object.entries(this.app.models).forEach(([ modelName, model ]) => {
-      const modelConfig = model.constructor.config()
+      const modelConfig = (<typeof FabrixModel>model.constructor).config()
       model.store = modelConfig.store || this.app.config.get('stores.models.defaultStore')
     })
     return Promise.resolve()

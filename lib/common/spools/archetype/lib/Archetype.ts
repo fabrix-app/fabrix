@@ -1,4 +1,8 @@
-import { Spool } from '../../'
+import { Spool } from '../../../'
+
+import * as config from './config/index'
+import * as pkg from '../package.json'
+import * as api from './api/index'
 
 export class Archetype extends Spool {
 
@@ -8,9 +12,9 @@ export class Archetype extends Spool {
 
   constructor (app) {
     super(app, {
-      config: require('./config/index'),
-      api: require('./api/index'),
-      pkg: require('./package')
+      config: config,
+      api: api,
+      pkg: pkg
     })
   }
 

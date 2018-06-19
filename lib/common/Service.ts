@@ -3,14 +3,17 @@
 import { FabrixApp} from '../index'
 import { EventEmitter } from 'events'
 import { enumerable, writable } from './'
+import { FabrixGeneric } from './Generic'
 
 /**
  * Fabrix Service Class.
  */
-export class FabrixService {
+export class FabrixService extends FabrixGeneric {
   private _app: FabrixApp
 
   constructor (app: FabrixApp) {
+    super(app)
+
     if (!(app instanceof EventEmitter)) {
       throw new Error('The "app" argument must be of type EventEmitter')
     }

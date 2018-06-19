@@ -1,6 +1,6 @@
 import { Spool } from '../'
 
-export class AbstractSpool extends Spool {
+export class ExtensionSpool extends Spool {
 
   static get type () {
     return 'extension'

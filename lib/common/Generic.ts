@@ -1,7 +1,8 @@
+import { FabrixApp } from '../index'
 /**
  * Fabrix Generic Class.
  */
-// export interface FabrixGeneric<T> {
-//   new() : T
-// }
-export class FabrixGeneric {}
+export class FabrixGeneric {
+  public methods = []
+  constructor (app: FabrixApp) {}
+}

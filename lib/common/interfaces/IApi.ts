@@ -1,7 +1,7 @@
 import { FabrixModel, FabrixService, FabrixResolver, FabrixPolicy, FabrixController, FabrixGeneric } from '../'
 
 export interface IApi {
-  [key: string]: {[key: string]: any},
+  [key: string]: any
   // models?: {[key: string]: FabrixModel},
   // services?: {[key: string]: FabrixService},
   // resolvers?: {[key: string]: FabrixResolver},

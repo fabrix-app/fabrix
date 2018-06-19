@@ -2,21 +2,26 @@ import { EventEmitter } from 'events'
 import { FabrixApp } from '../index'
 import { FabrixResolver } from './'
 import { IllegalAccessError } from '../errors'
+import { FabrixGeneric } from './Generic'
 
 /**
  * Fabrix Model Class.
  */
-export class FabrixModel {
+export class FabrixModel extends FabrixGeneric {
   private _app: FabrixApp
   private _config: {[key: string]: any}
   private _schema: any
   private _resolver: any
 
+  public store
+
   /**
    * Model configuration
    */
   public static config (): {[key: string]: any} {
-    return {}
+    return {
+      store: null
+    }
   }
 
   /**
@@ -48,6 +53,8 @@ export class FabrixModel {
    * Construct the model and bind the Resolver
    */
   constructor (app: FabrixApp) {
+    super(app)
+
     if (!(app instanceof EventEmitter)) {
       throw new Error('The "app" argument must be of type EventEmitter')
     }

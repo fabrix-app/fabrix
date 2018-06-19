@@ -4,7 +4,13 @@ module.exports = class Testspool extends Spool {
   constructor (app) {
     super(app, {
       pkg: {
-        name: 'testspool'
+        name: 'spool-test'
+      },
+      config: {
+        test: {
+          val: 0,
+          otherval: 1
+        }
       }
     })
   }

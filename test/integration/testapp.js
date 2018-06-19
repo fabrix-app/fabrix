@@ -6,6 +6,9 @@ module.exports = {
 
   },
   config: {
+    test: {
+      val: 1
+    },
     main: {
       paths: {
         root: __dirname
@@ -18,7 +21,5 @@ module.exports = {
       logger: new smokesignals.Logger('silent')
     }
   },
-  pkg: {
-
-  }
+  pkg: {}
 }

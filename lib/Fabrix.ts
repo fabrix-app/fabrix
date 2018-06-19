@@ -5,6 +5,18 @@ import { LoggerProxy } from './LoggerProxy'
 import { enumerable, writable, configurable, Spool, IApi, IPkg, IConfig, IEnv } from './common'
 import * as Errors from './errors'
 import * as pkg from '../package.json'
+import { FabrixGeneric } from './common/Generic'
+import { FabrixController } from './common/Controller'
+import { FabrixService } from './common/Service'
+import { FabrixPolicy } from './common/Policy'
+import { FabrixModel } from './common/Model'
+import { FabrixResolver } from './common/Resolver'
+import { ServerSpool } from './common/spools/server'
+import { ExtensionSpool } from './common/spools/extension'
+import { DatastoreSpool } from './common/spools/datastore'
+import { SystemSpool } from './common/spools/system'
+import { ToolSpool } from './common/spools/tool'
+import { MiscSpool } from './common/spools/misc'
 
 // inject Error and Resource types into the global namespace
 Core.assignGlobals()
@@ -22,14 +34,14 @@ export class FabrixApp extends EventEmitter {
   private _versions: {[key: string]: any }
   private _api: IApi
   private _fabrix: any
-  private _spools: {[key: string]: Spool}
+  private _spools: {[key: string]: Spool | ServerSpool | ExtensionSpool | DatastoreSpool | SystemSpool | ToolSpool | MiscSpool }
 
   public resources: string[] = ['controllers', 'policies', 'services', 'models', 'resolvers']
-  public controllers: {[key: string]: any }
-  public services: {[key: string]: any }
-  public policies: {[key: string]: any }
-  public models: {[key: string]: any }
-  public resolvers: {[key: string]: any }
+  public controllers: {[key: string]: FabrixController }
+  public services: {[key: string]: FabrixService }
+  public policies: {[key: string]: FabrixPolicy }
+  public models: {[key: string]: FabrixModel }
+  public resolvers: {[key: string]: FabrixResolver }
   public routes: any[]
 
   /**
@@ -84,9 +96,10 @@ export class FabrixApp extends EventEmitter {
     // instantiate spools TOTO type of Spool
     this.config.get('main.spools').forEach((NewSpool: any) => {
       try {
-        const spool = new NewSpool(this)
+        const spoolContext = <typeof Spool> NewSpool
+        const spool = new spoolContext(this, {})
         this.spools[spool.name] = spool
-        this.config.merge(spool.config)
+        this.config.merge(spool.config, spoolContext.configAction)
         Core.mergeApi(this, spool, this.resources)
         Core.bindSpoolMethodListeners(this, spool)
       }

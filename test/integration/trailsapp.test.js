@@ -168,6 +168,41 @@ describe('Fabrix', () => {
           app.config = { }
           assert.equal(app.config.get('foo'), 'bar')
         })
+
+        it('should get default spool config object from app config', () => {
+          const def = {
+            pkg: { },
+            api: { },
+            config: {
+              main: {
+                spools: [
+                  Testspool
+                ]
+              }
+            }
+          }
+          const app = new FabrixApp(def)
+          assert.equal(app.config.get('test.val'), 0)
+          assert.equal(app.config.get('test.otherval'), 1)
+        })
+
+        it('should override default spool config object from app config', () => {
+          const def = {
+            pkg: { },
+            api: { },
+            config: {
+              main: {
+                spools: [ Testspool ]
+              },
+              test: {
+                val: 1
+              }
+            }
+          }
+          const app = new FabrixApp(def)
+          assert.equal(app.config.get('test.val'), 1)
+          assert.equal(app.config.get('test.otherval'), 1)
+        })
       })
     })
 

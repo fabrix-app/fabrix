@@ -60,9 +60,7 @@ export const Pathfinder = {
    *
    */
   getLifecyclePath (spool: Spool, stageName: string, spools: Spool[], path?: any[]): any {
-    // TODO CHECK
-    const stage = spool.config.lifecycle[stageName] || { }
-    // const stage = spool.lifecycle[stageName] || { }
+    const stage = spool.lifecycle[stageName] || { }
 
     if (!path) {
       return Pathfinder.getLifecyclePath(spool, stageName, spools, [ spool ])
@@ -104,9 +102,7 @@ export const Pathfinder = {
   getEventProducer (eventName: string, stageName: string, spools: Spool[], path: any[] = [ ]): any {
     const producers = spools
       .filter(spool => {
-        // TODO check
-        const stage = spool.config.lifecycle[stageName]
-        // const stage = spool.lifecycle[stageName]
+        const stage = spool.lifecycle[stageName]
         return path.indexOf(spool) === -1 && stage.emit.indexOf(eventName) >= 0
       })
 

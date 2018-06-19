@@ -19,7 +19,7 @@ import { FabrixController } from './common/Controller'
 import { FabrixPolicy } from './common/Policy'
 import { FabrixModel } from './common/Model'
 import { FabrixResolver } from './common/Resolver'
-import { Spool, ILifecycle } from './common'
+import { Spool, ILifecycle, FabrixGeneric } from './common'
 
 declare global {
   namespace NodeJS {
@@ -96,19 +96,17 @@ export const Core = {
    */
   bindMethods (app: FabrixApp, resource: string): any {
     return Object.entries(app.api[resource])
-      .map(([ resourceName, Resource ]) => {
-        const obj = new Resource(app)
+      .map(([ resourceName, Resource ]: [string, any]) => {
+        const objContext = <typeof FabrixGeneric>Resource
+        const obj = new objContext(app)
 
         obj.methods = Core.getClassMethods(obj) || []
-        console.log(obj.methods)
         Object.entries(obj.methods).forEach(([ _, method])  => {
-          console.log('BROKE', method)
-          // TODO
-          // obj[method] = obj[method].bind(obj)
+          obj[method] = obj[method].bind(obj)
         })
         return [ resourceName, obj ]
       })
-      .reduce((result, [ resourceName, _resource ]) => Object.assign(result, {
+      .reduce((result, [ resourceName, _resource ]: [string, any]) => Object.assign(result, {
         [resourceName]: _resource
       }), { })
   },
