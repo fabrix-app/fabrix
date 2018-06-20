@@ -9,7 +9,11 @@ import { FabrixApp } from '../index'
  * @class Spool
  * @see {@link https://fabrix.app/doc/en/ref/spool}
  */
+export interface Spool {
+  [key: string]: any
+}
 export class Spool {
+  private _stage = 'pre'
   private _app: FabrixApp
   private _config: ISpoolConfig
   private _pkg: any // IPkg
@@ -101,6 +105,17 @@ export class Spool {
     this._config = omit(config, this._spoolConfigKeys)
     this._lifecycle = Spool.configuredSpoolLifecycle(config)
     this.app.emit(`spool:${this.name}:constructed`, this)
+  }
+
+  set stage (val) {
+    this._stage = val
+  }
+
+  /**
+   * Returns the lifecylce stage that the spool is currently in
+   */
+  get stage () {
+    return this._stage
   }
 
 

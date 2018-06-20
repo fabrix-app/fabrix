@@ -25,6 +25,9 @@ Core.assignGlobals()
  * The Fabrix Application. Merges the configuration and API resources
  * loads Spools, initializes logging and event listeners.
  */
+export interface FabrixApp {
+  [key: string]: any
+}
 export class FabrixApp extends EventEmitter {
 
   private _logger: LoggerProxy
@@ -35,6 +38,7 @@ export class FabrixApp extends EventEmitter {
   private _api: IApi
   private _fabrix: any
   private _spools: {[key: string]: Spool | ServerSpool | ExtensionSpool | DatastoreSpool | SystemSpool | ToolSpool | MiscSpool }
+  public _ext: {[key: string]: any} = {}
 
   public resources: string[] = ['controllers', 'policies', 'services', 'models', 'resolvers']
   public controllers: {[key: string]: FabrixController }
@@ -42,7 +46,8 @@ export class FabrixApp extends EventEmitter {
   public policies: {[key: string]: FabrixPolicy }
   public models: {[key: string]: FabrixModel }
   public resolvers: {[key: string]: FabrixResolver }
-  public routes: any[]
+  public routes: any[] = []
+
 
   /**
    * @param app.pkg The application package.json
@@ -96,10 +101,11 @@ export class FabrixApp extends EventEmitter {
     // instantiate spools TOTO type of Spool
     this.config.get('main.spools').forEach((NewSpool: any) => {
       try {
-        const spoolContext = <typeof Spool> NewSpool
+        const spoolContext = <typeof NewSpool> NewSpool
         const spool = new spoolContext(this, {})
         this.spools[spool.name] = spool
         this.config.merge(spool.config, spoolContext.configAction)
+        Core.mergeExtensions(this, spool)
         Core.mergeApi(this, spool, this.resources)
         Core.bindSpoolMethodListeners(this, spool)
       }
@@ -112,11 +118,9 @@ export class FabrixApp extends EventEmitter {
     // instantiate resource classes and bind resource methods
     this.bindResourceMethods(this.resources)
 
-    // TODO REMOVE: Establish an empty routes paradigm
-    this.routes = []
-
     Core.bindApplicationListeners(this)
     Core.bindSpoolPhaseListeners(this, Object.values(this.spools))
+
   }
 
   /**
@@ -183,6 +187,27 @@ export class FabrixApp extends EventEmitter {
     return this.logger
   }
 
+  /**
+   *
+   */
+  // get (target, key) {
+  //   console.log('V GETTER!', key)
+  //   if (this.hasOwnProperty(key)) {
+  //     console.log(key)
+  //     return this[key]
+  //   }
+  //   else if (this._ext.hasOwnProperty(key)) {
+  //     console.log('ext', key)
+  //     return this._ext[key]
+  //   }
+  //   else {
+  //     throw new RangeError(`${key} does not exist on FabrixApp instance.`)
+  //   }
+  // }
+
+  get ext () {
+    return this._ext
+  }
 
   /**
    * Start the App. Load all Spools.
@@ -201,10 +226,12 @@ export class FabrixApp extends EventEmitter {
 
     await Promise
       .all(Object.values(this.spools).map(spool => {
+        spool.stage = 'unloading'
         this.log.debug('Unloading spool', spool.name, '...')
         return spool.unload()
       }))
       .then(() => {
+        Object.values(this.spools).forEach(spool => { spool.stage = 'unloaded' })
         this.log.debug('All spools unloaded. Done.')
         this.removeAllListeners()
       })

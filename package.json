@@ -1,6 +1,6 @@
 {
   "name": "@fabrix/fabrix",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "description": "Strongly Typed Modern Web Application Framework for Node.js",
   "keywords": [
     "framework",
@@ -13,6 +13,8 @@
     "grails",
     "sails",
     "trails",
+    "sails.js",
+    "trails.js",
     "fabrix",
     "typescript",
     "server",

@@ -97,11 +97,11 @@ export const Core = {
   bindMethods (app: FabrixApp, resource: string): any {
     return Object.entries(app.api[resource])
       .map(([ resourceName, Resource ]: [string, any]) => {
-        const objContext = <typeof FabrixGeneric>Resource
+        const objContext = <typeof Resource> Resource
         const obj = new objContext(app)
 
         obj.methods = Core.getClassMethods(obj) || []
-        Object.entries(obj.methods).forEach(([ _, method])  => {
+        Object.entries(obj.methods).forEach(([ _, method]: [any, string])  => {
           obj[method] = obj[method].bind(obj)
         })
         return [ resourceName, obj ]
@@ -142,6 +142,19 @@ export const Core = {
       app.api[resource] || {},
       spool.api[resource] || {})
     )
+  },
+
+  mergeExtensions (
+    app: FabrixApp,
+    spool: Spool
+  ) {
+    const extensions = spool.extensions || {}
+    for (const ext of Object.keys(extensions)) {
+      if (!extensions.hasOwnProperty(ext)) {
+        continue
+      }
+      Object.defineProperty(app, ext, spool.extensions[ext])
+    }
   },
 
   /**
@@ -230,20 +243,26 @@ export const Core = {
 
     app.after((lifecycle.initialize.listen).concat('spool:all:configured'))
       .then(() => app.log.debug('spool: initializing', spool.name))
+      .then(() => spool.stage = 'initializing')
       .then(() => spool.initialize())
       .then(() => app.emit(`spool:${spool.name}:initialized`))
+      .then(() => spool.stage = 'initialized')
       .catch(this.handlePromiseRejection)
 
     app.after((lifecycle.configure.listen).concat('spool:all:validated'))
       .then(() => app.log.debug('spool: configuring', spool.name))
+      .then(() => spool.stage = 'configuring')
       .then(() => spool.configure())
       .then(() => app.emit(`spool:${spool.name}:configured`))
+      .then(() => spool.stage = 'configured')
       .catch(this.handlePromiseRejection)
 
     app.after('fabrix:start')
       .then(() => app.log.debug('spool: validating', spool.name))
+      .then(() => spool.stage = 'validating')
       .then(() => spool.validate())
       .then(() => app.emit(`spool:${spool.name}:validated`))
+      .then(() => spool.stage = 'validated')
       .catch(this.handlePromiseRejection)
   },
 

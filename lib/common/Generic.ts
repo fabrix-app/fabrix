@@ -3,6 +3,6 @@ import { FabrixApp } from '../index'
  * Fabrix Generic Class.
  */
 export class FabrixGeneric {
-  public methods = []
+  public methods: string[] = []
   constructor (app: FabrixApp) {}
 }
