@@ -9,6 +9,11 @@ import { FabrixModel } from '../Model'
  * API for all datastores.
  */
 export class DatastoreSpool extends Spool {
+  /**
+   * A Reference to the Library being used as the ORM
+   */
+  public _datastore: any
+
   static get type () {
     return 'datastore'
   }
@@ -25,8 +30,10 @@ export class DatastoreSpool extends Spool {
    */
   async initialize (): Promise<any> {
     Object.entries(this.app.models).forEach(([ modelName, model ]) => {
-      const modelConfig = (<typeof FabrixModel>model.constructor).config()
-      model.store = modelConfig.store || this.app.config.get('stores.models.defaultStore')
+      const modelConfig = (<typeof FabrixModel>model.constructor).config(this.app, this._datastore)
+      model.store = modelConfig.store || this.app.config.get('models.defaultStore')
+      model.migrate = modelConfig.migrate || this.app.config.get('models.migrate') || 'safe'
+      console.log('INIT STORE', model.store)
     })
     return Promise.resolve()
   }

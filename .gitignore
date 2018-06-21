@@ -35,5 +35,3 @@ build/Release
 node_modules
 
 *.sw*
-package-lock.json
-yarn.lock

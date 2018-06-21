@@ -89,7 +89,7 @@
     "@fabrix/lint": "^1.0.0-alpha.3",
     "@types/lodash": "^4.14.109",
     "@types/mkdirp": "^0.5.2",
-    "@types/node": "~10.3.2",
+    "@types/node": "~10.3.4",
     "mocha": "^5",
     "nyc": "^12.0.2",
     "pre-commit": "^1.1.3",

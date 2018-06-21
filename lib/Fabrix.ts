@@ -38,11 +38,10 @@ export class FabrixApp extends EventEmitter {
   private _api: IApi
   private _fabrix: any
   private _spools: {[key: string]: Spool | ServerSpool | ExtensionSpool | DatastoreSpool | SystemSpool | ToolSpool | MiscSpool }
-  public _ext: {[key: string]: any} = {}
 
   public resources: string[] = ['controllers', 'policies', 'services', 'models', 'resolvers']
   public controllers: {[key: string]: FabrixController }
-  public services: {[key: string]: FabrixService }
+  public services: {[key: string]: any } // FabrixService }
   public policies: {[key: string]: FabrixPolicy }
   public models: {[key: string]: FabrixModel }
   public resolvers: {[key: string]: FabrixResolver }
@@ -185,28 +184,6 @@ export class FabrixApp extends EventEmitter {
    */
   get log () {
     return this.logger
-  }
-
-  /**
-   *
-   */
-  // get (target, key) {
-  //   console.log('V GETTER!', key)
-  //   if (this.hasOwnProperty(key)) {
-  //     console.log(key)
-  //     return this[key]
-  //   }
-  //   else if (this._ext.hasOwnProperty(key)) {
-  //     console.log('ext', key)
-  //     return this._ext[key]
-  //   }
-  //   else {
-  //     throw new RangeError(`${key} does not exist on FabrixApp instance.`)
-  //   }
-  // }
-
-  get ext () {
-    return this._ext
   }
 
   /**

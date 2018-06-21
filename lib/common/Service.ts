@@ -21,6 +21,15 @@ export class FabrixService extends FabrixGeneric {
     this.app.emit(`service:${this.id}:constructed`, this)
   }
 
+  get __ () {
+    if (this.app.__) {
+      return this.app.__
+    }
+    else {
+      throw new Error('Missing spool-i18n, make sure it is included in app.main.spools')
+    }
+  }
+
   // @enumerable(false)
   // @writable(false)
   get app(): FabrixApp {

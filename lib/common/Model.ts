@@ -9,18 +9,22 @@ import { FabrixGeneric } from './Generic'
  */
 export class FabrixModel extends FabrixGeneric {
   private _app: FabrixApp
+  private _datastore: any
   private _config: {[key: string]: any}
   private _schema: any
   private _resolver: any
 
   public store
+  public migrate
 
   /**
    * Model configuration
    */
-  public static config (): {[key: string]: any} {
+  public static config (app, datastore?): {[key: string]: any, tableName: string, store: string, migrate: string} {
     return {
-      store: null
+      tableName: null,
+      store: null,
+      migrate: null
     }
   }
 
@@ -29,7 +33,7 @@ export class FabrixModel extends FabrixGeneric {
    * foreign keys, etc go here. Definition will differ based on which
    * ORM/datastore Spool is being used.
    */
-  public static schema (): {[key: string]: any} {
+  public static schema (app, datastore?): {[key: string]: any} {
     return {}
   }
 
@@ -52,7 +56,7 @@ export class FabrixModel extends FabrixGeneric {
   /**
    * Construct the model and bind the Resolver
    */
-  constructor (app: FabrixApp) {
+  constructor (app: FabrixApp, datastore?) {
     super(app)
 
     if (!(app instanceof EventEmitter)) {
@@ -60,14 +64,25 @@ export class FabrixModel extends FabrixGeneric {
     }
     this._app = app
 
+    if (!datastore) {
+      this.app.log.warn(`${this.name} did not receive an instance of the datastore`)
+    }
+    this._datastore = datastore
+
     this.resolver = new (<typeof FabrixModel>this.constructor).resolver(this)
     this.app.emit(`model:${this.name}:constructed`, this)
   }
 
-  // @enumerable(false)
-  // @writable(false)
   get app(): FabrixApp {
     return this._app
+  }
+
+  get datastore() {
+    return this._datastore
+  }
+
+  set datastore(val) {
+    this._datastore = val
   }
 
   /**
@@ -75,9 +90,8 @@ export class FabrixModel extends FabrixGeneric {
    */
   get config () {
     if (!this._config) {
-      this._config = (<typeof FabrixModel>this.constructor).config()
+      this._config = (<typeof FabrixModel>this.constructor).config // (this.app, this.datastore)
     }
-
     return this._config
   }
 
@@ -86,7 +100,7 @@ export class FabrixModel extends FabrixGeneric {
    */
   get schema () {
     if (!this._schema) {
-      this._schema = (<typeof FabrixModel>this.constructor).config
+      this._schema = (<typeof FabrixModel>this.constructor).config // (this.app, this.datastore)
     }
     return this._schema
   }
@@ -96,7 +110,7 @@ export class FabrixModel extends FabrixGeneric {
    */
   set resolver (r) {
     if (this.resolver) {
-      throw new IllegalAccessError('Cannot change the resolver on a Model')
+      // throw new IllegalAccessError('Cannot change the resolver on a Model')
     }
 
     this._resolver = r
@@ -120,7 +134,27 @@ export class FabrixModel extends FabrixGeneric {
    * Return the name of the database table or collection
    */
   get tableName (): string {
-    const config = (<typeof FabrixModel>this.constructor).config() || { }
+    const config = (<typeof FabrixModel>this.constructor).config(this.app, this.datastore)
+    // const config = (<typeof FabrixModel>this.constructor).config || { tableName: null }
     return config.tableName || this.name
+    // return this.config.tableName || this.name
   }
+
+  /**
+    save (...args) {
+      return this.resolver.save(...args)
+    }
+
+    update (...args) {
+      return this.resolver.update(...args)
+    }
+
+    delete (...args) {
+      return this.resolver.delete(...args)
+    }
+
+    get (...args) {
+      return this.resolver.get(...args)
+    }
+  */
 }

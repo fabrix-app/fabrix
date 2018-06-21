@@ -1,3 +1,5 @@
+// tslint:disable no-unused-expression
+
 import { FabrixApp } from '../index'
 import { FabrixModel } from './'
 
@@ -41,5 +43,23 @@ export class FabrixResolver {
   get app(): FabrixApp {
     return this.model.app
   }
+
+  /**
+    public save(...args) {
+      throw new Error('Orm for Save not defined')
+    }
+
+    public update(...args) {
+      throw new Error('Orm for Update not defined')
+    }
+
+    public delete(...args) {
+      throw new Error('Orm for Delete not defined')
+    }
+
+    public get(...args) {
+      throw new Error('Orm for Get not defined')
+    }
+  */
 }
 
