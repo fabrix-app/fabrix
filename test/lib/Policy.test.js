@@ -1,5 +1,5 @@
 const assert = require('assert')
-const Policy = require('../../dist/common/Policy').FabrixPolicy
+const Policy = require('../../dist/common').FabrixPolicy
 const Fabrix = require('../../dist').FabrixApp
 const testApp = require('../integration/testapp')
 

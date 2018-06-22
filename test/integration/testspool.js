@@ -1,4 +1,4 @@
-const Spool = require('../../dist/common/spool').Spool
+const Spool = require('../../dist/common').Spool
 
 module.exports = class Testspool extends Spool {
   constructor (app) {

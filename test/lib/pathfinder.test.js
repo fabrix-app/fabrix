@@ -1,7 +1,7 @@
 const EventEmitter = require('events').EventEmitter
 const assert = require('assert')
 const lib = require('../../dist/index')
-const Spool = require('../../dist/common/spool').Spool
+const Spool = require('../../dist/common').Spool
 
 describe('lib.Pathfinder', () => {
   describe('#getPathErrors', () => {

@@ -1,6 +1,6 @@
 const assert = require('assert')
 const Fabrix = require('../../dist').FabrixApp
-const Service = require('../../dist/common/Service').FabrixService
+const Service = require('../../dist/common').FabrixService
 const testApp = require('../integration/testapp')
 
 describe('lib/Service', () => {

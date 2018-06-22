@@ -110,7 +110,7 @@ export class FabrixModel extends FabrixGeneric {
    */
   set resolver (r) {
     if (this.resolver) {
-      // throw new IllegalAccessError('Cannot change the resolver on a Model')
+      throw new IllegalAccessError('Cannot change the resolver on a Model')
     }
 
     this._resolver = r
@@ -137,7 +137,6 @@ export class FabrixModel extends FabrixGeneric {
     const config = (<typeof FabrixModel>this.constructor).config(this.app, this.datastore)
     // const config = (<typeof FabrixModel>this.constructor).config || { tableName: null }
     return config.tableName || this.name
-    // return this.config.tableName || this.name
   }
 
   /**
