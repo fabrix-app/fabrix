@@ -1,7 +1,7 @@
 // decorators
-export { configurable } from './decorators/configurable'
-export { enumerable } from './decorators/enumerable'
-export { writable } from './decorators/writable'
+// export { configurable } from './decorators/configurable'
+// export { enumerable } from './decorators/enumerable'
+// export { writable } from './decorators/writable'
 
 // Fabrix Spool Classes
 export { Spool } from './Spool'

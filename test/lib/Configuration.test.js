@@ -237,6 +237,74 @@ describe('lib.Configuration', () => {
       // assert.throws(() => config.customObject.string = 'c', lib.IllegalAccessError)
       // assert.throws(() => config.customObject['string'] = 'c', lib.IllegalAccessError)
     })
+
+    it('should merge values', () => {
+      const config = new lib.Configuration(_.cloneDeep(testConfig))
+      config.merge({
+        customObject: {
+          string: 'b',
+          int: 2,
+          array: [3, 4, 5],
+          subobj: {
+            attr: 'b'
+          },
+          newValue: 'a'
+        }
+      }, 'merge')
+      // Old Value should still be the same
+      assert.equal(config.get('customObject.string'), 'a')
+      assert.equal(config.get('customObject.int'), 1)
+      assert.deepEqual(config.get('customObject.array'), [1, 2, 3])
+      assert.deepEqual(config.get('customObject.subobj'), {attr: 'a'})
+      // New Value should be merged in
+      assert.equal(config.get('customObject.newValue'), 'a')
+
+    })
+
+    it('should completely ignore replaceable values', () => {
+      const config = new lib.Configuration(_.cloneDeep(testConfig))
+      config.merge({
+        customObject: {
+          string: 'b',
+          int: 2,
+          array: [3, 4, 5],
+          subobj: {
+            attr: 'b'
+          },
+          newValue: 'a'
+        }
+      }, 'replaceable')
+      // Old Value should still be the same
+      assert.equal(config.get('customObject.string'), 'a')
+      assert.equal(config.get('customObject.int'), 1)
+      assert.deepEqual(config.get('customObject.array'), [1, 2, 3])
+      assert.deepEqual(config.get('customObject.subobj'), {attr: 'a'})
+      // New Value should be merged in
+      assert.equal(config.get('customObject.newValue'), 'a')
+    })
+
+    it('should completely hold the specified values', () => {
+      const config = new lib.Configuration(_.cloneDeep(testConfig))
+      config.merge({
+        customObject: {
+          string: 'b',
+          int: 2,
+          array: [3, 4, 5],
+          subobj: {
+            attr: 'b'
+          },
+          newValue: 'a'
+        }
+      }, 'hold')
+      // Old Values will be the new Values
+      assert.equal(config.get('customObject.string'), 'b')
+      assert.equal(config.get('customObject.int'), 2)
+      assert.deepEqual(config.get('customObject.array'), [3, 4, 5])
+      assert.deepEqual(config.get('customObject.subobj'), {attr: 'b'})
+      // New Value should be merged in
+      assert.equal(config.get('customObject.newValue'), 'a')
+    })
+
   })
   describe('#flattenTree', () => {
     it('test', () => {

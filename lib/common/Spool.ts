@@ -2,7 +2,7 @@
 
 import { EventEmitter } from 'events'
 import { defaultsDeep, omit } from 'lodash'
-import { writable, enumerable, configurable, IApi, IPkg, ISpoolConfig, ILifecycle } from './index'
+import { IApi, IPkg, ISpoolConfig, ILifecycle } from './index'
 import { FabrixApp } from '../index'
 
 /**
@@ -19,18 +19,18 @@ export class Spool {
   private _pkg: any // IPkg
   private _api: IApi
   private _lifecycle: ILifecycle
-  private _spoolConfigKeys = ['lifecycle', 'spool']
+  private _spoolConfigKeys = ['lifecycle', 'spool', 'trailpack']
 
   /**
    * Return the action for the config file of this spool into the app.config
-   * replaceable: allow config provided by spool to be overridden by app.config
+   * replaceable: allow config provided by spool to be completely overridden by app.config
    * hold: do not allow config provided by spool to be overridden by app.config
-   * merge: attempt to deep merge config provided by spool with app.config TODO
+   * merge: attempt to deep merge config provided by spool with app.config
    * This method can be overridden for spools by declaring a 'configAction' getter
    * in the extending spool class.
    */
   static get configAction (): string {
-    return 'replaceable'
+    return 'merge'
   }
 
   /**
@@ -62,7 +62,9 @@ export class Spool {
 
   static configuredSpoolLifecycle (config) {
     const level1 = config.lifecycle || {}
-    const level2 = config.spool && config.spool.lifecycle ? config.spool.lifecycle : {}
+    const level2 = config.spool && config.spool.lifecycle
+      ? config.spool.lifecycle : config.trailpack && config.trailpack.lifecycle
+        ? config.trailpack.lifecycle : {}
     const level3 = Spool.defaultLifecycle
     return defaultsDeep({}, level1, level2, level3)
   }

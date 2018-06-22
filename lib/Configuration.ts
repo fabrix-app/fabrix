@@ -1,4 +1,4 @@
-import { merge } from 'lodash'
+import { merge, defaultsDeep } from 'lodash'
 import { resolve, dirname } from 'path'
 import { IllegalAccessError } from './errors'
 import { requireMainFilename } from './utils'
@@ -102,6 +102,14 @@ export class Configuration extends Map<any, any> {
       const hasKey = this.has(key)
       if (!hasKey || configAction === 'hold') {
         this.set(key, value)
+      }
+      else if (hasKey && configAction === 'merge') {
+        const firstValue = this.get(key)
+        value = defaultsDeep(firstValue, value)
+        this.set(key, value)
+      }
+      else if (hasKey && configAction === 'replaceable') {
+        // Do Nothing
       }
       return { hasKey, key }
     })

@@ -2,7 +2,7 @@ import { EventEmitter } from 'events'
 import { Core } from './Core'
 import { Configuration } from './Configuration'
 import { LoggerProxy } from './LoggerProxy'
-import { enumerable, writable, configurable, Spool, IApi, IPkg, IConfig, IEnv } from './common'
+import { Spool, IApi, IPkg, IConfig, IEnv } from './common'
 import * as Errors from './errors'
 import * as pkg from '../package.json'
 import { FabrixGeneric } from './common/Generic'
@@ -116,8 +116,9 @@ export class FabrixApp extends EventEmitter {
 
     // instantiate resource classes and bind resource methods
     this.bindResourceMethods(this.resources)
-
+    // Bind Application Listeners
     Core.bindApplicationListeners(this)
+    // Bind the Phase listeners for the Spool lifecycle
     Core.bindSpoolPhaseListeners(this, Object.values(this.spools))
 
   }

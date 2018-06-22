@@ -2,7 +2,7 @@
 
 import { FabrixApp} from '../index'
 import { EventEmitter } from 'events'
-import { enumerable, writable } from './'
+// import { enumerable, writable } from './'
 import { FabrixGeneric } from './Generic'
 
 /**
