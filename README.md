@@ -109,6 +109,8 @@ Fabrix would not have been possible without the substantial work done by the [Tr
 [npm-url]: https://npmjs.org/package/@fabrix/fabrix
 [ci-image]: https://img.shields.io/circleci/project/github/fabrix-app/fabrix/master.svg
 [ci-url]: https://circleci.com/gh/fabrix-app/fabrix/tree/master
+[daviddm-image]: http://img.shields.io/david/fabrix-app/fabrix.svg?style=flat-square
+[daviddm-url]: https://david-dm.org/fabrix-app/fabrix
 [gitter-image]: http://img.shields.io/badge/+%20GITTER-JOIN%20CHAT%20%E2%86%92-1DCE73.svg?style=flat-square
 [gitter-url]: https://gitter.im/fabrix-app/fabrix
 [twitter-image]: https://img.shields.io/twitter/follow/fabrix-app.svg?style=social
