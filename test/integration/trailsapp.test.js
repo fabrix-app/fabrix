@@ -62,6 +62,9 @@ describe('Fabrix', () => {
         it('should set paths.sockets if not configured explicitly by user', () => {
           assert(global.app.config.get('main.paths.sockets'))
         })
+        it('should set resources if not configured explicitly by user', () => {
+          assert(global.app.config.get('main.resources'))
+        })
       })
 
       describe('errors', () => {
@@ -202,6 +205,61 @@ describe('Fabrix', () => {
           const app = new FabrixApp(def)
           assert.equal(app.config.get('test.val'), 1)
           assert.equal(app.config.get('test.otherval'), 1)
+        })
+
+        it('should have default resources', () => {
+          const def = {
+            pkg: { },
+            api: { },
+            config: {
+              main: {
+              }
+            }
+          }
+          const app = new FabrixApp(def)
+          assert.deepEqual(app.config.get('main.resources'), [
+            'controllers',
+            'policies',
+            'services',
+            'models',
+            'resolvers'
+          ])
+
+          assert(app['controllers'])
+          assert(app['services'])
+          assert(app['models'])
+          assert(app['resolvers'])
+          assert(app['policies'])
+        })
+
+        it('should override default resources', () => {
+          const def = {
+            pkg: { },
+            api: { },
+            config: {
+              main: {
+               resources: ['controllers','events']
+              }
+            }
+          }
+          const app = new FabrixApp(def)
+          assert.deepEqual(app.config.get('main.resources'), ['controllers', 'events'])
+          assert(app['controllers'])
+          assert(app['events'])
+          assert(!app['models'])
+        })
+
+        it('should throw error on incorrectly configured main.resources', () => {
+          const def = {
+            pkg: { },
+            api: { },
+            config: {
+              main: {
+                resources: {}
+              }
+            }
+          }
+          assert.throws(() => new FabrixApp(def), Error)
         })
       })
     })

@@ -1,8 +1,9 @@
-import { merge, defaultsDeep } from 'lodash'
+import { merge, defaultsDeep, isArray } from 'lodash'
 import { resolve, dirname } from 'path'
-import { IllegalAccessError } from './errors'
+import { IllegalAccessError, ConfigValueError } from './errors'
 import { requireMainFilename } from './utils'
 
+// Proxy Handler for get requests to the configuration
 const ConfigurationProxyHandler: ProxyHandler<Configuration> = {
   get (target: any, key: string) {
     if (target.has && target.has(key)) {
@@ -15,6 +16,9 @@ const ConfigurationProxyHandler: ProxyHandler<Configuration> = {
   }
 }
 
+/**
+ * Extend map class for getter/setter tuple config
+ */
 export class Configuration extends Map<any, any> {
   public immutable: boolean
   public env: {}
@@ -37,6 +41,18 @@ export class Configuration extends Map<any, any> {
     return toReturn
   }
 
+  static initialResources (tree) {
+    if (tree.hasOwnProperty('main') && tree.main.hasOwnProperty('resources')) {
+      if (!isArray(tree.main['resources'])) {
+        throw new ConfigValueError('if set, main.resources must be an array')
+      }
+      return tree.main['resources']
+    }
+    else {
+      return ['controllers', 'policies', 'services', 'models', 'resolvers']
+    }
+  }
+
   /**
    * Copy and merge the provided configuration into a new object, decorated with
    * necessary default and environment-specific values.
@@ -48,6 +64,7 @@ export class Configuration extends Map<any, any> {
 
     const configTemplate = {
       main: {
+        resources: Configuration.initialResources(initialConfig),
         maxListeners: 128,
         spools: [ ],
         paths: {
@@ -71,21 +88,30 @@ export class Configuration extends Map<any, any> {
       NODE_ENV?: string
     } = { }
   ) {
+    // Constants for configuration
     const config = Configuration.buildConfig(configTree, processEnv['NODE_ENV'])
     const configEntries = Object.entries(Configuration.flattenTree(config))
+    // Add to the map constructor
     super(configEntries)
 
+    // Initial values
     this.immutable = false
     this.env = processEnv
 
+    // Bind methods
     this.get = this.get.bind(this)
     this.set = this.set.bind(this)
     this.entries = this.entries.bind(this)
     this.has = this.has.bind(this)
 
+    // Return Proxy
     return new Proxy(this, ConfigurationProxyHandler)
   }
 
+  /**
+   * Throws IllegalAccessError if the configuration has already been set to immutable
+   * and an attempt to set value occurs.
+   */
   set (key: string, value: any) {
     if (this.immutable === true) {
       throw new IllegalAccessError('Cannot set properties directly on config. Use .set(key, value) (immutable)')
@@ -96,18 +122,20 @@ export class Configuration extends Map<any, any> {
   /**
     * Merge tree into this configuration. Return overwritten keys
    */
-  merge (configTree: {[key: string]: any}, configAction = 'hold') {
+  merge (configTree: {[key: string]: any}, configAction = 'hold'): { hasKey: boolean, key: any }[] {
     const configEntries = Object.entries(Configuration.flattenTree(configTree))
     return configEntries.map(([ key, value ]) => {
       const hasKey = this.has(key)
+      // If the key has never been set, it is added to the config
+      // If configAction is set to hold, then it will replace the initial config
       if (!hasKey || configAction === 'hold') {
         this.set(key, value)
       }
+      // If configAction is set to merge, it will merge values over the initial config
       else if (hasKey && configAction === 'merge') {
-        const firstValue = this.get(key)
-        value = defaultsDeep(firstValue, value)
-        this.set(key, value)
+        this.set(key, defaultsDeep(this.get(key), value))
       }
+      // If configAction is replaceable, and the key already exists, it's ignored completely
       else if (hasKey && configAction === 'replaceable') {
         // Do Nothing
       }

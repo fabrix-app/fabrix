@@ -48,7 +48,7 @@ export const Core = {
     'app',
     'api',
     'log',
-    '__',
+    '__', // this reserved method comes from i18n
     'constructor',
     'undefined',
     'methods',
@@ -133,10 +133,13 @@ export const Core = {
     return props
   },
 
+  /**
+   * Merge the app api resources with the ones provided by the spools
+   */
   mergeApi (
     app: FabrixApp,
     spool: Spool,
-    defaults = ['controllers', 'services', 'policies', 'models', 'resolvers']
+    defaults = [ ]
   ) {
     defaults.forEach(resource => Object.assign(
       app.api[resource] || {},
@@ -144,6 +147,9 @@ export const Core = {
     )
   },
 
+  /**
+   * Merge extensions provided by spools into the app
+   */
   mergeExtensions (
     app: FabrixApp,
     spool: Spool
