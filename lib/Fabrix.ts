@@ -125,6 +125,7 @@ export class FabrixApp extends EventEmitter {
     // Bind the Phase listeners for the Spool lifecycle
     Core.bindSpoolPhaseListeners(this, Object.values(this.spools))
 
+    this.emit('fabrix:constructed')
   }
 
   /**
