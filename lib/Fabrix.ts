@@ -38,14 +38,15 @@ export class FabrixApp extends EventEmitter {
   private _api: IApi
   private _fabrix: any
   private _spools: {[key: string]: Spool | ServerSpool | ExtensionSpool | DatastoreSpool | SystemSpool | ToolSpool | MiscSpool }
+  private _resources: string[] = [ ]
 
-  public resources: string[] = ['controllers', 'policies', 'services', 'models', 'resolvers']
-  public controllers: {[key: string]: FabrixController }
+  public controllers: {[key: string]: any } // FabrixController }
   public services: {[key: string]: any } // FabrixService }
-  public policies: {[key: string]: FabrixPolicy }
-  public models: {[key: string]: FabrixModel }
-  public resolvers: {[key: string]: FabrixResolver }
-  public routes: any[] = []
+  public policies: {[key: string]: any } // FabrixPolicy }
+  public models: {[key: string]: any } // FabrixModel }
+  public resolvers: {[key: string]: any } // FabrixResolver }
+
+  public routes: any[] = [ ]
 
 
   /**
@@ -73,11 +74,6 @@ export class FabrixApp extends EventEmitter {
       throw new Errors.ApiNotDefinedError()
     }
 
-    // Set each api resource to make sure it's provided as an object in app
-    this.resources.forEach(resource => {
-      app.api[resource] = app.api[resource] || (app.api[resource] = { })
-    })
-
     // set the process node env if not established by environment
     if (!process.env.NODE_ENV) {
       process.env.NODE_ENV = 'development'
@@ -94,8 +90,16 @@ export class FabrixApp extends EventEmitter {
     this._api = app.api
     this._fabrix = pkg
 
-    // set the max listeners from the config
+    // Set the max listeners from the config
     this.setMaxListeners(this.config.get('main.maxListeners'))
+
+    // Set the resources from the configuration
+    this.resources = this.config.get('main.resources')
+
+    // Set each api resource to make sure it's provided as an object in app
+    this.resources.forEach(resource => {
+      app.api[resource] = app.api[resource] || (app.api[resource] = { })
+    })
 
     // instantiate spools TOTO type of Spool
     this.config.get('main.spools').forEach((NewSpool: any) => {
@@ -121,6 +125,7 @@ export class FabrixApp extends EventEmitter {
     // Bind the Phase listeners for the Spool lifecycle
     Core.bindSpoolPhaseListeners(this, Object.values(this.spools))
 
+    this.emit('fabrix:constructed')
   }
 
   /**
@@ -185,6 +190,14 @@ export class FabrixApp extends EventEmitter {
    */
   get log () {
     return this.logger
+  }
+
+  set resources (values) {
+    this._resources = Object.assign(this._resources, values)
+  }
+
+  get resources() {
+    return this._resources
   }
 
   /**

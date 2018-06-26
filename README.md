@@ -6,23 +6,21 @@
 [![Test Coverage][coverage-image]][coverage-url]
 [![Follow @fabrix-app on Twitter][twitter-image]][twitter-url]
 
-Fabrix is a strongly typed modern, [community-driven](https://opencollective.com/fabrix) web application framework for Node.js. It
-builds on the pedigree of [Rails](http://rubyonrails.org/) and [Grails](https://grails.org/)
-to accelerate development by adhering to a straightforward, convention-based,
-API-driven design philosophy.
+Fabrix is a strongly typed modern web application framework for Node.js. It builds on the pedigree of [Rails](http://rubyonrails.org/) and [Grails](https://grails.org/) to accelerate development by adhering to a straightforward, convention-based, API-driven design philosophy.
 
 ## Getting Started
 
 #### Install
+The Fabrix CLI is still under development so the following is a placeholder.
 
 ```sh
-$ 
+$ npm install @fabrix/fab-cli
 ```
 
-#### Trailblaze
+#### Start Sewing
 
 Fabrix uses a CLI to generate scaffolding for new
-applications, and to create resources inside the application.
+applications, and to create resources inside the application. (TODO)
 
 ```sh
 $ fab --help
@@ -43,6 +41,9 @@ Generators:
 
   Create New Service
     fab service <service-name>
+    
+  Create New Spool
+      fab spool <spool-name>
 ```
 
 #### Run
@@ -57,9 +58,7 @@ $ node server.js
 ## Spools
 
 [Spools](https://github.com/fabrix-app/spool) extend the framework's
-capabilities and allow developers to leverage existing ecosystem tools through a
-simple and well-defined API. New features, behavior, APIs, and other functionality
-can be added to the Fabrix framework through Spools.
+capabilities and allow developers to leverage existing ecosystem tools through a simple and well-defined API. New features, behavior, APIs, and other functionality can be added to the Fabrix framework through Spools.
 
 Many Fabrix installations will include some of the following Spools:
 
@@ -101,7 +100,7 @@ information on how our projects are organized and how to get started.
 [MIT](https://github.com/fabrix-app/fabrix/blob/master/LICENSE)
 
 ## Legacy
-Fabrix would not have been possible without the substantial work done by the [Trail.js team](https://github.com/trailsjs). While Fabrix maintains a different code base and system of best practices, none of this would have been possible without the contributions from their community.
+Fabrix would not have been possible without the substantial work done by the [Trails.js team](https://github.com/trailsjs). While Fabrix maintains a different code base and system of best practices, none of this would have been possible without the contributions from the Trails community.
 
 <img src="http://cdn.fabrix.app/art/backgrounds/fabrix-day.png">
 
