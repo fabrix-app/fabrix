@@ -1,4 +1,5 @@
 const Spool = require('../../dist/common').Spool
+const Generic = require('../../dist/common').FabrixGeneric
 
 module.exports = class Testspool extends Spool {
   constructor (app) {
@@ -10,6 +11,11 @@ module.exports = class Testspool extends Spool {
         test: {
           val: 0,
           otherval: 1
+        }
+      },
+      api: {
+        events: {
+          Test: Generic
         }
       }
     })

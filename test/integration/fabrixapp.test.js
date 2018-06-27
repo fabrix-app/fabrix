@@ -247,6 +247,37 @@ describe('Fabrix', () => {
           assert(app['controllers'])
           assert(app['events'])
           assert(!app['models'])
+          assert(!app['services'])
+          assert(!app['resolvers'])
+        })
+
+        it('should have combined spool resources', () => {
+          const def = {
+            pkg: { },
+            api: { },
+            config: {
+              main: {
+                spools: [
+                  Testspool
+                ]
+              }
+            }
+          }
+          const app = new FabrixApp(def)
+          assert.deepEqual(app.config.get('main.resources'), [
+            'controllers',
+            'policies',
+            'services',
+            'models',
+            'resolvers',
+            'events'
+          ])
+          assert(app['controllers'])
+          assert(app['events'])
+          assert(app['models'])
+          assert(app['services'])
+          assert(app['resolvers'])
+          assert(app['events'])
         })
 
         it('should throw error on incorrectly configured main.resources', () => {

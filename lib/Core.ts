@@ -1,3 +1,4 @@
+import { union } from 'lodash'
 import { FabrixApp } from './'
 import * as mkdirp from 'mkdirp'
 import { Templates } from './'
@@ -95,12 +96,12 @@ export const Core = {
    * Bind the context of API resource methods.
    */
   bindMethods (app: FabrixApp, resource: string): any {
-    return Object.entries(app.api[resource])
+    return Object.entries(app.api[resource] || { })
       .map(([ resourceName, Resource ]: [string, any]) => {
         const objContext = <typeof Resource> Resource
         const obj = new objContext(app)
 
-        obj.methods = Core.getClassMethods(obj) || []
+        obj.methods = Core.getClassMethods(obj) || [ ]
         Object.entries(obj.methods).forEach(([ _, method]: [any, string])  => {
           obj[method] = obj[method].bind(obj)
         })
@@ -135,15 +136,18 @@ export const Core = {
 
   /**
    * Merge the app api resources with the ones provided by the spools
+   * Given that they are allowed by app.config.main.resources
    */
   mergeApi (
     app: FabrixApp,
-    spool: Spool,
-    defaults = [ ]
+    spool: Spool
   ) {
-    defaults.forEach(resource => Object.assign(
-      app.api[resource] || {},
-      spool.api[resource] || {})
+    // use the setter to see if any new api resources from the spool can be applied
+    app.resources = union(Object.keys(app.api), Object.keys(spool.api))
+    // Foreach resource, bind it into the app.api
+    app.resources.forEach(resource => Object.assign(
+      (app.api[resource] || { }),
+      (spool.api[resource] || { }))
     )
   },
 

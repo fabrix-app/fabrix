@@ -109,7 +109,7 @@ export class FabrixApp extends EventEmitter {
         this.spools[spool.name] = spool
         this.config.merge(spool.config, spoolContext.configAction)
         Core.mergeExtensions(this, spool)
-        Core.mergeApi(this, spool, this.resources)
+        Core.mergeApi(this, spool)
         Core.bindSpoolMethodListeners(this, spool)
       }
       catch (e) {
@@ -176,10 +176,14 @@ export class FabrixApp extends EventEmitter {
     return this._fabrix
   }
 
+  /**
+   * Gets the Spools that have been installed
+   */
   get spools () {
     return this._spools
   }
 
+  // Get's the api
   get api () {
     return this._api
   }
@@ -192,10 +196,17 @@ export class FabrixApp extends EventEmitter {
     return this.logger
   }
 
+  /**
+   * Sets available/allowed resources from Api and Spool Apis
+   */
   set resources (values) {
-    this._resources = Object.assign(this._resources, values)
+    this._resources = Object.assign([], Configuration.initialResources(this.config, values))
+    this.config.set('main.resources', this._resources)
   }
 
+  /**
+   * Gets the Api resources that have been set
+   */
   get resources() {
     return this._resources
   }
