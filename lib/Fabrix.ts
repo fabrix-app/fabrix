@@ -47,9 +47,6 @@ export class FabrixApp extends EventEmitter {
   public models: {[key: string]: any } // FabrixModel }
   public resolvers: {[key: string]: any } // FabrixResolver }
 
-  public routes: any[] = [ ]
-
-
   /**
    * @param app.pkg The application package.json
    * @param app.api The application api (api/ folder)
@@ -94,10 +91,12 @@ export class FabrixApp extends EventEmitter {
     // Set the max listeners from the config
     this.setMaxListeners(this.config.get('main.maxListeners'))
 
-    // Set the resources from the configuration
+    // Set the resources from the configuration (this bypasses the setter with the initial config)
+    this._resources = this.config.get('main.resources')
+    // See if additional resources can be set
     this.resources = union(Object.keys(app.api), this.config.get('main.resources'))
 
-    // Set each api resource to make sure it's provided as an object in app
+    // Set each api resource to make sure it's provided as an object in the app
     this.resources.forEach(resource => {
       app.api[resource] = app.api[resource] || (app.api[resource] = { })
     })
@@ -201,8 +200,10 @@ export class FabrixApp extends EventEmitter {
    * Sets available/allowed resources from Api and Spool Apis
    */
   set resources (values) {
-    this._resources = Object.assign([], Configuration.initialResources(this.config, values))
-    this.config.set('main.resources', this._resources)
+    if (!this.config.get('main.lockResources')) {
+      this._resources = Object.assign([], Configuration.initialResources(this.config, values))
+      this.config.set('main.resources', this._resources)
+    }
   }
 
   /**

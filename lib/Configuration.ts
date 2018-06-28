@@ -85,6 +85,7 @@ export class Configuration extends Map<any, any> {
     const configTemplate = {
       main: {
         resources: Configuration.initialResources(initialConfig),
+        lockResources: false,
         maxListeners: 128,
         spools: [ ],
         paths: {

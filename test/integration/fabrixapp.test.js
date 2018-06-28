@@ -252,6 +252,31 @@ describe('Fabrix', () => {
           assert(!app['resolvers'])
         })
 
+        it('should lock resources', () => {
+          const def = {
+            pkg: { },
+            api: { },
+            config: {
+              main: {
+                resources: ['controllers','events'],
+                lockResources: true,
+                spools: [
+                  Testspool,
+                  Testspool2
+                ]
+              }
+            }
+          }
+          const app = new FabrixApp(def)
+          assert.deepEqual(app.config.get('main.resources'), ['controllers', 'events'])
+          assert(app['controllers'])
+          assert(app['events'])
+          assert(!app['customKey'])
+          assert(!app['models'])
+          assert(!app['services'])
+          assert(!app['resolvers'])
+        })
+
         it('should have combined spool resources', () => {
           const def = {
             pkg: { },
