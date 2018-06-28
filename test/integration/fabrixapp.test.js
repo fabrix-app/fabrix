@@ -219,18 +219,18 @@ describe('Fabrix', () => {
           }
           const app = new FabrixApp(def)
           assert.deepEqual(app.config.get('main.resources'), [
-            'controllers',
-            'policies',
-            'services',
-            'models',
-            'resolvers'
+            // 'controllers',
+            // 'policies',
+            // 'services',
+            // 'models',
+            // 'resolvers'
           ])
 
-          assert(app['controllers'])
-          assert(app['services'])
-          assert(app['models'])
-          assert(app['resolvers'])
-          assert(app['policies'])
+          // assert(app['controllers'])
+          // assert(app['services'])
+          // assert(app['models'])
+          // assert(app['resolvers'])
+          // assert(app['policies'])
         })
 
         it('should override default resources', () => {
@@ -267,19 +267,19 @@ describe('Fabrix', () => {
           }
           const app = new FabrixApp(def)
           assert.deepEqual(app.config.get('main.resources'), [
-            'controllers',
-            'policies',
-            'services',
-            'models',
-            'resolvers',
+            // 'controllers',
+            // 'policies',
+            // 'services',
+            // 'models',
+            // 'resolvers',
             'events',
             'customKey'
           ])
-          assert(app['controllers'])
-          assert(app['events'])
-          assert(app['models'])
-          assert(app['services'])
-          assert(app['resolvers'])
+          // assert(app['controllers'])
+          // assert(app['events'])
+          // assert(app['models'])
+          // assert(app['services'])
+          // assert(app['resolvers'])
           assert(app['events'])
           assert(app['customKey'])
         })

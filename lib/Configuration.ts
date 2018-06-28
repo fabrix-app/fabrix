@@ -61,7 +61,7 @@ export class Configuration extends Map<any, any> {
     }
   }
 
-  static initialResources (tree, resources = ['controllers', 'policies', 'services', 'models', 'resolvers']) {
+  static initialResources (tree, resources = []) {
     if (tree.hasOwnProperty('main') && tree.main.hasOwnProperty('resources')) {
       if (!isArray(tree.main['resources'])) {
         throw new ConfigValueError('if set, main.resources must be an array')

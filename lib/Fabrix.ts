@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events'
+import { union } from 'lodash'
 import { Core } from './Core'
 import { Configuration } from './Configuration'
 import { LoggerProxy } from './LoggerProxy'
@@ -94,7 +95,7 @@ export class FabrixApp extends EventEmitter {
     this.setMaxListeners(this.config.get('main.maxListeners'))
 
     // Set the resources from the configuration
-    this.resources = this.config.get('main.resources')
+    this.resources = union(Object.keys(app.api), this.config.get('main.resources'))
 
     // Set each api resource to make sure it's provided as an object in app
     this.resources.forEach(resource => {
