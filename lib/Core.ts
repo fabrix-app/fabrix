@@ -143,7 +143,7 @@ export const Core = {
     spool: Spool
   ) {
     // use the setter to see if any new api resources from the spool can be applied
-    app.resources = union(Object.keys(app.api), Object.keys(spool.api))
+    app.resources = union(app.resources, Object.keys(app.api), Object.keys(spool.api))
     // Foreach resource, bind it into the app.api
     app.resources.forEach(resource => Object.assign(
       (app.api[resource] || { }),

@@ -104,7 +104,7 @@ describe('lib.Pathfinder', () => {
       // circular dependency
       new Spool(app, {
         pkg: {
-            name: 'pack5'
+          name: 'pack5'
         },
         config: {
           lifecycle: {

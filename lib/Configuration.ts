@@ -1,4 +1,4 @@
-import { merge, isArray, defaults } from 'lodash'
+import { merge, isArray, defaults, union } from 'lodash'
 import { resolve, dirname } from 'path'
 import { IllegalAccessError, ConfigValueError } from './errors'
 import { requireMainFilename } from './utils'

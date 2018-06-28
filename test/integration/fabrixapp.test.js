@@ -4,6 +4,7 @@ const assert = require('assert')
 const FabrixApp = require('../../dist').FabrixApp
 const Spool = require('../../dist/common').Spool
 const Testspool = require('./testspool')
+const Testspool2 = require('./testspool2')
 const testAppDefinition = require('./testapp')
 const lib = require('../../dist/index')
 
@@ -258,7 +259,8 @@ describe('Fabrix', () => {
             config: {
               main: {
                 spools: [
-                  Testspool
+                  Testspool,
+                  Testspool2
                 ]
               }
             }
@@ -270,7 +272,8 @@ describe('Fabrix', () => {
             'services',
             'models',
             'resolvers',
-            'events'
+            'events',
+            'customKey'
           ])
           assert(app['controllers'])
           assert(app['events'])
@@ -278,6 +281,7 @@ describe('Fabrix', () => {
           assert(app['services'])
           assert(app['resolvers'])
           assert(app['events'])
+          assert(app['customKey'])
         })
 
         it('should throw error on incorrectly configured main.resources', () => {
