@@ -1,11 +1,11 @@
 const Spool = require('../../dist/common').Spool
 const Generic = require('../../dist/common').FabrixGeneric
 
-module.exports = class Testspool extends Spool {
+module.exports = class Testspool2 extends Spool {
   constructor (app) {
     super(app, {
       pkg: {
-        name: 'spool-test'
+        name: 'spool-test2'
       },
       config: {
         test: {
@@ -14,7 +14,7 @@ module.exports = class Testspool extends Spool {
         }
       },
       api: {
-        events: {
+        customKey: {
           Test: Generic
         }
       }

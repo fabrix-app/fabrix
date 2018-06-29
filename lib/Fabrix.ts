@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events'
+import { union } from 'lodash'
 import { Core } from './Core'
 import { Configuration } from './Configuration'
 import { LoggerProxy } from './LoggerProxy'
@@ -46,15 +47,12 @@ export class FabrixApp extends EventEmitter {
   public models: {[key: string]: any } // FabrixModel }
   public resolvers: {[key: string]: any } // FabrixResolver }
 
-  public routes: any[] = [ ]
-
-
   /**
    * @param app.pkg The application package.json
    * @param app.api The application api (api/ folder)
    * @param app.config The application configuration (config/ folder)
    *
-   * Initialize the Fabrix Application and its EventEmitter parentclass. Set
+   * Initialize the Fabrix Application and its EventEmitter parent class. Set
    * some necessary default configuration.
    */
   constructor (app: {
@@ -93,10 +91,13 @@ export class FabrixApp extends EventEmitter {
     // Set the max listeners from the config
     this.setMaxListeners(this.config.get('main.maxListeners'))
 
-    // Set the resources from the configuration
-    this.resources = this.config.get('main.resources')
+    // Set the resources from the configuration (this bypasses the setter with the initial config
+    // in case the resourceLock is configured)
+    this._resources = this.config.get('main.resources')
+    // See if additional resources can be set
+    this.resources = union(Object.keys(app.api), this.config.get('main.resources'))
 
-    // Set each api resource to make sure it's provided as an object in app
+    // Set each api resource to make sure it's provided as an object in the app
     this.resources.forEach(resource => {
       app.api[resource] = app.api[resource] || (app.api[resource] = { })
     })
@@ -104,12 +105,18 @@ export class FabrixApp extends EventEmitter {
     // instantiate spools TOTO type of Spool
     this.config.get('main.spools').forEach((NewSpool: any) => {
       try {
+        // Create new Instance of the Spool
         const spoolContext = <typeof NewSpool> NewSpool
         const spool = new spoolContext(this, {})
+        // Add the spool instance to the app.spools namespace
         this.spools[spool.name] = spool
+        // Reconcile the spool.config with the app.config
         this.config.merge(spool.config, spoolContext.configAction)
+        // Merge extensions into app.<ext>
         Core.mergeExtensions(this, spool)
-        Core.mergeApi(this, spool, this.resources)
+        // Merge the spool.api with app.api
+        Core.mergeApi(this, spool)
+        // Bind the Spool Listeners to app.emit
         Core.bindSpoolMethodListeners(this, spool)
       }
       catch (e) {
@@ -118,8 +125,8 @@ export class FabrixApp extends EventEmitter {
       }
     })
 
-    // instantiate resource classes and bind resource methods
-    this.bindResourceMethods(this.resources)
+    // Instantiate resource classes and bind resource methods
+    Core.bindResourceMethods(this, this.resources)
     // Bind Application Listeners
     Core.bindApplicationListeners(this)
     // Bind the Phase listeners for the Spool lifecycle
@@ -128,58 +135,43 @@ export class FabrixApp extends EventEmitter {
     this.emit('fabrix:constructed')
   }
 
-  /**
-   * Instantiate resource classes and bind resource methods
-   */
-  bindResourceMethods(defaults: string[]): void {
-    defaults.forEach(resource => {
-      try {
-        this[resource] = Core.bindMethods(this, resource)
-      }
-      catch (err) {
-        this.log.error(err)
-      }
-    })
-  }
-
-  // @enumerable(false)
-  // @writable(false)
   get logger () {
     return this._logger
   }
 
-  // @enumerable(false)
   get env () {
     return this._env
   }
 
-  // @enumerable(false)
   get pkg () {
     return this._pkg
   }
 
-  // @enumerable(false)
-  // @writable(false)
-  // @configurable(false)
   get versions () {
     return this._versions
   }
 
-  // @writable(false)
-  // @configurable(true)
   get config () {
     return this._config
   }
 
-  // @enumerable(false)
+  /**
+   * Gets the package.json of the Fabrix module
+   */
   get fabrix () {
     return this._fabrix
   }
 
+  /**
+   * Gets the Spools that have been installed
+   */
   get spools () {
     return this._spools
   }
 
+  /**
+   *   Gets the api
+   */
   get api () {
     return this._api
   }
@@ -192,10 +184,19 @@ export class FabrixApp extends EventEmitter {
     return this.logger
   }
 
+  /**
+   * Sets available/allowed resources from Api and Spool Apis
+   */
   set resources (values) {
-    this._resources = Object.assign(this._resources, values)
+    if (!this.config.get('main.lockResources')) {
+      this._resources = Object.assign([], Configuration.initialResources(this.config, values))
+      this.config.set('main.resources', this._resources)
+    }
   }
 
+  /**
+   * Gets the Api resources that have been set
+   */
   get resources() {
     return this._resources
   }
@@ -225,6 +226,10 @@ export class FabrixApp extends EventEmitter {
         Object.values(this.spools).forEach(spool => { spool.stage = 'unloaded' })
         this.log.debug('All spools unloaded. Done.')
         this.removeAllListeners()
+      })
+      .catch(err => {
+        this.log.error(err, 'while handling stop.')
+        throw err
       })
 
     return this

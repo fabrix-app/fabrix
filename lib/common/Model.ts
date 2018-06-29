@@ -20,7 +20,7 @@ export class FabrixModel extends FabrixGeneric {
   /**
    * Model configuration
    */
-  public static config (app, datastore?): {[key: string]: any, tableName: string, store: string, migrate: string} {
+  public static config (app: FabrixApp, datastore?): {[key: string]: any} {
     return {
       tableName: null,
       store: null,
@@ -33,7 +33,7 @@ export class FabrixModel extends FabrixGeneric {
    * foreign keys, etc go here. Definition will differ based on which
    * ORM/datastore Spool is being used.
    */
-  public static schema (app, datastore?): {[key: string]: any} {
+  public static schema (app: FabrixApp, datastore?): {[key: string]: any} {
     return {}
   }
 

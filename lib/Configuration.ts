@@ -1,4 +1,4 @@
-import { merge, defaultsDeep, isArray } from 'lodash'
+import { merge, isArray, defaults, union } from 'lodash'
 import { resolve, dirname } from 'path'
 import { IllegalAccessError, ConfigValueError } from './errors'
 import { requireMainFilename } from './utils'
@@ -25,23 +25,46 @@ export class Configuration extends Map<any, any> {
 
   /**
    * Flattens configuration tree
+   * Recursive
    */
   static flattenTree (tree = { }) {
-    const toReturn: {[key: string]: any} = { }
-
-    Object.entries(tree).forEach(([ k, v ]) => {
-      if (typeof v === 'object' && v !== null) {
-        const flatObject = Configuration.flattenTree(v)
-        Object.keys(flatObject).forEach(flatKey => {
-          toReturn[`${k}.${flatKey}`] = flatObject[flatKey]
-        })
-      }
-      toReturn[k] = v
-    })
-    return toReturn
+    // Try to flatten and fail if circular
+    try {
+      const toReturn: { [key: string]: any } = {}
+      Object.entries(tree).forEach(([k, v]) => {
+        // if (typeof v === 'object' && v !== null) {
+        if (
+          v instanceof Object
+          && typeof v !== 'function'
+        ) {
+          // If value is an array, flatten by index and don't try to flatten further
+          if (Array.isArray(v)) {
+            v.forEach((val, i) => {
+              toReturn[`${k}.${i}`] = val
+            })
+          }
+          // If the value is a normal object, keep flattening
+          else {
+            const flatObject = Configuration.flattenTree(v)
+            Object.keys(flatObject).forEach(flatKey => {
+              toReturn[`${k}.${flatKey}`] = flatObject[flatKey]
+            })
+          }
+        }
+        // Other wise, the value is a function, string, or number etc and should stop flattening
+        toReturn[k] = v
+      })
+      return toReturn
+    }
+    catch (err) {
+      throw new RangeError('Tree is circular, check that there are no circular references in the config')
+    }
   }
 
-  static initialResources (tree) {
+  /**
+   * Defines the initial api resources
+   */
+  static initialResources (tree, resources = []) {
     if (tree.hasOwnProperty('main') && tree.main.hasOwnProperty('resources')) {
       if (!isArray(tree.main['resources'])) {
         throw new ConfigValueError('if set, main.resources must be an array')
@@ -49,7 +72,7 @@ export class Configuration extends Map<any, any> {
       return tree.main['resources']
     }
     else {
-      return ['controllers', 'policies', 'services', 'models', 'resolvers']
+      return resources
     }
   }
 
@@ -65,6 +88,7 @@ export class Configuration extends Map<any, any> {
     const configTemplate = {
       main: {
         resources: Configuration.initialResources(initialConfig),
+        lockResources: false,
         maxListeners: 128,
         spools: [ ],
         paths: {
@@ -120,7 +144,7 @@ export class Configuration extends Map<any, any> {
   }
 
   /**
-    * Merge tree into this configuration. Return overwritten keys
+    * Merge tree into this configuration if allowed. Return overwritten keys
    */
   merge (configTree: {[key: string]: any}, configAction = 'hold'): { hasKey: boolean, key: any }[] {
     const configEntries = Object.entries(Configuration.flattenTree(configTree))
@@ -131,11 +155,12 @@ export class Configuration extends Map<any, any> {
       if (!hasKey || configAction === 'hold') {
         this.set(key, value)
       }
-      // If configAction is set to merge, it will merge values over the initial config
+      // If configAction is set to merge, it will default values over the initial config
       else if (hasKey && configAction === 'merge') {
-        this.set(key, defaultsDeep(this.get(key), value))
+        this.set(key, defaults(this.get(key), value))
       }
       // If configAction is replaceable, and the key already exists, it's ignored completely
+      // This is because it was set by a higher level app config
       else if (hasKey && configAction === 'replaceable') {
         // Do Nothing
       }

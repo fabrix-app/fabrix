@@ -48,7 +48,7 @@ export const Templates = {
 
       return (
         ` API
-          Resources         : ${app.resources || []}
+          API Resources     : ${resources ? app.resources : 'NONE INSTALLED'}
           ${ resources }
           Spools            : ${Object.keys(app.spools || {})}`
       )

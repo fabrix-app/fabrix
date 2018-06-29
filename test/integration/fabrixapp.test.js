@@ -3,7 +3,10 @@ const path = require('path')
 const assert = require('assert')
 const FabrixApp = require('../../dist').FabrixApp
 const Spool = require('../../dist/common').Spool
+const Controller = require('../../dist/common').FabrixController
 const Testspool = require('./testspool')
+const Testspool2 = require('./testspool2')
+const Testspool3 = require('./testspool3')
 const testAppDefinition = require('./testapp')
 const lib = require('../../dist/index')
 
@@ -207,6 +210,70 @@ describe('Fabrix', () => {
           assert.equal(app.config.get('test.otherval'), 1)
         })
 
+        it('should not have root api overridden by api provided by spools with same namespace', () => {
+          const def = {
+            pkg: { },
+            api: {
+              controllers: {
+                TestController: class TestController extends Controller {
+                  foo() {
+                    return 'bar'
+                  }
+                }
+              }
+            },
+            config: {
+              main: {
+                spools: [
+                  Testspool3
+                ]
+              }
+            }
+          }
+          const app = new FabrixApp(def)
+          assert.equal(app.controllers.TestController.foo(), 'bar')
+        })
+
+        it('(sanity) should be able to access spool api method if not overridden', () => {
+          const def = {
+            pkg: { },
+            api: { },
+            config: {
+              main: {
+                spools: [
+                  Testspool3
+                ]
+              }
+            }
+          }
+          const app = new FabrixApp(def)
+          assert.equal(app.controllers.TestController.foo(), 'baz')
+        })
+
+        it('(sanity) should combine api resources in the same name space', () => {
+          const def = {
+            pkg: { },
+            api: {
+              controllers: {
+                TestController: class TestController extends Controller {
+                  foo() {
+                    return 'bar'
+                  }
+                }
+              }
+            },
+            config: {
+              main: {
+                spools: [
+                  Testspool3
+                ]
+              }
+            }
+          }
+          const app = new FabrixApp(def)
+          assert.equal(app.controllers.Test2Controller.foo(), 'bar')
+        })
+
         it('should have default resources', () => {
           const def = {
             pkg: { },
@@ -217,19 +284,13 @@ describe('Fabrix', () => {
             }
           }
           const app = new FabrixApp(def)
-          assert.deepEqual(app.config.get('main.resources'), [
-            'controllers',
-            'policies',
-            'services',
-            'models',
-            'resolvers'
-          ])
+          assert.deepEqual(app.config.get('main.resources'), [])
 
-          assert(app['controllers'])
-          assert(app['services'])
-          assert(app['models'])
-          assert(app['resolvers'])
-          assert(app['policies'])
+          assert(!app['controllers'])
+          assert(!app['services'])
+          assert(!app['models'])
+          assert(!app['resolvers'])
+          assert(!app['policies'])
         })
 
         it('should override default resources', () => {
@@ -247,6 +308,61 @@ describe('Fabrix', () => {
           assert(app['controllers'])
           assert(app['events'])
           assert(!app['models'])
+          assert(!app['services'])
+          assert(!app['resolvers'])
+        })
+
+        it('should lock resources', () => {
+          const def = {
+            pkg: { },
+            api: { },
+            config: {
+              main: {
+                resources: ['controllers','events'],
+                lockResources: true,
+                spools: [
+                  Testspool,
+                  Testspool2
+                ]
+              }
+            }
+          }
+          const app = new FabrixApp(def)
+          assert.deepEqual(app.config.get('main.resources'), ['controllers', 'events'])
+          assert(app['controllers'])
+          assert(app['events'])
+          assert(!app['customKey'])
+          assert(!app['models'])
+          assert(!app['services'])
+          assert(!app['policies'])
+          assert(!app['resolvers'])
+        })
+
+        it('should have combined spool resources', () => {
+          const def = {
+            pkg: { },
+            api: { },
+            config: {
+              main: {
+                spools: [
+                  Testspool,
+                  Testspool2
+                ]
+              }
+            }
+          }
+          const app = new FabrixApp(def)
+          assert.deepEqual(app.config.get('main.resources'), [
+            'events',
+            'customKey'
+          ])
+          assert(!app['controllers'])
+          assert(!app['policies'])
+          assert(!app['models'])
+          assert(!app['services'])
+          assert(!app['resolvers'])
+          assert(app['events'])
+          assert(app['customKey'])
         })
 
         it('should throw error on incorrectly configured main.resources', () => {

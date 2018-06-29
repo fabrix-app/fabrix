@@ -321,9 +321,16 @@ describe('lib.Configuration', () => {
           }
         }
       })
-
-      assert(obj['main.spools.1'])
+      assert(obj['main.spools'][0])
+      assert(obj['main.spools.0'])
       assert.equal(obj['settings.foo'], 'bar')
+    })
+  })
+  describe('#flattenTree', () => {
+    it('circular tree error', () => {
+      const circle = { test: 'key'}
+      circle.circle = circle
+      assert.throws(() => lib.Configuration.flattenTree(circle), Error)
     })
   })
   describe('#merge', () => {
