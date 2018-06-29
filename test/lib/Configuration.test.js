@@ -326,6 +326,13 @@ describe('lib.Configuration', () => {
       assert.equal(obj['settings.foo'], 'bar')
     })
   })
+  describe('#flattenTree', () => {
+    it('circular tree error', () => {
+      const circle = { test: 'key'}
+      circle.circle = circle
+      assert.throws(() => lib.Configuration.flattenTree(circle), Error)
+    })
+  })
   describe('#merge', () => {
     const tree = {
       foo: true,

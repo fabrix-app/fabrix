@@ -61,6 +61,9 @@ export class Configuration extends Map<any, any> {
     }
   }
 
+  /**
+   * Defines the initial api resources
+   */
   static initialResources (tree, resources = []) {
     if (tree.hasOwnProperty('main') && tree.main.hasOwnProperty('resources')) {
       if (!isArray(tree.main['resources'])) {
@@ -141,7 +144,7 @@ export class Configuration extends Map<any, any> {
   }
 
   /**
-    * Merge tree into this configuration. Return overwritten keys
+    * Merge tree into this configuration if allowed. Return overwritten keys
    */
   merge (configTree: {[key: string]: any}, configAction = 'hold'): { hasKey: boolean, key: any }[] {
     const configEntries = Object.entries(Configuration.flattenTree(configTree))
@@ -152,11 +155,12 @@ export class Configuration extends Map<any, any> {
       if (!hasKey || configAction === 'hold') {
         this.set(key, value)
       }
-      // If configAction is set to merge, it will merge values over the initial config
+      // If configAction is set to merge, it will default values over the initial config
       else if (hasKey && configAction === 'merge') {
         this.set(key, defaults(this.get(key), value))
       }
       // If configAction is replaceable, and the key already exists, it's ignored completely
+      // This is because it was set by a higher level app config
       else if (hasKey && configAction === 'replaceable') {
         // Do Nothing
       }

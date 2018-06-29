@@ -68,4 +68,9 @@ describe('lib.Core', () => {
       assert.equal(s1, Service)
     })
   })
+  describe('#handlePromiseRejection', () => {
+    it('should throw an error and log it', () => {
+      assert.throws(() => lib.Core.handlePromiseRejection(new Error('Promise Rejection Test')), Error)
+    })
+  })
 })

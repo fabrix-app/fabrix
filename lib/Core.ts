@@ -113,6 +113,20 @@ export const Core = {
   },
 
   /**
+   * Instantiate resource classes and bind resource methods
+   */
+  bindResourceMethods(app: FabrixApp, defaults: string[]): void {
+    defaults.forEach(resource => {
+      try {
+        app[resource] = Core.bindMethods(app, resource)
+      }
+      catch (err) {
+        app.log.error(err)
+      }
+    })
+  },
+
+  /**
    * Traverse prototype chain and aggregate all class method names
    */
   getClassMethods (obj: any): string[] {
@@ -138,17 +152,36 @@ export const Core = {
    * Merge the app api resources with the ones provided by the spools
    * Given that they are allowed by app.config.main.resources
    */
-  mergeApi (
-    app: FabrixApp,
-    spool: Spool
-  ) {
-    // use the setter to see if any new api resources from the spool can be applied
+  mergeApi (app: FabrixApp, spool: Spool) {
+    // Use the setter to see if any new api resources from the spool can be applied
     app.resources = union(app.resources, Object.keys(app.api), Object.keys(spool.api))
-    // Foreach resource, bind it into the app.api
-    app.resources.forEach(resource => Object.assign(
-      (app.api[resource] || { }),
-      (spool.api[resource] || { }))
-    )
+    // Foreach resource, bind the spool.api into the app.api
+    app.resources.forEach( resource => {
+      // If there is a conflict, resolve it at the resource level
+      if (app.api.hasOwnProperty(resource) && spool.api.hasOwnProperty(resource)) {
+        Core.mergeApiResource(app, spool, resource)
+      }
+      // Else define the resource in the app.api and merge the spool.api resource into it
+      else if (!app.api.hasOwnProperty(resource) && spool.api.hasOwnProperty(resource)) {
+        app.api[resource] = {}
+        Object.assign(
+          (app.api[resource] || {}),
+          (spool.api[resource] || {})
+        )
+      }
+    })
+  },
+
+  /**
+   * Merge the Spool Api Resource if not already defined by App Api
+   */
+  mergeApiResource (app: FabrixApp, spool: Spool, resource: string) {
+    const spoolApiResources = Object.keys(spool.api[resource])
+    spoolApiResources.forEach(k => {
+      if (!app.api[resource].hasOwnProperty(k)) {
+        app.api[resource][k] = spool.api[resource][k]
+      }
+    })
   },
 
   /**
@@ -162,6 +195,9 @@ export const Core = {
     for (const ext of Object.keys(extensions)) {
       if (!extensions.hasOwnProperty(ext)) {
         continue
+      }
+      if (app.hasOwnProperty(ext)) {
+        app.log.warn(`Spool Extension ${spool.name}.${ext} overriding app.${ext}`)
       }
       Object.defineProperty(app, ext, spool.extensions[ext])
     }

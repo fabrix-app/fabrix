@@ -97,6 +97,11 @@ See https://github.com/fabrix-app/fabrix/wiki/FAQ
 We love contributions! Please check out our [Contributor's Guide](https://github.com/fabrix-app/fabrix/blob/master/.github/CONTRIBUTING.md) for more
 information on how our projects are organized and how to get started.
 
+## Development
+Fabrix uses a continuous integration process and all tests must pass for Fabrix to release a new version.  CircleCI releases a new version when a PR is merged into master.  For local development, you can download [CircleCI's local development tools](https://circleci.com/docs/2.0/local-cli/#installing-the-circleci-local-cli-on-macos-and-linux-distros) and run local tests before submitting a Pull Request.
+
+Fabrix maintains a high score of coverage tests, any Pull Request should have well written Integration and Unit tests that increase the overall coverage score. 
+
 ## License
 [MIT](https://github.com/fabrix-app/fabrix/blob/master/LICENSE)
 
