@@ -44,7 +44,7 @@ Generators:
     fab service <service-name>
     
   Create New Spool
-      fab spool <spool-name>
+    fab spool <spool-name>
 ```
 
 #### Run
@@ -64,6 +64,7 @@ capabilities and allow developers to leverage existing ecosystem tools through a
 Many Fabrix installations will include some of the following Spools:
 
 - [router](https://github.com/fabrix-app/spool-router)
+- [i81n](https://github.com/fabrix-app/spool-i18n)
 - [repl](https://github.com/fabrix-app/spool-repl)
 - [express](https://github.com/fabrix-app/spool-express)
 - [sequelize](https://github.com/fabrix-app/spool-sequelize)
@@ -84,10 +85,10 @@ See [**fabrix.app/doc**](http://fabrix.app/doc) for complete documentation.
 #### Videos
 
 #### Support
-- [Live Gitter Chat](https://gitter.im/fabrix-app/fabrix)
-- [Twitter](https://twitter.com/fabrix-app)
+- [Live Gitter Chat](https://gitter.im/fabrix-app/Lobby)
+- [Twitter](https://twitter.com/FabrixApp)
 - [Fabrix.app Website](http://fabrix.app/support)
-- [Stackoverflow](http://stackoverflow.com/questions/tagged/fabrix-app)
+- [Stackoverflow](http://stackoverflow.com/questions/tagged/fabrix)
 
 ## FAQ
 
