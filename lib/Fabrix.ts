@@ -115,7 +115,7 @@ export class FabrixApp extends EventEmitter {
         // Merge extensions into app.<ext>
         Core.mergeExtensions(this, spool)
         // Merge the spool.api with app.api
-        Core.mergeApi(this, spool)
+        Core.mergeSpoolApi(this, spool)
         // Bind the Spool Listeners to app.emit
         Core.bindSpoolMethodListeners(this, spool)
       }
@@ -125,6 +125,8 @@ export class FabrixApp extends EventEmitter {
       }
     })
 
+    // Merge the API from the spools
+    Core.mergeApi(this)
     // Instantiate resource classes and bind resource methods
     Core.bindResourceMethods(this, this.resources)
     // Bind Application Listeners

@@ -7,6 +7,7 @@ const Controller = require('../../dist/common').FabrixController
 const Testspool = require('./testspool')
 const Testspool2 = require('./testspool2')
 const Testspool3 = require('./testspool3')
+const Testspool4 = require('./testspool4')
 const testAppDefinition = require('./testapp')
 const lib = require('../../dist/index')
 
@@ -271,7 +272,93 @@ describe('Fabrix', () => {
             }
           }
           const app = new FabrixApp(def)
-          assert.equal(app.controllers.Test2Controller.foo(), 'bar')
+          assert.equal(app.controllers.TestController.foo(), 'bar')
+          assert.equal(app.controllers.Test2Controller.foo(), 'baz')
+        })
+
+        it('(sanity) should combine api resources in the same name space from different spools in order', () => {
+          const def = {
+            pkg: { },
+            api: { },
+            config: {
+              main: {
+                spools: [
+                  Testspool3,
+                  Testspool4
+                ]
+              }
+            }
+          }
+          const app = new FabrixApp(def)
+
+          assert.equal(app.controllers.TestController.foo(), 'barf')
+          assert.equal(app.controllers.Test2Controller.foo(), 'barf')
+          assert.equal(app.controllers.Test3Controller.foo(), 'baz')
+          assert.equal(app.controllers.Test4Controller.foo(), 'barf')
+
+          assert.equal(app.controllers.TestController.kaz(), 'ba')
+          assert.equal(app.controllers.Test2Controller.kaz(), 'baf')
+          assert.equal(app.controllers.Test3Controller.kaz(), 'ba')
+          assert.equal(app.controllers.Test4Controller.kaz(), 'baf')
+        })
+
+        it('(sanity) should combine root api resources in the same name space from different spools in order', () => {
+          const def = {
+            pkg: { },
+            api: {
+              controllers: {
+                TestController: class TestController extends Controller {
+                  foo() {
+                    return 'bar'
+                  }
+                }
+              }
+            },
+            config: {
+              main: {
+                spools: [
+                  Testspool3,
+                  Testspool4
+                ]
+              }
+            }
+          }
+          const app = new FabrixApp(def)
+
+          assert.equal(app.controllers.TestController.foo(), 'bar')
+          assert.equal(app.controllers.Test2Controller.foo(), 'barf')
+          assert.equal(app.controllers.Test3Controller.foo(), 'baz')
+          assert.equal(app.controllers.Test4Controller.foo(), 'barf')
+
+          assert.equal(app.controllers.TestController.kaz(), 'ba')
+          assert.equal(app.controllers.Test2Controller.kaz(), 'baf')
+          assert.equal(app.controllers.Test3Controller.kaz(), 'ba')
+          assert.equal(app.controllers.Test4Controller.kaz(), 'baf')
+        })
+
+        it('(sanity) should ignore spool resource method becacuse it\'s defined in the app', () => {
+          const def = {
+            pkg: { },
+            api: {
+              controllers: {
+                TestController: class TestController extends Controller {
+                  foo() {
+                    return 'bar'
+                  }
+                }
+              }
+            },
+            config: {
+              main: {
+                spools: [
+                  Testspool3,
+                  Testspool4,
+                ]
+              }
+            }
+          }
+          const app = new FabrixApp(def)
+          assert.equal(app.controllers.TestController.foo(), 'bar')
         })
 
         it('should have default resources', () => {
