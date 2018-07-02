@@ -1,4 +1,4 @@
-# Tapestry
+# Our Tapestry
 
 ## Purpose
 
@@ -21,7 +21,5 @@ Major and minor version releases occur according to a regular calendar schedule,
 ### v2.0 (April 2019)
 
 Fabrix v2 development takes place on the [v2 branch](https://github.com/fabrix-app/fabrix/tree/v2). Some key changes and additions:
-- Node 8 is required; ES5 code written for Node 4 will be refactored into ES6, however, this may be possible to compile to a lower version of Node.
-- Separate i18n and logging from the core
-- Introduce `Resolver` as a core Fabrix class
 - Standardize `Policy` interface
+- Stricter Types and Interfaces

@@ -49,12 +49,12 @@ Generators:
 
 #### Run
 
-Once installation is complete, begin your journey!
+Once installation is complete, begin weaving!
 ```sh
-$ node server.js
+$ npm run build && node dist/server.js
 ```
 
-#### Happy Fabrix!
+#### Sew on and Sew Forth!
 
 ## Spools
 
