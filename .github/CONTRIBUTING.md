@@ -1,4 +1,4 @@
-# Contributing to Fabrix-app and Spools
+# Contributing to Fabrix and Spools
 
 This guide is designed to help you get off the ground quickly contributing to Fabrix, Spools and the Fabrix ecosystem.  The goal of our community is to make it easy for members of all skill levels to contribute.  This guide will help you write useful issues, propose eloquent feature requests, and submit top-notch code that can be merged quickly.  
 
@@ -7,7 +7,7 @@ Maintaining a open source project is a labor of love, meaning the core maintaine
 
 ## Submitting Issues
 
-> Fabrix is composed of a core library, [Fabrix](https://github.com/fabrix-app/fabrix), and a number of [Spools](https://github.com/fabrix-app), which have their own dedicated repositories.  These repositories may also live outside the Fabrix-app official Github organization.  
+> Fabrix is composed of a core library, [Fabrix](https://github.com/fabrix-app/fabrix), and a number of [Spools](https://github.com/fabrix-app), which have their own dedicated repositories.  These repositories may also live outside the Fabrix-app official Github organization and NPM scope @fabrix.  
 > 
 > _*Please open issues with spools, generators, etc. in the relevant repository.*_  
 > 
@@ -25,16 +25,14 @@ When submitting an issue, please follow these simple instructions:
   - Detailed explanation of how to recreate the issue, including necessary setup setps
 6. If you are experiencing more than one problem, create a separate issue for each one. If you think they might be related, please reference the other issues you've created.
 
-
-
 ## Submitting Features
 
 > New feature requests should be made as pull requests to the `backlog` section of [ROADMAP.MD](https://github.com/fabrix-app/fabrix/blob/master/ROADMAP.md) or as issues on the `Backlog` milestone in the [issue queue](https://github.com/fabrix-app/fabrix/milestones/Backlog).  We will monitor community discussion on these PRs and issues and if they are wanted by the community/fabrix devs, they will be merged.  Further discussion is welcome even after a PR has been merged. 
 
 ##### Submitting a new feature request
-1. First, look at the `backlog` table in [ROADMAP.MD](https://github.com/fabrix-app/fabrix/blob/master/ROADMAP.md) or the [Backlog Milestone](https://github.com/fabrix-app/fabrix/milestones/Backlog) in the issue queue toand also search open pull requests in that file to make sure your change hasn't already been proposed.  If it has, join the discussion.
+1. First, look at the `backlog` table in [ROADMAP.MD](https://github.com/fabrix-app/fabrix/blob/master/ROADMAP.md) or the [Backlog Milestone](https://github.com/fabrix-app/fabrix/milestones/Backlog) in the issue queue and also search open pull requests in that file to make sure your change hasn't already been proposed.  If it has, join the discussion.
 2. If it doesn't already exist, create a pull request editing the `backlog` table of [ROADMAP.MD](https://github.com/fabrix-app/fabrix/blob/master/ROADMAP.md).
-3. Start a discussion about why your feature should be built (or better yet, build it).  Get feedback in the [Fabrix.js Gitter](https://gitter.im/fabrix-app/fabrix) Channel.  The more feedback we get from our community, the better we are able to build the framework of your dreams :evergreen_tree:
+3. Start a discussion about why your feature should be built (or better yet, build it).  Get feedback in the [Fabrix-app Gitter](https://gitter.im/fabrix-app/Lobby) Channel.  The more feedback we get from our community, the better we are able to build the framework of your dreams :evergreen_tree:
 
 ## Writing Tests
 
@@ -61,7 +59,7 @@ If the Spool is in the Fabrix Github organization, please send feature requests,
 
 You are welcome to author a new Spool at any time.  Spools must inherit from the main [Spool](https://github.com/fabrix-app/fabrix) interface to inherit the API.  Feel free to start work on a new spool, just make sure and do a thorough search on npm, Google and Github to make sure someone else hasn't already started working on the same thing.  
 
-It is recommended that you maintain your Spool in your own Github repository.  If you would like to submit your Spool to be listed in the [Fabrix-app Github Organization](https://github.com/fabrix-app), please submit an issue to the [Fabrix Issue queue](https://github.com/fabrix-app/fabrix/issues).
+It is recommended that you maintain your Spool in your own Github repository.  If you would like to submit your Spool to be listed in the [Fabrix-app Github Organization](https://github.com/fabrix-app) and @fabrix NPM scope, please submit an issue to the [Fabrix Issue queue](https://github.com/fabrix-app/fabrix/issues).
 
 ###### Contributing to a generator
 
@@ -71,7 +69,7 @@ Fabrix generators are based upon a cli. Please follow the core best practices fo
 
 Fabrix has several dependencies referenced in the `package.json` file that are not part of the project proper. Any proposed changes to those dependencies or _their_ dependencies should be sent to their respective projects (i.e. Sequelize etc.) Please do not send your patch or feature request to this repository, we cannot accept or fulfill it.
 
-In case of doubt, open an issue in the [issue tracker](https://github.com/fabrix-app/fabrix/issues), ask your question in the [Gitter room](http://gitter.im/fabrix-app/fabrix).  Especially if you plan to work on something big. Nothing is more frustrating than seeing your hard work go to waste because your vision does not align with a project's roadmap.  At the end of the day, we just want to be able to merge your code.
+In case of doubt, open an issue in the [issue tracker](https://github.com/fabrix-app/fabrix/issues), ask your question in the [Gitter room](http://gitter.im/fabrix-app/Lobby).  Especially if you plan to work on something big. Nothing is more frustrating than seeing your hard work go to waste because your vision does not align with a project's roadmap.  At the end of the day, we just want to be able to merge your code.
 
 ###### Submitting Pull Requests
 
@@ -84,7 +82,7 @@ In case of doubt, open an issue in the [issue tracker](https://github.com/fabrix
 
 ## Publishing Releases
 
-All releases are tagged and published by the [Fabrix.js Maintainers](https://github.com/orgs/fabrix-app/teams) automatically via [Travis-CI](https://travis-ci.org/fabrix-app/fabrix). For a patch release, the deployment process is as follows:
+All releases are tagged and published by the [Fabrix.js Maintainers](https://github.com/orgs/fabrix-app/teams) automatically via [Cicle-CI](https://circleci.com/gh/fabrix-app/fabrix). For a patch release, the deployment process is as follows:
 
 1. Tag a release
 ```sh
