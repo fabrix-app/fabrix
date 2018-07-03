@@ -215,8 +215,11 @@ export class FabrixApp extends EventEmitter {
   /**
    * Shutdown. Unbind listeners, unload spools.
    */
-  async stop (): Promise<any> {
+  async stop (error?): Promise<any> {
     this.emit('fabrix:stop')
+    if (error) {
+      this.emit('fabrix:stop:error', error)
+    }
 
     await Promise
       .all(Object.values(this.spools).map(spool => {
