@@ -1,29 +1,49 @@
 import { FabrixApp } from './'
 
-declare global {
-  interface Console {
-    log: (message?: any, ...optionalParams: any[]) => void
-    info: (message?: any, ...optionalParams: any[]) => void
-    debug: (message?: any, ...optionalParams: any[]) => void
-    warn: (message?: any, ...optionalParams: any[]) => void
-    error: (message?: any, ...optionalParams: any[]) => void
-    silly: (message?: any, ...optionalParams: any[]) => void
-  }
-}
+// declare global {
+//   interface Console {
+//     log: (message?: any, ...optionalParams: any[]) => void
+//     info: (message?: any, ...optionalParams: any[]) => void
+//     debug: (message?: any, ...optionalParams: any[]) => void
+//     warn: (message?: any, ...optionalParams: any[]) => void
+//     error: (message?: any, ...optionalParams: any[]) => void
+//     silly: (message?: any, ...optionalParams: any[]) => void
+//   }
+// }
+//
+// export interface LoggerProxy {
+//   // [key: string]: (message?: any, ...optionalParams: any[]) => void
+//   log: (message?: any, ...optionalParams: any[]) => void
+//   info: (message?: any, ...optionalParams: any[]) => void
+//   debug: (message?: any, ...optionalParams: any[]) => void
+//   warn: (message?: any, ...optionalParams: any[]) => void
+//   error: (message?: any, ...optionalParams: any[]) => void
+//   silly: (message?: any, ...optionalParams: any[]) => void
+//   app: FabrixApp
+// }
 
-export interface LoggerProxy {
-  // [key: string]: (message?: any, ...optionalParams: any[]) => void
-  log: (message?: any, ...optionalParams: any[]) => void
-  info: (message?: any, ...optionalParams: any[]) => void
-  debug: (message?: any, ...optionalParams: any[]) => void
-  warn: (message?: any, ...optionalParams: any[]) => void
-  error: (message?: any, ...optionalParams: any[]) => void
-  silly: (message?: any, ...optionalParams: any[]) => void
-  app: FabrixApp
-}
+// export interface LoggerProxyProxy {
+//   // [key: string]: (message?: any, ...optionalParams: any[]) => void
+//   log: (message?: any, ...optionalParams: any[]) => void
+//   info: (message?: any, ...optionalParams: any[]) => void
+//   debug: (message?: any, ...optionalParams: any[]) => void
+//   warn: (message?: any, ...optionalParams: any[]) => void
+//   error: (message?: any, ...optionalParams: any[]) => void
+//   silly: (message?: any, ...optionalParams: any[]) => void
+//   app: FabrixApp
+// }
+
+// export interface LoggerProxy {
+//   (message?: any, ...optionalParams: any[]): void
+// }
 
 export class LoggerProxy {
   app: FabrixApp
+  warn
+  debug
+  info
+  error
+  silly
   /**
    * Instantiate Proxy; bind log events to default console.log
    */
