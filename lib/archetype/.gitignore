@@ -5,6 +5,6 @@ npm-debug.log
 
 # fabrix
 .tmp/
-
+dist
 # other
 *.sw*

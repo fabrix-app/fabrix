@@ -1,11 +1,11 @@
 import * as development from './development'
-import * as production from './production'
 import * as staging from './staging'
+import * as production from './production'
 import * as testing from './testing'
 
-export default {
+export {
   development,
-  production,
   staging,
+  production,
   testing
 }

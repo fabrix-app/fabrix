@@ -7,7 +7,7 @@
 
 import { resolve } from 'path'
 
-export default {
+export const main = {
 
   /**
    * Order does *not* matter. Each module is loaded according to its own

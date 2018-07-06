@@ -6,6 +6,6 @@
  * @see {@link http://fabrix.app/doc/config/routes}
  */
 
-export default [
+export const routes = [
 
 ]

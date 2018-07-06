@@ -21,8 +21,8 @@ const app = new FabrixApp({
   config: {
     main: {
       spools: [
-        // require('spool-router'),
-        // require('spool-runkit')(exports)
+        require('@fabrix/spool-router').RouterSpool,
+        require('@fabrix/spool-runkit').RunkitSpool(exports)
       ]
     }
   },

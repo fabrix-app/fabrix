@@ -6,7 +6,26 @@
 export const spool = {
   type: 'misc',
   /**
-   * Configure the lifecycle of this pack; that is, how it boots up, and which
+   * A searchable list of what this spool provides
+   */
+  provides: {
+    /**
+     * `resources` are the API namespaces that this spool provides
+     */
+    resources: [],
+    /**
+     * `api` is an object of keys containing arrays that declare things like:
+     * api: { controllers: ['HelloWorldController'] }
+     */
+    api: {},
+    /**
+     * `config` is an array declaring the configurations included in this spool like:
+     * config: ['<spoolname>', 'routes']
+     */
+    config: []
+  },
+  /**
+   * Configure the lifecycle of this spool; that is, how it boots up, and which
    * order it loads relative to other spools.
    */
   lifecycle: {

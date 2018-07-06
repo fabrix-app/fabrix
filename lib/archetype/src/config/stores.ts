@@ -7,6 +7,6 @@
  * @see {@link http://fabrix.app/doc/config/stores}
  */
 
-export default {
+export const stores = {
 
 }

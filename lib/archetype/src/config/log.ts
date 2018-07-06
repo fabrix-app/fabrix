@@ -5,6 +5,6 @@
  * @see {@link http://fabrix.app/doc/config/log}
  */
 
-export default {
+export const log = {
   level: 'info'
 }

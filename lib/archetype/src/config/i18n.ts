@@ -8,7 +8,7 @@
  * @see http://fabrix.app/doc/config/i18n
  */
 
-export default {
+export const i18n = {
 
   /**
    * The default locale
