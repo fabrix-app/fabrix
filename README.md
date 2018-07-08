@@ -1,4 +1,4 @@
-<img src="http://cdn.fabrix.app/art/logos/fabrix-horiz-logo-green.svg" height="96px" title="Fabrix Logo" />
+<img src="https://s3.us-east-2.amazonaws.com/fabrix-app/web/sw-002-1_rect-01-01.png" height="96px" title="Fabrix Logo" />
 
 [![Gitter][gitter-image]][gitter-url]
 [![NPM version][npm-image]][npm-url]
@@ -108,8 +108,6 @@ Fabrix maintains a high score of coverage tests, any Pull Request should have we
 
 ## Legacy
 Fabrix would not have been possible without the substantial work done by the [Trails.js team](https://github.com/trailsjs). While Fabrix maintains a different code base and system of best practices, none of this would have been possible without the contributions from the Trails community.
-
-<img src="http://cdn.fabrix.app/art/backgrounds/fabrix-day.png">
 
 [npm-image]: https://img.shields.io/npm/v/@fabrix/fabrix.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/@fabrix/fabrix
