@@ -120,25 +120,25 @@ export class Spool {
     return this._stage
   }
 
-
-  // @enumerable(false)
-//  @configurable(true)
   get app (): FabrixApp {
     return this._app
   }
 
-//  @writable(true)
   get api () {
     return this._api
   }
 
-//  @enumerable(true)
+  /**
+   * Virtual Setter for `api`
+   */
+  set api (api) {
+    this._api = api
+  }
+
   get config () {
     return this._config
   }
 
-//  @enumerable(false)
-//  @writable(false)
   get pkg () {
     return this._pkg
   }
