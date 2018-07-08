@@ -139,6 +139,13 @@ export class Spool {
     return this._config
   }
 
+  /**
+   * Virtual Setter for `config`
+   */
+  set config (config) {
+    this._config = config
+  }
+
   get pkg () {
     return this._pkg
   }
