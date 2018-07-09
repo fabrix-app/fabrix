@@ -82,7 +82,7 @@ In case of doubt, open an issue in the [issue tracker](https://github.com/fabrix
 
 ## Publishing Releases
 
-All releases are tagged and published by the [Fabrix.js Maintainers](https://github.com/orgs/fabrix-app/teams) automatically via [Cicle-CI](https://circleci.com/gh/fabrix-app/fabrix). For a patch release, the deployment process is as follows:
+All releases are tagged and published by the [Fabrix Maintainers](https://github.com/orgs/fabrix-app/teams) automatically via [Cicle-CI](https://circleci.com/gh/fabrix-app/fabrix). For a patch release, the deployment process is as follows:
 
 1. Tag a release
 ```sh

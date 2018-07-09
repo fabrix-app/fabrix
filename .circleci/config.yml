@@ -1,9 +1,18 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+
 version: 2
+
+defaults: &defaults
+  working_directory: ~/fabrix
+  docker:
+    - image: circleci/node:10.0.0
+
 jobs:
-  build:
-    working_directory: ~/fabrix
-    docker:
-      - image: circleci/node:10.0.0
+  test:
+    <<: *defaults
     steps:
       - checkout
       - run:
@@ -35,3 +44,34 @@ jobs:
           prefix: coverage
       - store_test_results:
           path: test-results.xml
+      - persist_to_workspace:
+          root: ~/fabrix
+          paths: .
+  deploy:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/fabrix
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/fabrix/.npmrc
+      - run:
+          name: Publish package
+          command: npm publish
+
+workflows:
+  version: 2
+  test-deploy:
+    jobs:
+      - test:
+          filters:
+            tags:
+              only: /^v.*/
+      - deploy:
+          requires:
+            - test
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
