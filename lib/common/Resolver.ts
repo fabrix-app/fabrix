@@ -9,13 +9,7 @@ import { FabrixModel } from './'
 export class FabrixResolver {
   private _model: FabrixModel
 
-  /**
-   * Model configuration
-   */
-  static config () {
-  }
-
-  constructor (model: FabrixModel) {
+  constructor (model: FabrixModel, datastore?) {
     if (!model) {
       throw new RangeError('Resolver must be given a Model to bind to')
     }
@@ -38,28 +32,33 @@ export class FabrixResolver {
   }
 
   /**
+   * Return the schema of the parent model
+   */
+  get config (): FabrixModel['config'] {
+    return this.model.config
+  }
+
+  /**
    * Returns the instance of the parent model
    */
   get app(): FabrixApp {
     return this.model.app
   }
 
-  /**
-    public save(...args) {
-      throw new Error('Orm for Save not defined')
-    }
-
-    public update(...args) {
-      throw new Error('Orm for Update not defined')
-    }
-
-    public delete(...args) {
-      throw new Error('Orm for Delete not defined')
-    }
-
-    public get(...args) {
-      throw new Error('Orm for Get not defined')
-    }
-  */
+  // public save(...args) {
+  //   throw new Error('Orm method for Save not defined')
+  // }
+  //
+  // public update(...args) {
+  //   throw new Error('Orm method for Update not defined')
+  // }
+  //
+  // public delete(...args) {
+  //   throw new Error('Orm method for Delete not defined')
+  // }
+  //
+  // public get(...args) {
+  //   throw new Error('Orm method for Get not defined')
+  // }
 }
 

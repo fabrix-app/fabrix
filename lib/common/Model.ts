@@ -4,6 +4,7 @@ import { FabrixResolver } from './'
 import { IllegalAccessError } from '../errors'
 import { FabrixGeneric } from './Generic'
 
+
 /**
  * Fabrix Model Class.
  */
@@ -64,12 +65,9 @@ export class FabrixModel extends FabrixGeneric {
     }
     this._app = app
 
-    if (!datastore) {
-      this.app.log.warn(`${this.name} did not receive an instance of the datastore`)
-    }
     this._datastore = datastore
 
-    this.resolver = new (<typeof FabrixModel>this.constructor).resolver(this)
+    this.resolver = new (<typeof FabrixModel>this.constructor).resolver(this, datastore)
     this.app.emit(`model:${this.name}:constructed`, this)
   }
 
@@ -78,11 +76,14 @@ export class FabrixModel extends FabrixGeneric {
   }
 
   get datastore() {
+    // if (!this._datastore) {
+    //   this.app.log.warn(`${this.name} did not receive an instance of the datastore`)
+    // }
     return this._datastore
   }
 
-  set datastore(val) {
-    this._datastore = val
+  set datastore(datastore) {
+    this._datastore = datastore
   }
 
   /**
@@ -135,11 +136,11 @@ export class FabrixModel extends FabrixGeneric {
    */
   get tableName (): string {
     const config = (<typeof FabrixModel>this.constructor).config(this.app, this.datastore)
-    // const config = (<typeof FabrixModel>this.constructor).config || { tableName: null }
     return config.tableName || this.name
   }
 
   /**
+   * Bound Methods from the Resolver Class
     save (...args) {
       return this.resolver.save(...args)
     }

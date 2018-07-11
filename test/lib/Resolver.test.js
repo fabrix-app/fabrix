@@ -1,3 +1,5 @@
+'use strict'
+
 const assert = require('assert')
 const Model = require('../../dist/common').FabrixModel
 const Resolver = require('../../dist/common').FabrixResolver
@@ -29,6 +31,23 @@ describe('lib/Resolver', () => {
   describe('errors', () => {
     it('should require "model" argument to constructor', () => {
       assert.throws(() => new Resolver(), RangeError)
+    })
+  })
+  describe('Model Proxy', () => {
+    it('should get a resolver method through model method', () => {
+      const app = new Fabrix(testApp)
+      const TestModel = class TestModel extends Model {
+        static get resolver () {
+          return class MyResolver extends Resolver {
+            findFoo() {
+              return 'foo'
+            }
+          }
+        }
+      }
+      const initModel = new TestModel(app)
+      assert.equal(initModel.resolver.findFoo(), 'foo')
+      assert.throws(() => initModel.save(), Error)
     })
   })
 })
