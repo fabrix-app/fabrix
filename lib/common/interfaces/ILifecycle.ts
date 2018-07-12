@@ -6,5 +6,9 @@ export interface ILifecycle {
   initialize: {
     listen: string[],
     emit: string[]
+  },
+  sanity: {
+    listen: string[],
+    emit: string[]
   }
 }

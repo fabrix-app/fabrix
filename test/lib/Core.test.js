@@ -73,4 +73,39 @@ describe('lib.Core', () => {
       assert.throws(() => lib.Core.handlePromiseRejection(new Error('Promise Rejection Test')), Error)
     })
   })
+  describe('#mergeExtensions', () => {
+    const B = class B {
+      constructor() {
+        this.foo = 'bar'
+        this.extensions = {
+          foo: {
+            get: () => {
+              return this.foo
+            },
+            set: (newValue) => {
+              this.foo = newValue
+            },
+            enumerable: true,
+            configurable: true
+          }
+        }
+        return this
+      }
+    }
+
+    const A = class A {
+      constructor(b) {
+        lib.Core.mergeExtensions(this, b)
+      }
+    }
+
+    it('should merge extensions from a spool and place them in the app', () => {
+      const b = new B()
+      const a = new A(b)
+
+      assert.equal(a.foo, 'bar')
+      a.foo = 'baz'
+      assert.equal(a.foo, 'baz')
+    })
+  })
 })

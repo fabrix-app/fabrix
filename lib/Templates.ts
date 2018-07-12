@@ -10,6 +10,7 @@ export const Templates = {
     start: 'Spooling up...',
     stop: 'Spooling down...',
     initialized: 'All spools are loaded.',
+    sane: `Sanity check complete`,
     ready (app: FabrixApp) {
       const baseUrl = app.config.get('web.baseUrl') ||
           `http://${app.config.get('web.host') || 'localhost'}:${app.config.get('web.port') || '80'}`
@@ -53,6 +54,8 @@ export const Templates = {
           Spools            : ${Object.keys(app.spools || {})}`
       )
     },
+
+    sane: `Sanity checks keep us happy`,
 
     initialized: `
                                                  

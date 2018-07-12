@@ -7,17 +7,17 @@ describe('lib.Pathfinder', () => {
   describe('#getPathErrors', () => {
     it('errors list length should be 0 when no errors found (n=2, h=1)', () => {
       const errors = lib.Pathfinder.getPathErrors({
-        packA: true,
-        packB: false
+        spoolA: true,
+        spoolB: false
       })
       assert.equal(errors.length, 0)
     })
     it('errors list length should be 0 when no errors found (n=4, h=3)', () => {
       const errors = lib.Pathfinder.getPathErrors({
-        packA: true,
-        packB: {
-          packC: {
-            packD: true
+        spoolA: true,
+        spoolB: {
+          spoolC: {
+            spoolD: true
           }
         }
       })
@@ -25,96 +25,96 @@ describe('lib.Pathfinder', () => {
     })
     it('errors list length should be 0 when no errors found (n=9, h=4)', () => {
       const errors = lib.Pathfinder.getPathErrors({
-        packA: true,
-        packB: {
-          packC: {
-            packD: true,
-            packE: {
-              packF: true
+        spoolA: true,
+        spoolB: {
+          spoolC: {
+            spoolD: true,
+            spoolE: {
+              spoolF: true
             },
-            packG: true
+            spoolG: true
           }
         },
-        packH: {
-          packI: true
+        spoolH: {
+          spoolI: true
         }
       })
       assert.equal(errors.length, 0)
     })
     it('errors list length should equal number of errors found (n=6, h=2)', () => {
       const errors = lib.Pathfinder.getPathErrors({
-        packA: {
-          packB: true
+        spoolA: {
+          spoolB: true
         },
-        packC: true,
-        packD: new Error(),
-        packE: {
-          packF: new Error()
+        spoolC: true,
+        spoolD: new Error(),
+        spoolE: {
+          spoolF: new Error()
         }
       })
       assert.equal(errors.length, 2)
     })
     it('errors list length should equal number of errors found (n=11, h=4)', () => {
       const errors = lib.Pathfinder.getPathErrors({
-        packA: true,
-        packB: {
-          packC: {
-            packD: true,
-            packE: {
-              packF: new Error(),
-              packJ: {
-                packK: true
+        spoolA: true,
+        spoolB: {
+          spoolC: {
+            spoolD: true,
+            spoolE: {
+              spoolF: new Error(),
+              spoolJ: {
+                spoolK: true
               }
             },
-            packG: true
+            spoolG: true
           }
         },
-        packH: {
-          packI: true
+        spoolH: {
+          spoolI: true
         }
       })
       assert.equal(errors.length, 1)
     })
     it('errors list length should equal number of errors found (n=11, h=5)', () => {
       const errors = lib.Pathfinder.getPathErrors({
-        packA: true,
-        packB: {
-          packC: {
-            packD: true,
-            packE: {
-              packF: true,
-              packJ: {
-                packK: new Error()
+        spoolA: true,
+        spoolB: {
+          spoolC: {
+            spoolD: true,
+            spoolE: {
+              spoolF: true,
+              spoolJ: {
+                spoolK: new Error()
               }
             },
-            packG: true
+            spoolG: true
           }
         },
-        packH: {
-          packI: true
+        spoolH: {
+          spoolI: true
         }
       })
       assert.equal(errors.length, 1)
     })
     it('errors list length should equal number of errors found (n=12, h=4)', () => {
       const errors = lib.Pathfinder.getPathErrors({
-        packA: true,
-        packB: {
-          packC: {
-            packD: true,
-            packE: {
-              packF: true,
-              packJ: {
-                packK: true
+        spoolA: true,
+        spoolB: {
+          spoolC: {
+            spoolD: true,
+            spoolE: {
+              spoolF: true,
+              spoolJ: {
+                spoolK: true
               }
             },
-            packG: true
+            spoolG: true
           }
         },
-        packH: {
-          packI: true
+        spoolH: {
+          spoolI: true
         },
-        packL: new Error()
+        spoolL: new Error()
       })
       assert.equal(errors.length, 1)
     })
@@ -124,45 +124,45 @@ describe('lib.Pathfinder', () => {
     const spools = [
       new Spool(app, {
         pkg: {
-          name: 'pack1'
+          name: 'spool1'
         },
         config: {
           lifecycle: {
             configure: {
-              emit: [ 'pack1:configured', 'pack1:custom' ]
+              emit: [ 'spool1:configured', 'spool1:custom' ]
             },
             initialize: {
-              emit: [ 'pack1:initialized', 'pack1:custom' ]
+              emit: [ 'spool1:initialized', 'spool1:custom' ]
             }
           }
         }
       }),
       new Spool(app, {
         pkg: {
-          name: 'pack2'
+          name: 'spool2'
         },
         config: {
           lifecycle: {
             configure: {
-              emit: [ 'pack2:configured' ]
+              emit: [ 'spool2:configured' ]
             },
             initialize: {
-              emit: [ 'pack2:initialized' ]
+              emit: [ 'spool2:initialized' ]
             }
           }
         }
       })
     ]
     it('should return the spool that produces a particular event', () => {
-      const producer = lib.Pathfinder.getEventProducer('pack1:configured', 'configure', spools, [ ])
+      const producer = lib.Pathfinder.getEventProducer('spool1:configured', 'configure', spools, [ ])
       assert.equal(producer, spools[0])
     })
     it('should return the spool that produces a particular event', () => {
-      const producer = lib.Pathfinder.getEventProducer('pack2:configured', 'configure', spools, [ ])
+      const producer = lib.Pathfinder.getEventProducer('spool2:configured', 'configure', spools, [ ])
       assert.equal(producer, spools[1])
     })
     it('should return Error if there is no spool that produces the given event', () => {
-      const producer = lib.Pathfinder.getEventProducer('nopack', 'configure', spools, [ { name: 'test' } ])
+      const producer = lib.Pathfinder.getEventProducer('nospool', 'configure', spools, [ { name: 'test' } ])
       assert(producer instanceof Error)
     })
   })
@@ -172,17 +172,17 @@ describe('lib.Pathfinder', () => {
     const spools = [
       new Spool(app, {
         pkg: {
-          name: 'pack0'
+          name: 'spool0'
         },
         config: {
           lifecycle: {
             configure: {
               listen: [ ],
-              emit: [ 'pack0:configured' ]
+              emit: [ 'spool0:configured' ]
             },
             initialize: {
               listen: [ ],
-              emit: [ 'pack0:initialized' ]
+              emit: [ 'spool0:initialized' ]
             }
           }
         }
@@ -190,16 +190,16 @@ describe('lib.Pathfinder', () => {
 
       new Spool(app, {
         pkg: {
-          name: 'pack1'
+          name: 'spool1'
         },
         config: {
           lifecycle: {
             configure: {
-              listen: [ 'pack0:configured' ],
-              emit: [ 'pack1:configured' ]
+              listen: [ 'spool0:configured' ],
+              emit: [ 'spool1:configured' ]
             },
             initialize: {
-              emit: [ 'pack1:initialized', 'pack1:custom' ]
+              emit: [ 'spool1:initialized', 'spool1:custom' ]
             }
           }
         }
@@ -207,17 +207,17 @@ describe('lib.Pathfinder', () => {
 
       new Spool(app, {
         pkg: {
-          name: 'pack2'
+          name: 'spool2'
         },
         config: {
           lifecycle: {
             configure: {
-              listen: [ 'pack1:configured' ],
-              emit: [ 'pack2:configured' ]
+              listen: [ 'spool1:configured' ],
+              emit: [ 'spool2:configured' ]
             },
             initialize: {
-              listen: [ 'pack1:initialized', 'pack1:custom' ],
-              emit: [ 'pack2:initialized' ]
+              listen: [ 'spool1:initialized', 'spool1:custom' ],
+              emit: [ 'spool2:initialized' ]
             }
           }
         }
@@ -225,17 +225,17 @@ describe('lib.Pathfinder', () => {
 
       new Spool(app, {
         pkg: {
-          name: 'pack3'
+          name: 'spool3'
         },
         config: {
           lifecycle: {
             configure: {
-              listen: [ 'pack2:configured' ],
-              emit: [ 'pack3:configured' ]
+              listen: [ 'spool2:configured' ],
+              emit: [ 'spool3:configured' ]
             },
             initialize: {
-              listen: [ 'pack2:initialized', 'pack1:custom' ],
-              emit: [ 'pack3:initialized' ]
+              listen: [ 'spool2:initialized', 'spool1:custom' ],
+              emit: [ 'spool3:initialized' ]
             }
           }
         }
@@ -243,18 +243,18 @@ describe('lib.Pathfinder', () => {
 
       new Spool(app, {
         pkg: {
-          name: 'pack4'
+          name: 'spool4'
         },
         config: {
           lifecycle: {
             // dependency with no route to source
             configure: {
-              listen: [ 'packX:configured' ],
-              emit: [ 'pack4:configured' ]
+              listen: [ 'spoolX:configured' ],
+              emit: [ 'spool4:configured' ]
             },
             // dependency on spoolwith circular dependency
             initialize: {
-              listen: [ 'pack5:initialized', 'pack0:initialized' ]
+              listen: [ 'spool5:initialized', 'spool0:initialized' ]
             }
           }
         }
@@ -263,17 +263,17 @@ describe('lib.Pathfinder', () => {
       // circular dependency
       new Spool(app, {
         pkg: {
-          name: 'pack5'
+          name: 'spool5'
         },
         config: {
           lifecycle: {
             configure: {
-              listen: [ 'pack5:configured' ],
-              emit: [ 'pack5:configured' ]
+              listen: [ 'spool5:configured' ],
+              emit: [ 'spool5:configured' ]
             },
             initialize: {
-              listen: [ 'pack4:initialized' ],
-              emit: [ 'pack5:initialized' ]
+              listen: [ 'spool4:initialized' ],
+              emit: [ 'spool5:initialized' ]
             }
           }
         }
@@ -290,48 +290,48 @@ describe('lib.Pathfinder', () => {
       it('should return complete path for valid spool(distance=2, single tree path)', () => {
         const path = lib.Pathfinder.getLifecyclePath (spools[2], 'configure', spools)
         assert(path)
-        assert(path.pack1)
-        assert.equal(path.pack1.pack0, true)
+        assert(path.spool1)
+        assert.equal(path.spool1.spool0, true)
       })
 
       it('should return complete path for valid spool(distance=1, complex tree path)', () => {
         const path = lib.Pathfinder.getLifecyclePath (spools[2], 'initialize', spools)
         assert(path)
-        assert.equal(path.pack1, true)
+        assert.equal(path.spool1, true)
       })
 
       it('should return complete path for valid spool(distance=1, complex tree path)', () => {
         const path = lib.Pathfinder.getLifecyclePath (spools[2], 'initialize', spools)
         assert(path)
-        assert.equal(path.pack1, true)
+        assert.equal(path.spool1, true)
       })
 
       it('should return complete path for valid spool(distance=2, complex tree path)', () => {
         const path = lib.Pathfinder.getLifecyclePath (spools[3], 'initialize', spools)
         assert(path)
-        assert.equal(path.pack2.pack1, true)
-        assert.equal(path.pack1, true)
+        assert.equal(path.spool2.spool1, true)
+        assert.equal(path.spool1, true)
       })
 
-      it('should return path Error leaves for spoolwith no source route', () => {
+      it('should return path Error leaves for spool with no source route', () => {
         const path = lib.Pathfinder.getLifecyclePath (spools[4], 'configure', spools)
         assert(path instanceof Error)
       })
 
-      it('should return path with false leaf for spoolwith circular dependency (within self)', () => {
+      it('should return path with false leaf for spool with circular dependency (within self)', () => {
         const path = lib.Pathfinder.getLifecyclePath (spools[5], 'configure', spools)
         assert(path instanceof Error)
       })
 
-      it('should return path with false leaf for spoolwith circular dependency (b/w dependency and self)', () => {
+      it('should return path with false leaf for spool with circular dependency (b/w dependency and self)', () => {
         const path = lib.Pathfinder.getLifecyclePath (spools[4], 'initialize', spools)
-        assert.equal(path.pack0, true)
-        assert(path.pack5 instanceof Error)
+        assert.equal(path.spool0, true)
+        assert(path.spool5 instanceof Error)
       })
     })
 
     describe('#isLifecycleStageValid', () => {
-      it('should return true for a valid spool path (pack=sink)', () => {
+      it('should return true for a valid spool path (spool=sink)', () => {
         const valid = lib.Pathfinder.isLifecycleStageValid(spools[0], 'configure', spools)
         assert(valid)
       })

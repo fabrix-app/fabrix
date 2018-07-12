@@ -305,6 +305,10 @@ export const Core = {
       app.log.silly(Templates.silly.initialized)
       app.log.info(Templates.info.initialized)
     })
+    app.once('spool:all:sane', () => {
+      app.log.silly(Templates.silly.sane)
+      app.log.info(Templates.info.sane)
+    })
     app.once('fabrix:ready', () => {
       app.log.info(Templates.info.ready(app))
       app.log.debug(Templates.debug.ready(app))
@@ -331,6 +335,7 @@ export const Core = {
     const validatedEvents = spools.map(spool => `spool:${spool.name}:validated`)
     const configuredEvents = spools.map(spool => `spool:${spool.name}:configured`)
     const initializedEvents = spools.map(spool => `spool:${spool.name}:initialized`)
+    const sanityEvents = spools.map(spool => `spool:${spool.name}:sane`)
 
     app.after(configuredEvents).then(async () => {
       await this.createDefaultPaths(app)
@@ -343,6 +348,11 @@ export const Core = {
     app.after(initializedEvents)
       .then(() => {
         app.emit('spool:all:initialized')
+      })
+
+    app.after(sanityEvents)
+      .then(() => {
+        app.emit('spool:all:sane')
         app.emit('fabrix:ready')
       })
   },
@@ -356,6 +366,14 @@ export const Core = {
     spool: Spool
   ) {
     const lifecycle = spool.lifecycle
+
+    app.after((lifecycle.sanity.listen).concat('spool:all:initialized'))
+      .then(() => app.log.debug('spool: sanity check', spool.name))
+      .then(() => spool.stage = 'sanity')
+      .then(() => spool.sanity())
+      .then(() => app.emit(`spool:${spool.name}:sane`))
+      .then(() => spool.stage = 'sane')
+      .catch(this.handlePromiseRejection)
 
     app.after((lifecycle.initialize.listen).concat('spool:all:configured'))
       .then(() => app.log.debug('spool: initializing', spool.name))

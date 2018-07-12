@@ -56,6 +56,10 @@ export class Spool {
       initialize: {
         listen: [ ],
         emit: [ ]
+      },
+      sanity: {
+        listen: [ ],
+        emit: [ ]
       }
     }
   }
@@ -180,6 +184,15 @@ export class Spool {
    * run daemon-like services should override this method.
    */
   async initialize (): Promise<any> {
+
+  }
+
+  /**
+   * Check any configured or initialized state to prove that the Fabrix app in
+   * fact does have the values specified by the lifecylce. Spools that require
+   * runtime specifications should override this method
+   */
+  sanity (): any {
 
   }
 
