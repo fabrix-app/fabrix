@@ -2,6 +2,7 @@ import { merge, isArray, defaults, union } from 'lodash'
 import { resolve, dirname } from 'path'
 import { IllegalAccessError, ConfigValueError } from './errors'
 import { requireMainFilename } from './utils'
+import { Core } from './Core'
 
 // Proxy Handler for get requests to the configuration
 const ConfigurationProxyHandler: ProxyHandler<Configuration> = {
@@ -22,15 +23,14 @@ const ConfigurationProxyHandler: ProxyHandler<Configuration> = {
 export class Configuration extends Map<any, any> {
   public immutable: boolean
   public env: {}
-
   /**
    * Flattens configuration tree
    * Recursive
    */
   static flattenTree (tree = { }) {
-    // Try to flatten and fail if circular
+    const toReturn: { [key: string]: any } = {}
+    // Try to flatten and fail if unable to resolve circular object
     try {
-      const toReturn: { [key: string]: any } = {}
       Object.entries(tree).forEach(([k, v]) => {
         // if (typeof v === 'object' && v !== null) {
         if (
@@ -42,6 +42,9 @@ export class Configuration extends Map<any, any> {
             v.forEach((val, i) => {
               toReturn[`${k}.${i}`] = val
             })
+          }
+          else if (!Core.isNotCircular(v)) {
+            toReturn[k] = v
           }
           // If the value is a normal object, keep flattening
           else {
@@ -57,7 +60,10 @@ export class Configuration extends Map<any, any> {
       return toReturn
     }
     catch (err) {
-      throw new RangeError('Tree is circular, check that there are no circular references in the config')
+      if (err !== Core.BreakException) {
+        throw new RangeError('Tree is circular and can not be resolved, check that there are no circular references in the config')
+      }
+      return toReturn
     }
   }
 
@@ -133,6 +139,43 @@ export class Configuration extends Map<any, any> {
   }
 
   /**
+   * Recursively sets the tree values on the config map
+   */
+  private _reverseFlattenSet(key, value) {
+    if (/\.[0-9a-z]+$/.test(key)) {
+      const decedent = (key).match(/\.([0-9a-z]+)$/)[1]
+      const parent = key.replace(/\.[0-9a-z]+$/, '')
+      const proto = Array.isArray(value) ? [] : {}
+      const newParentValue = Core.defaultsDeep({[decedent]: value}, this.get(parent) || proto)
+      super.set(key, value)
+      // Recursively reverse flatten the set back up the tree
+      return this._reverseFlattenSet(parent, newParentValue)
+    }
+    else {
+      // This is as high as it goes
+      return super.set(key, value)
+    }
+  }
+  /**
+   * Flattens what is being called to .set
+   */
+  private _flattenSet(key, value) {
+    if (
+      value instanceof Object
+      && typeof value !== 'function'
+      && !Array.isArray(value)
+    ) {
+      // Flatten the new value
+      const configEntries = Object.entries(Configuration.flattenTree({[key]: value}))
+      // Set the flat values
+      configEntries.forEach(([_key, _value]) => {
+        return super.set(_key, _value)
+      })
+    }
+    // Reverse flatten up the tree
+    return this._reverseFlattenSet(key, value)
+  }
+  /**
    * Throws IllegalAccessError if the configuration has already been set to immutable
    * and an attempt to set value occurs.
    */
@@ -140,7 +183,7 @@ export class Configuration extends Map<any, any> {
     if (this.immutable === true) {
       throw new IllegalAccessError('Cannot set properties directly on config. Use .set(key, value) (immutable)')
     }
-    return super.set(key, value)
+    return this._flattenSet(key, value)
   }
 
   /**
@@ -157,7 +200,18 @@ export class Configuration extends Map<any, any> {
       }
       // If configAction is set to merge, it will default values over the initial config
       else if (hasKey && configAction === 'merge') {
-        this.set(key, defaults(this.get(key), value))
+        if (Array.isArray(value)) {
+          // Do Nothing
+        }
+        else if (typeof value === 'number') {
+          // Do Nothing
+        }
+        else if (typeof value === 'string') {
+          // Do Nothing
+        }
+        else {
+          this.set(key, Core.defaultsDeep(this.get(key), value))
+        }
       }
       // If configAction is replaceable, and the key already exists, it's ignored completely
       // This is because it was set by a higher level app config
