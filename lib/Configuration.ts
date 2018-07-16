@@ -57,6 +57,8 @@ export class Configuration extends Map<any, any> {
         // Other wise, the value is a function, string, or number etc and should stop flattening
         toReturn[k] = v
       })
+
+      // Return the consturcted return object
       return toReturn
     }
     catch (err) {

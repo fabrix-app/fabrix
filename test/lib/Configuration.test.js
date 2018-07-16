@@ -239,27 +239,84 @@ describe('lib.Configuration', () => {
     })
 
     describe('#set sanity', () => {
+      const fn = function () {}
+      let config
+
+      beforeEach(() => {
+        config = new lib.Configuration(_.cloneDeep(testConfig))
+      })
       it('should set leaves as well as root', () => {
-        const config = new lib.Configuration(_.cloneDeep(testConfig))
+
         config.set('test', {test2: {test3: 4}})
         assert.equal(config.get('test.test2.test3'), 4)
         assert.deepEqual(config.get('test.test2'), {test3: 4})
         assert.deepEqual(config.get('test'), {test2: {test3: 4}})
+      })
+      it('should set leaves as well as root', () => {
 
         config.set('test.test2', {test3: 5})
         assert.equal(config.get('test.test2.test3'), 5)
         assert.deepEqual(config.get('test.test2'), {test3: 5})
         assert.deepEqual(config.get('test'), {test2: {test3: 5}})
+      })
+      it('should set leaves as well as root', () => {
 
         config.set('test.test2.test3', 6)
         assert.equal(config.get('test.test2.test3'), 6)
         assert.deepEqual(config.get('test.test2'), {test3: 6})
         assert.deepEqual(config.get('test'), {test2: {test3: 6}})
+      })
+      it('should set leaves as well as root', () => {
 
+        config.set('test', {test2: {test3: [1, 2, 3]}})
+        assert.deepEqual(config.get('test.test2.test3'), [1, 2, 3])
+        assert.deepEqual(config.get('test.test2'), {test3: [1, 2, 3]})
+        assert.deepEqual(config.get('test'), {test2: {test3: [1, 2, 3]}})
+      })
+      it('should set leaves as well as root', () => {
+        config.set('test.test2', {test3: [1, 2, 3]})
+        assert.deepEqual(config.get('test.test2.test3'), [1, 2, 3])
+        assert.deepEqual(config.get('test.test2'), {test3: [1, 2, 3]})
+        assert.deepEqual(config.get('test'), {test2: {test3: [1, 2, 3]}})
+      })
+      it('should set leaves as well as root', () => {
         config.set('test.test2.test3', [1, 2, 3])
-        assert.deepEqual(config.get('test.test2.test3'), [1 ,2, 3])
-        assert.deepEqual(config.get('test.test2'), { test3: [1 ,2, 3] })
-        assert.deepEqual(config.get('test'), { test2: { test3: [1 ,2, 3] } })
+        assert.deepEqual(config.get('test.test2.test3'), [1, 2, 3])
+        assert.deepEqual(config.get('test.test2'), {test3: [1, 2, 3]})
+        assert.deepEqual(config.get('test'), {test2: {test3: [1, 2, 3]}})
+      })
+      it('should set leaves as well as root', () => {
+        config.set('test', {test2: {test3: fn}})
+        assert.deepEqual(config.get('test.test2.test3'), fn)
+        assert.deepEqual(config.get('test.test2'), {test3: fn})
+        assert.deepEqual(config.get('test'), {test2: {test3: fn}})
+      })
+      it('should set leaves as well as root', () => {
+        config.set('test.test2', {test3: fn})
+        assert.deepEqual(config.get('test.test2.test3'), fn)
+        assert.deepEqual(config.get('test.test2'), {test3: fn})
+        assert.deepEqual(config.get('test'), {test2: {test3: fn}})
+      })
+      it('should set leaves as well as root', () => {
+        config.set('test.test2.test3', fn)
+        assert.deepEqual(config.get('test.test2.test3'), fn)
+        assert.deepEqual(config.get('test.test2'), { test3: fn })
+        assert.deepEqual(config.get('test'), { test2: { test3: fn } })
+      })
+      it('should set leaves as well as root', () => {
+        config.set('test', { test2: { test3: 3, test4: null }})
+        config.set('test.test2.test4', fn)
+        assert.deepEqual(config.get('test.test2.test3'), 3)
+        assert.deepEqual(config.get('test.test2.test4'), fn)
+        assert.deepEqual(config.get('test.test2'), { test3: 3, test4: fn })
+        assert.deepEqual(config.get('test'), { test2: { test3: 3, test4: fn } })
+      })
+      it('should set leaves as well as root', () => {
+        config.set('test', { test2: { test3: 3 }, test4: null })
+        config.set('test.test4', fn)
+        assert.deepEqual(config.get('test.test2.test3'), 3)
+        assert.deepEqual(config.get('test.test4'), fn)
+        assert.deepEqual(config.get('test'), { test2: { test3: 3 }, test4: fn })
       })
     })
   })
