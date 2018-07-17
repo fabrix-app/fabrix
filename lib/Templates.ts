@@ -34,7 +34,7 @@ export const Templates = {
         Web Server Info
           Server            : ${app.config.get('web.server') || 'NOT INSTALLED'}
           Port              : ${app.config.get('web.port') || 'N/A'}
-          Routes            : ${(app.routes || [ ]).length}`
+          Routes            : ${Object.keys(app.routes || {}).length}`
       )
     }
   },

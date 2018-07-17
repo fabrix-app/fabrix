@@ -6,6 +6,4 @@
  * @see {@link http://fabrix.app/doc/config/routes}
  */
 
-export const routes = [
-
-]
+export const routes = { }
