@@ -7,7 +7,8 @@ module.exports = {
   },
   config: {
     test: {
-      val: 1
+      val: 1,
+      prefix: '/api'
     },
     main: {
       paths: {

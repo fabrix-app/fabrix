@@ -34,7 +34,8 @@ export class Configuration extends Map<any, any> {
       Object.entries(tree).forEach(([k, v]) => {
         // if (typeof v === 'object' && v !== null) {
         if (
-          v instanceof Object
+          v !== null
+          && v instanceof Object
           && typeof v !== 'function'
         ) {
           // If value is an array, flatten by index and don't try to flatten further
@@ -163,7 +164,8 @@ export class Configuration extends Map<any, any> {
    */
   private _flattenSet(key, value) {
     if (
-      value instanceof Object
+      value !== null
+      && value instanceof Object
       && typeof value !== 'function'
       && !Array.isArray(value)
     ) {
@@ -202,7 +204,10 @@ export class Configuration extends Map<any, any> {
       }
       // If configAction is set to merge, it will default values over the initial config
       else if (hasKey && configAction === 'merge') {
-        if (Array.isArray(value)) {
+        if (value === null) {
+          // Do Nothing
+        }
+        else if (Array.isArray(value)) {
           // Do Nothing
         }
         else if (typeof value === 'number') {

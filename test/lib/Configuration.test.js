@@ -72,7 +72,8 @@ describe('lib.Configuration', () => {
         array: [1, 2, 3],
         subobj: {
           attr: 'a'
-        }
+        },
+        nullValue: null
       }
     }
   })
@@ -245,6 +246,19 @@ describe('lib.Configuration', () => {
       beforeEach(() => {
         config = new lib.Configuration(_.cloneDeep(testConfig))
       })
+      it('should set leaves as well as root', () => {
+
+        config.set('test', null)
+        assert.equal(config.get('test'), null)
+        config.set('test', 'word')
+        assert.equal(config.get('test'), 'word')
+      })
+
+      it('should set leaves as well as root on a previously null value', () => {
+        config.set('customerObject.nullValue', 'word')
+        assert.equal(config.get('customerObject.nullValue'), 'word')
+      })
+
       it('should set leaves as well as root', () => {
 
         config.set('test', {test2: {test3: 4}})
