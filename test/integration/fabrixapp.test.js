@@ -159,6 +159,23 @@ describe('Fabrix', () => {
           })
         })
 
+        it('should be able to reassign a previously null value', () => {
+          const def = {
+            pkg: { },
+            api: { },
+            config: {
+              main: {
+                spools: [ Testspool ]
+              },
+              test: {
+                prefix: '/api'
+              }
+            }
+          }
+          const app = new FabrixApp(def)
+          assert.equal(app.config.get('test.prefix'), '/api')
+        })
+
         it('should disallow re-assignment of config object', () => {
           const def = {
             pkg: { },
