@@ -11,6 +11,7 @@ import { FabrixGeneric } from './Generic'
 export class FabrixModel extends FabrixGeneric {
   private _app: FabrixApp
   private _datastore: any
+  private _instance: any
   private _config: {[key: string]: any}
   private _schema: any
   private _resolver: any
@@ -76,14 +77,24 @@ export class FabrixModel extends FabrixGeneric {
   }
 
   get datastore() {
-    // if (!this._datastore) {
-    //   this.app.log.warn(`${this.name} did not receive an instance of the datastore`)
-    // }
+    if (!this._datastore) {
+      // This will throw an error if the logger is not set yet
+      // this.app.log.warn(`${this.name} did not receive an instance of the datastore`)
+    }
     return this._datastore
   }
 
   set datastore(datastore) {
     this._datastore = datastore
+  }
+
+  get instance() {
+    if (!this._resolver) {
+      return
+      // This will throw an error if the logger is not set yet
+      // this.app.log.warn(`${this.name} did not receive an instance from the datastore`)
+    }
+    return this._resolver.instance
   }
 
   /**

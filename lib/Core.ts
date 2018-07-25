@@ -11,6 +11,7 @@ import {
   NamespaceConflictError,
   PackageNotDefinedError,
   TimeoutError,
+  SanityError,
   SpoolError,
   ValidationError
 } from './errors'
@@ -39,6 +40,7 @@ export const Errors = {
   NamespaceConflictError,
   PackageNotDefinedError,
   TimeoutError,
+  SanityError,
   SpoolError,
   ValidationError
 }

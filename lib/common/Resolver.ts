@@ -17,6 +17,10 @@ export class FabrixResolver {
     this.app.emit(`resolver:${this.model.name}:constructed`, this)
   }
 
+  get instance(): any {
+    return
+  }
+
   /**
    * Return the parent model
    */

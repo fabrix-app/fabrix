@@ -15,6 +15,7 @@ describe('lib.Errors', () => {
     assert(global.NamespaceConflictError)
     assert(global.ValidationError)
     assert(global.SpoolError)
+    assert(global.SanityError)
   })
 
   describe('ConfigNotDefinedError', () => {
@@ -90,6 +91,32 @@ describe('lib.Errors', () => {
         }
       })
 
+    })
+  })
+  describe('SanityError', () => {
+    it('#name', () => {
+      const err = new SanityError()
+      // err.constructor.humanizeMessage([])
+      assert.equal(err.name, 'SanityError')
+    })
+    describe('#message', () => {
+      it('should specify missing/undefined spools', () => {
+        const testConfig = {
+          main: {
+            spools: [
+              undefined
+            ]
+          }
+        }
+
+        try {
+          new lib.Configuration(testConfig)
+        }
+        catch (e) {
+          assert(/The following configuration values are invalid/.test(e.message))
+          assert(/main.spools\.0/.test(e.message))
+        }
+      })
     })
   })
   describe('SpoolError', () => {
