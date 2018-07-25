@@ -78,7 +78,8 @@ export class FabrixModel extends FabrixGeneric {
 
   get datastore() {
     if (!this._datastore) {
-      this.app.log.warn(`${this.name} did not receive an instance of the datastore`)
+      // This will throw an error if the logger is not set yet
+      // this.app.log.warn(`${this.name} did not receive an instance of the datastore`)
     }
     return this._datastore
   }
@@ -88,8 +89,10 @@ export class FabrixModel extends FabrixGeneric {
   }
 
   get instance() {
-    if (!this._resolver.instance) {
-      this.app.log.warn(`${this.name} did not receive an instance from the datastore`)
+    if (!this._resolver) {
+      return
+      // This will throw an error if the logger is not set yet
+      // this.app.log.warn(`${this.name} did not receive an instance from the datastore`)
     }
     return this._resolver.instance
   }
