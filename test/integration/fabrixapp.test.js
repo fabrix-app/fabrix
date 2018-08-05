@@ -548,5 +548,19 @@ describe('Fabrix', () => {
         return eventPromise
       })
     })
+
+    describe('#sanity', () => {
+      let app
+      before(() => {
+        app = new FabrixApp(testAppDefinition)
+      })
+
+      // https://github.com/fabrix-app/fabrix/issues/11
+      it.skip('should log itself without failing', (done) => {
+        app.log.info(app)
+        console.log(app)
+        done()
+      })
+    })
   })
 })

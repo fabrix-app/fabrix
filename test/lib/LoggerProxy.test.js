@@ -65,5 +65,9 @@ describe('lib.LoggerProxy', () => {
     })
     logger('info', 'hello', '123')
   })
+  it('should be able to log itself without error' , done => {
+    emitter.once('fabrix:log', () => done())
+    logger.info(logger)
+  })
 })
 
