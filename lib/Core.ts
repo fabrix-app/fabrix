@@ -236,7 +236,7 @@ export const Core = {
    * Merge two Spools Api Resources's in order of their load
    */
   mergeSpoolApiResource (app: FabrixApp, spool: Spool, next: Spool, resource: string) {
-    if (spool.api.hasOwnProperty(resource) && next.api.hasOwnProperty(resource)) {
+    if (spool && spool.api.hasOwnProperty(resource) && next.api.hasOwnProperty(resource)) {
       Object.keys(next.api[resource]).forEach(method => {
         Core.mergeSpoolApiResourceMethod(app, spool, next, resource, method)
       })
@@ -247,7 +247,7 @@ export const Core = {
    * Merge two Spools Api Resources Method's in order of their load
    */
   mergeSpoolApiResourceMethod (app: FabrixApp, spool: Spool, next: Spool, resource: string, method: string) {
-    if (spool.api[resource].hasOwnProperty(method) && next.api[resource].hasOwnProperty(method)) {
+    if (spool && spool.api[resource].hasOwnProperty(method) && next.api[resource].hasOwnProperty(method)) {
       const spoolProto = Core.getPropertyNames(spool.api[resource][method])
       spoolProto.forEach(proto => {
         if (!Core.hasPrototypeProperty(next.api[resource][method], proto)) {

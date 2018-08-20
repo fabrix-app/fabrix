@@ -19,16 +19,16 @@ export const Pathfinder = {
   },
 
   /**
-   * Return true if all stages for a spoolare valid; false otherwise
+   * Return true if all stages for a spool are valid; false otherwise
    */
   isLifecycleValid (spool: Spool, spools: Spool[]): boolean {
     return lifecycleStages.every(stageName => {
-      return Pathfinder.isLifecycleStageValid (spool, stageName, spools)
+      return Pathfinder.isLifecycleStageValid(spool, stageName, spools)
     })
   },
 
   /**
-   * Return true if a particular stage is valid for the given pack; false
+   * Return true if a particular stage is valid for the given spool; false
    * otherwise
    */
   isLifecycleStageValid (spool: Spool, stageName: string, spools: Spool[]): boolean {

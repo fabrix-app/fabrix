@@ -7,7 +7,7 @@ import { FabrixApp } from '../index'
 
 /**
  * @class Spool
- * @see {@link https://fabrix.app/doc/en/ref/spool}
+ * @see {@link https://fabrix.app/docs/en/ref/spool}
  */
 export interface Spool {
   [key: string]: any
