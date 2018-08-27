@@ -4,7 +4,7 @@ import { FabrixApp } from './index'
 
 export const Templates = {
   hr: '---------------------------------------------------------------',
-  docs: 'Fabrix Documentation: http://fabrix.app/doc',
+  docs: 'Fabrix Documentation: https://fabrix.app/docs',
 
   info: {
     start: 'Spooling up...',
