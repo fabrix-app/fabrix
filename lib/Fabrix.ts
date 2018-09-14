@@ -18,6 +18,7 @@ import { DatastoreSpool } from './common/spools/datastore'
 import { SystemSpool } from './common/spools/system'
 import { ToolSpool } from './common/spools/tool'
 import { MiscSpool } from './common/spools/misc'
+import { enumerable } from './common/decorators/enumerable'
 
 // inject Error and Resource types into the global namespace
 Core.assignGlobals()
@@ -30,7 +31,6 @@ export interface FabrixApp {
   [key: string]: any
 }
 export class FabrixApp extends EventEmitter {
-
   private _logger: LoggerProxy
   private _env: IEnv
   private _pkg: any // IPkg
@@ -137,22 +137,27 @@ export class FabrixApp extends EventEmitter {
     this.emit('fabrix:constructed')
   }
 
+  // @enumerable(false)
   get logger () {
     return this._logger
   }
 
+  // @enumerable(false)
   get env () {
     return this._env
   }
 
+  // @enumerable(false)
   get pkg () {
     return this._pkg
   }
 
+  // @enumerable(false)
   get versions () {
     return this._versions
   }
 
+  // @enumerable(false)
   get config () {
     return this._config
   }
@@ -160,6 +165,7 @@ export class FabrixApp extends EventEmitter {
   /**
    * Gets the package.json of the Fabrix module
    */
+  // @enumerable(false)
   get fabrix () {
     return this._fabrix
   }
@@ -167,6 +173,7 @@ export class FabrixApp extends EventEmitter {
   /**
    * Gets the Spools that have been installed
    */
+  // @enumerable(false)
   get spools () {
     return this._spools
   }
@@ -174,6 +181,7 @@ export class FabrixApp extends EventEmitter {
   /**
    *   Gets the api
    */
+  // @enumerable(false)
   get api () {
     return this._api
   }
@@ -182,6 +190,7 @@ export class FabrixApp extends EventEmitter {
    * Return the Fabrix logger
    * fires fabrix:log:* log events
    */
+  // @enumerable(false)
   get log () {
     return this.logger
   }
@@ -199,6 +208,7 @@ export class FabrixApp extends EventEmitter {
   /**
    * Gets the Api resources that have been set
    */
+  // @enumerable(false)
   get resources() {
     return this._resources
   }

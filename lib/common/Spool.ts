@@ -4,6 +4,7 @@ import { EventEmitter } from 'events'
 import { defaultsDeep, omit } from 'lodash'
 import { IApi, IPkg, ISpoolConfig, ILifecycle } from './index'
 import { FabrixApp } from '../index'
+import { FabrixGeneric } from './Generic'
 
 /**
  * @class Spool
@@ -12,9 +13,9 @@ import { FabrixApp } from '../index'
 export interface Spool {
   [key: string]: any
 }
-export class Spool {
+export class Spool extends FabrixGeneric {
+  public app: FabrixApp
   private _stage = 'pre'
-  private _app: FabrixApp
   private _config: ISpoolConfig
   private _pkg: any // IPkg
   private _api: IApi
@@ -93,6 +94,7 @@ export class Spool {
       api = { }
     }: { pkg?: any, config?: ISpoolConfig, api?: IApi }
   ) {
+    super(app)
     if (!(app instanceof EventEmitter)) {
       throw new Error('The "app" argument must be of type EventEmitter')
     }
@@ -100,7 +102,6 @@ export class Spool {
       throw new Error('Spool is missing package definition ("spool.pkg")')
     }
 
-    this._app = app
     this._pkg = Object.freeze(pkg)
     this._api = api
 
@@ -122,10 +123,6 @@ export class Spool {
    */
   get stage () {
     return this._stage
-  }
-
-  get app (): FabrixApp {
-    return this._app
   }
 
   get api () {

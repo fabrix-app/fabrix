@@ -38,17 +38,23 @@ import { FabrixApp } from './'
 // }
 
 export class LoggerProxy {
-  app: FabrixApp
-  warn
-  debug
-  info
-  error
-  silly
+  public app: FabrixApp
+  public warn
+  public debug
+  public info
+  public error
+  public silly
   /**
    * Instantiate Proxy; bind log events to default console.log
    */
   constructor (app: FabrixApp) {
-    this.app = app
+    Object.defineProperties(this, {
+      app: {
+        value: app,
+        writable: false,
+        enumerable: false
+      }
+    })
 
     this.app.on('fabrix:log', (level: string, msg: any[] = [ ]) => (
       console[level] || console.log)(level, ...msg)

@@ -4,12 +4,25 @@ import { FabrixResolver } from './'
 import { IllegalAccessError } from '../errors'
 import { FabrixGeneric } from './Generic'
 
+// export interface FabrixModel {
+//   new(): FabrixModel
+//   config(app: FabrixApp, datastore?): {
+//     [key: string]: any,
+//     tableName?: string,
+//     store?: any,
+//     migrate?: string
+//   }
+//   schema(app: FabrixApp, datastore?): {
+//     [key: string]: any
+//   }
+//   resolver(): any
+// }
 
 /**
  * Fabrix Model Class.
  */
 export class FabrixModel extends FabrixGeneric {
-  private _app: FabrixApp
+  public app: FabrixApp
   private _datastore: any
   private _instance: any
   private _config: {[key: string]: any}
@@ -22,7 +35,7 @@ export class FabrixModel extends FabrixGeneric {
   /**
    * Model configuration
    */
-  public static config (app: FabrixApp, datastore?): {[key: string]: any} {
+  public static config (app: FabrixApp, datastore?) {
     return {
       tableName: null,
       store: null,
@@ -64,16 +77,11 @@ export class FabrixModel extends FabrixGeneric {
     if (!(app instanceof EventEmitter)) {
       throw new Error('The "app" argument must be of type EventEmitter')
     }
-    this._app = app
 
     this._datastore = datastore
 
     this.resolver = new (<typeof FabrixModel>this.constructor).resolver(this, datastore)
     this.app.emit(`model:${this.name}:constructed`, this)
-  }
-
-  get app(): FabrixApp {
-    return this._app
   }
 
   get datastore() {
