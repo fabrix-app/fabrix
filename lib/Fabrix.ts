@@ -41,11 +41,11 @@ export class FabrixApp extends EventEmitter {
   private _spools: {[key: string]: Spool | ServerSpool | ExtensionSpool | DatastoreSpool | SystemSpool | ToolSpool | MiscSpool }
   private _resources: string[] = [ ]
 
-  public controllers: {[key: string]: FabrixGeneric } // FabrixController }
-  public services: {[key: string]: FabrixGeneric } // FabrixService }
-  public policies: {[key: string]: FabrixGeneric } // FabrixPolicy }
-  public models: {[key: string]: FabrixGeneric } // FabrixModel }
-  public resolvers: {[key: string]: any } // FabrixResolver }
+  public controllers: {[key: string]: FabrixController }
+  public services: {[key: string]: FabrixService }
+  public policies: {[key: string]: FabrixPolicy }
+  public models: {[key: string]: FabrixModel }
+  public resolvers: {[key: string]: FabrixResolver }
 
   /**
    * @param app.pkg The application package.json
