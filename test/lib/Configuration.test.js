@@ -21,7 +21,8 @@ describe('lib.Configuration', () => {
             array: [2, 3, 4],
             subobj: {
               attr: 'b'
-            }
+            },
+            func: (v = 0) => { return 1 + v }
           }
         },
         envTest2: {
@@ -37,7 +38,8 @@ describe('lib.Configuration', () => {
             subobj: {
               attr: 'b'
             },
-            int2: 2
+            int2: 2,
+            func: (v = 0) => { return 2 + v }
           }
         },
         envTest3: {
@@ -73,7 +75,8 @@ describe('lib.Configuration', () => {
         subobj: {
           attr: 'a'
         },
-        nullValue: null
+        nullValue: null,
+        func: (v = 0) => { return 3 + v }
       }
     }
   })
@@ -144,6 +147,8 @@ describe('lib.Configuration', () => {
       assert.equal(config.customObject.array[0], 2)
       assert(typeof config.customObject.subobj === 'object')
       assert.equal(config.customObject.subobj.attr, 'b')
+      assert(typeof config.customObject.func === 'function')
+      assert.equal(config.customObject.func(1), 2)
     })
 
     it('should merge partial custom env config', () => {
@@ -158,6 +163,8 @@ describe('lib.Configuration', () => {
       assert.equal(config.customObject.array[0], 1)
       assert(typeof config.customObject.subobj === 'object')
       assert.equal(config.customObject.subobj.attr, 'b')
+      assert(typeof config.customObject.func === 'function')
+      assert.equal(config.customObject.func(1), 3)
     })
 
     it('should merge new custom attr in env config', () => {
@@ -173,6 +180,8 @@ describe('lib.Configuration', () => {
       assert(typeof config.customObject.subobj === 'object')
       assert.equal(config.customObject.subobj.attr, 'b')
       assert.equal(config.customObject.int2, 2)
+      assert(typeof config.customObject.func === 'function')
+      assert.equal(config.customObject.func(1), 3)
     })
 
     it('should not override any configs if NODE_ENV matches no env', () => {
@@ -357,7 +366,10 @@ describe('lib.Configuration', () => {
           subobj: {
             attr: 'b'
           },
-          newValue: 'a'
+          newValue: 'a',
+          func: (v = 4) => {
+            return v + 1
+          }
         }
       }, 'merge')
       // Old Value should be replaced?
@@ -369,6 +381,8 @@ describe('lib.Configuration', () => {
       assert.equal(config.get('customObject.newValue'), 'a')
       assert.deepEqual(config.get('customObject.stringArray'), ['one', 'two', 'three'])
       assert.deepEqual(config.get('customObject.stringArray2'), ['one', 'two', 'three'])
+
+      assert.equal(config.get('customObject.func')(4), 7)
 
     })
 
