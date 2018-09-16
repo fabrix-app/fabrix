@@ -556,7 +556,7 @@ describe('Fabrix', () => {
       })
 
       // https://github.com/fabrix-app/fabrix/issues/11
-      it.skip('should log itself without failing', (done) => {
+      it('should log itself without failing', (done) => {
         app.log.info(app)
         console.log(app)
         done()

@@ -14,4 +14,11 @@ export class FabrixGeneric {
       }
     })
   }
+
+  /**
+   * Return the id of this controller
+   */
+  get id (): string {
+    return this.constructor.name.toLowerCase()
+  }
 }

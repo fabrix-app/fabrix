@@ -29,13 +29,13 @@ export class FabrixModel extends FabrixGeneric {
   private _schema: any
   private _resolver: any
 
-  public store
-  public migrate
+  public store: any
+  public migrate: any
 
   /**
    * Model configuration
    */
-  public static config (app: FabrixApp, datastore?) {
+  public static config (app: FabrixApp, datastore?): {[key: string]: any} {
     return {
       tableName: null,
       store: null,
@@ -72,11 +72,11 @@ export class FabrixModel extends FabrixGeneric {
    * Construct the model and bind the Resolver
    */
   constructor (app: FabrixApp, datastore?) {
-    super(app)
-
     if (!(app instanceof EventEmitter)) {
       throw new Error('The "app" argument must be of type EventEmitter')
     }
+
+    super(app)
 
     this._datastore = datastore
 
