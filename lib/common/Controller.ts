@@ -2,18 +2,19 @@
 
 import { FabrixApp } from '../index'
 import { EventEmitter } from 'events'
+import { FabrixGeneric } from './Generic'
 
 /**
  * Fabrix Controller Class.
  */
-export class FabrixController {
-  private _app: FabrixApp
+export class FabrixController extends FabrixGeneric {
+  public app: FabrixApp
 
   constructor (app: FabrixApp) {
     if (!(app instanceof EventEmitter)) {
       throw new Error('The "app" argument must be of type EventEmitter')
     }
-    this._app = app
+    super(app)
     this.app.emit(`controller:${this.id}:constructed`, this)
   }
 
@@ -24,12 +25,6 @@ export class FabrixController {
     else {
       throw new Error('Missing spool-i18n, make sure it is included in app.main.spools')
     }
-  }
-
-  // @enumerable(false)
-  // @writable(false)
-  get app(): FabrixApp {
-    return this._app
   }
 
   /**

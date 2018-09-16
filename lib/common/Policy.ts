@@ -9,7 +9,7 @@ import { FabrixGeneric } from './Generic'
  * Fabrix Policy Class.
  */
 export class FabrixPolicy extends FabrixGeneric {
-  private _app: FabrixApp
+  public app: FabrixApp
 
 
   /**
@@ -24,7 +24,6 @@ export class FabrixPolicy extends FabrixGeneric {
     if (!(app instanceof EventEmitter)) {
       throw new Error('The "app" argument must be of type EventEmitter')
     }
-    this._app = app
     this.app.emit(`policy:${this.id}:constructed`, this)
   }
 
@@ -35,12 +34,6 @@ export class FabrixPolicy extends FabrixGeneric {
     else {
       throw new Error('Missing spool-i18n, make sure it is included in app.main.spools')
     }
-  }
-
-  // @enumerable(false)
-  // @writable(false)
-  get app(): FabrixApp {
-    return this._app
   }
 
   /**

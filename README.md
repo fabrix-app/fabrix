@@ -76,7 +76,7 @@ Many Fabrix installations will include some of the following Spools:
 
 ## Documentation
 
-See [**fabrix.app/doc**](http://fabrix.app/doc) for complete documentation.
+See [**fabrix.app/docs**](http://fabrix.app/docs) for complete documentation.
 
 ## More Resources
 

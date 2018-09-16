@@ -4,7 +4,7 @@ import { FabrixApp } from './index'
 
 export const Templates = {
   hr: '---------------------------------------------------------------',
-  docs: 'Fabrix Documentation: http://fabrix.app/doc',
+  docs: 'Fabrix Documentation: https://fabrix.app/docs',
 
   info: {
     start: 'Spooling up...',
@@ -42,16 +42,22 @@ export const Templates = {
   silly: {
     ready (app: FabrixApp) {
       const resources = (app.resources || []).map(resource => {
-        let prefix = resource.charAt(0).toUpperCase() + resource.slice(1)
+        let prefix = resource.charAt(0).toUpperCase() + resource.slice(1) + (` (${ Object.keys(app.api[resource]).length })`)
         while (prefix.length < 17) { prefix = prefix + ' '}
         return `${ prefix } : ${Object.keys(app.api[resource] || {})}`
       }).join('\n          ')
 
+      let apiResourcesLabel = `API Resources (${ (app.resources || []).length })`
+      while (apiResourcesLabel.length < 18) { apiResourcesLabel = apiResourcesLabel + ' '}
+
+      let spoolsLabel = `Spools (${ Object.keys(app.spools || {}).length})`
+      while (spoolsLabel.length < 18) { spoolsLabel = spoolsLabel + ' '}
+
       return (
         ` API
-          API Resources     : ${resources ? app.resources : 'NONE INSTALLED'}
+          ${ apiResourcesLabel }: ${resources ? app.resources : 'NONE INSTALLED'}
           ${ resources }
-          Spools            : ${Object.keys(app.spools || {})}`
+          ${ spoolsLabel }: ${Object.keys(app.spools || {})}`
       )
     },
 
