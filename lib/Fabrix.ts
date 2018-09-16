@@ -41,10 +41,10 @@ export class FabrixApp extends EventEmitter {
   private _spools: {[key: string]: Spool | ServerSpool | ExtensionSpool | DatastoreSpool | SystemSpool | ToolSpool | MiscSpool }
   private _resources: string[] = [ ]
 
-  public controllers: {[key: string]: any } // FabrixController }
-  public services: {[key: string]: any } // FabrixService }
-  public policies: {[key: string]: any } // FabrixPolicy }
-  public models: {[key: string]: any } // FabrixModel }
+  public controllers: {[key: string]: FabrixGeneric } // FabrixController }
+  public services: {[key: string]: FabrixGeneric } // FabrixService }
+  public policies: {[key: string]: FabrixGeneric } // FabrixPolicy }
+  public models: {[key: string]: FabrixGeneric } // FabrixModel }
   public resolvers: {[key: string]: any } // FabrixResolver }
 
   /**
@@ -79,14 +79,49 @@ export class FabrixApp extends EventEmitter {
 
     const processEnv = Object.freeze(Object.assign({}, JSON.parse(JSON.stringify(process.env))))
 
-    this._logger = new LoggerProxy(this)
-    this._env = processEnv
-    this._pkg = app.pkg
-    this._versions = process.versions
-    this._config = new Configuration(app.config, processEnv)
-    this._spools = {}
-    this._api = app.api
-    this._fabrix = pkg
+    Object.defineProperties(this, {
+      _logger: {
+        value: new LoggerProxy(this),
+        enumerable: false
+      },
+      _env: {
+        value: processEnv,
+        enumerable: false
+      },
+      _pkg: {
+        value: app.pkg,
+        enumerable: false
+      },
+      _versions: {
+        value: process.versions,
+        enumerable: false
+      },
+      _config: {
+        value: new Configuration(app.config, processEnv),
+        enumerable: false
+      },
+      _spools: {
+        value: {},
+        enumerable: false
+      },
+      _api: {
+        value: app.api,
+        enumerable: false
+      },
+      _fabrix: {
+        value: pkg,
+        enumerable: false
+      }
+    })
+
+    // this._logger = new LoggerProxy(this)
+    // this._env = processEnv
+    // this._pkg = app.pkg
+    // this._versions = process.versions
+    // this._config = new Configuration(app.config, processEnv)
+    // this._spools = {}
+    // this._api = app.api
+    // this._fabrix = pkg
 
     // Set the max listeners from the config
     this.setMaxListeners(this.config.get('main.maxListeners'))

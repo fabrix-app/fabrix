@@ -1,4 +1,5 @@
 import { FabrixApp } from './'
+import { FabrixGeneric } from './common/Generic'
 
 // declare global {
 //   interface Console {
@@ -37,7 +38,7 @@ import { FabrixApp } from './'
 //   (message?: any, ...optionalParams: any[]): void
 // }
 
-export class LoggerProxy {
+export class LoggerProxy extends FabrixGeneric {
   public app: FabrixApp
   public warn
   public debug
@@ -48,13 +49,7 @@ export class LoggerProxy {
    * Instantiate Proxy; bind log events to default console.log
    */
   constructor (app: FabrixApp) {
-    Object.defineProperties(this, {
-      app: {
-        value: app,
-        writable: false,
-        enumerable: false
-      }
-    })
+    super(app)
 
     this.app.on('fabrix:log', (level: string, msg: any[] = [ ]) => (
       console[level] || console.log)(level, ...msg)

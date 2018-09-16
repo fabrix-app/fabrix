@@ -31,9 +31,8 @@ export class DatastoreSpool extends Spool {
   async initialize (): Promise<any> {
     Object.entries(this.app.models).forEach(([ modelName, model ]) => {
       const modelConfig = (<typeof FabrixModel>model.constructor).config(this.app, this._datastore)
-      model.store = modelConfig.store || this.app.config.get('models.defaultStore')
-      model.migrate = modelConfig.migrate || this.app.config.get('models.migrate') || 'safe'
-      console.log('INIT STORE', model.store)
+      Object.assign(model, { store: modelConfig['store'] || this.app.config.get('models.defaultStore')})
+      Object.assign(model, { migrate: modelConfig['migrate'] || this.app.config.get('models.migrate') || 'safe'})
     })
     return Promise.resolve()
   }
