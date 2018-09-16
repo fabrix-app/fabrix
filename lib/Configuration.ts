@@ -207,6 +207,9 @@ export class Configuration extends Map<any, any> {
         if (value === null) {
           // Do Nothing
         }
+        else if (typeof value === 'undefined') {
+          // Do Nothing
+        }
         else if (Array.isArray(value)) {
           // Do Nothing
         }
@@ -214,6 +217,9 @@ export class Configuration extends Map<any, any> {
           // Do Nothing
         }
         else if (typeof value === 'string') {
+          // Do Nothing
+        }
+        else if (typeof value === 'function') {
           // Do Nothing
         }
         else {
