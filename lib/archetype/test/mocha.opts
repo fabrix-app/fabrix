@@ -1,9 +1,9 @@
 --reporter spec
 --recursive
 --full-trace
+--no-exit
 --check-leaks
---globals app
---timeout 5000
+--timeout 1200000
+--globals app,shopID,shopProducts,__core-js_shared__,__coverage__,$$bole
 
-test/setup.js
-test/**/*.test.js
+test/index.js test/**/*.test.js

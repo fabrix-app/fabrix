@@ -1,6 +1,12 @@
+/**
+ * @module server
+ *
+ * Fabrix framework.
+ */
+
 import { FabrixApp } from '@fabrix/fabrix'
+import * as App from '.'
 
-import * as app from '.'
-const server = new FabrixApp(app)
+const app = new FabrixApp(App)
 
-export default server.start()
+app.start().catch(app.stop)
