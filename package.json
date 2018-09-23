@@ -1,6 +1,6 @@
 {
   "name": "@fabrix/fabrix",
-  "version": "1.5.4",
+  "version": "1.5.5",
   "description": "Strongly Typed Modern Web Application Framework for Node.js",
   "keywords": [
     "framework",
@@ -23,13 +23,13 @@
     "graphql"
   ],
   "scripts": {
-    "build": "npm run archetype && tsc -p ./lib/tsconfig.release.json",
+    "build": "tsc -p ./lib/tsconfig.release.json",
     "lint": "tslint -p ./lib",
     "watch": "tsc -w -p ./lib/tsconfig.release.json",
     "test": "npm run clean && npm run lint && npm run build && nyc mocha",
     "test-performance": "mocha test-performance",
     "prepublishOnly": "npm run compile",
-    "compile": "npm run clean && npm run build",
+    "compile": "npm run clean && npm run archetype && npm run build",
     "clean": "rm -rf dist",
     "archetype": "copyfiles -u 1 -a ./lib/archetype/* -a ./lib/archetype/**/* -a ./lib/archetype/**/**/* -a ./lib/archetype/**/**/**/* ./dist/",
     "ci": "cd .. && ci"
