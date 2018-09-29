@@ -14,9 +14,6 @@
   },
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
   "dependencies": {
     "@fabrix/fabrix": "^1.5",
     "@fabrix/spool-router": "^1.5"

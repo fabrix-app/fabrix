@@ -1,6 +1,6 @@
 {
   "name": "@fabrix/fabrix",
-  "version": "1.5.5",
+  "version": "1.5.7",
   "description": "Strongly Typed Modern Web Application Framework for Node.js",
   "keywords": [
     "framework",
@@ -20,6 +20,8 @@
     "fabrix.ts",
     "typescript",
     "server",
+    "cqrs",
+    "event-sourcing",
     "graphql"
   ],
   "scripts": {
@@ -29,15 +31,15 @@
     "test": "npm run clean && npm run lint && npm run build && nyc mocha",
     "test-performance": "mocha test-performance",
     "prepublishOnly": "npm run compile",
-    "compile": "npm run clean && npm run archetype && npm run build",
+    "compile": "npm run clean && npm run build",
     "clean": "rm -rf dist",
-    "archetype": "copyfiles -u 1 -a ./lib/archetype/* -a ./lib/archetype/**/* -a ./lib/archetype/**/**/* -a ./lib/archetype/**/**/**/* ./dist/",
     "ci": "cd .. && ci"
   },
   "main": "dist/index",
   "typings": "dist/index",
   "files": [
-    "dist"
+    "dist",
+    "archetype"
   ],
   "pre-commit": [
     "test"
