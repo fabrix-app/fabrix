@@ -5,7 +5,7 @@
  */
 
 import { FabrixApp } from '@fabrix/fabrix'
-import * as App from '.'
+import * as App from './'
 
 const app = new FabrixApp(App)
 

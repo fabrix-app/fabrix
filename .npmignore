@@ -7,3 +7,5 @@ test-performance/
 .istanbul.yml
 .travis.yml
 appveyor.yml
+.circleci
+.idea
