@@ -12,16 +12,21 @@ Fabrix is a strongly typed modern web application framework for Node.js. It buil
 ## Getting Started
 
 #### Install
-The Fabrix CLI is still under development so the following is a placeholder.
+Install the Fabrix CLI. This will help you generate a Fabrix app and more quickly.
 
 ```sh
-$ npm install @fabrix/fab-cli
+$ npm install @fabrix/fab-cli -g
+```
+
+#### Generate A New Fabrix App
+```sh
+$ fab app <new_app_name>
 ```
 
 #### Start Sewing
 
 Fabrix uses a CLI to generate scaffolding for new
-applications, and to create resources inside the application. (TODO)
+applications, and to create resources inside the application.
 
 ```sh
 $ fab --help
@@ -30,6 +35,8 @@ Usage:
   fab
 
 Generators:
+  Create New App
+    fab app <app-name>
 
   Create New Model
     fab model <model-name>
@@ -51,7 +58,7 @@ Generators:
 
 Once installation is complete, begin weaving!
 ```sh
-$ npm run build && node dist/server.js
+$ npm run compile && node dist/server.js
 ```
 
 #### Sew on and Sew Forth!
