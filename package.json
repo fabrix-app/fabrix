@@ -1,6 +1,6 @@
 {
   "name": "@fabrix/fabrix",
-  "version": "1.5.8",
+  "version": "1.5.9",
   "description": "Strongly Typed Modern Web Application Framework for Node.js",
   "keywords": [
     "framework",
@@ -30,6 +30,7 @@
     "watch": "tsc -w -p ./lib/tsconfig.release.json",
     "test": "npm run clean && npm run lint && npm run build && nyc mocha",
     "test-performance": "mocha test-performance",
+    "test-archetype": "cd archetype && npm install && npm test",
     "prepublishOnly": "npm run compile",
     "compile": "npm run clean && npm run build",
     "clean": "rm -rf dist",

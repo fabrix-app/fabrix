@@ -2,7 +2,7 @@
  * Logging Configuration
  * (app.config.log)
  *
- * @see {@link http://fabrix.app/doc/config/log}
+ * @see {@link http://fabrix.app/docs/config/log}
  */
 
 export const log = {

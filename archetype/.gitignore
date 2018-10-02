@@ -8,3 +8,4 @@ npm-debug.log
 dist
 # other
 *.sw*
+.nyc_output
