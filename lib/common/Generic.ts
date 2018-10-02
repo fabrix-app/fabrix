@@ -1,4 +1,10 @@
 import { FabrixApp } from '../index'
+
+export interface FabrixGeneric {
+  [key: string]: any
+  app: FabrixApp
+  methods: string[]
+}
 /**
  * Fabrix Generic Class.
  */
@@ -18,7 +24,7 @@ export class FabrixGeneric {
   /**
    * Return the id of this controller
    */
-  get id (): string {
+  public get id (): string {
     return this.constructor.name.toLowerCase()
   }
 }

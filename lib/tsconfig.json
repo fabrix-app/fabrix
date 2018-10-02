@@ -24,11 +24,8 @@
     "**/*.ts",
     "index.ts"
   ],
-  "exclude": [
-    "archetype/**/*.ts"
-  ],
   "paths": {
     "@fabrix/*": ["./*"],
-    "@fabrix/fabrix": ["./Farbix"]
+    "@fabrix/fabrix": ["./index"]
   }
 }
