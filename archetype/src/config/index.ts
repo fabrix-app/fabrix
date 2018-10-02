@@ -1,6 +1,6 @@
 /**
  * Fabrix Configuration Manifest
- * @see {@link http://fabrix.app/doc/config/manifest}
+ * @see {@link http://fabrix.app/docs/config/manifest}
  */
 import * as env from './env'
 import { i18n } from './i18n'

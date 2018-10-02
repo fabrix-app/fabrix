@@ -35,3 +35,7 @@ build/Release
 node_modules
 
 *.sw*
+
+# Archetype for CLI
+archetype/package-lock.json
+archetype/.nyc_output
