@@ -2,11 +2,13 @@
  * @module server
  *
  * Fabrix framework.
+ * @see {@link http://fabrix.app}
  */
 
 import { FabrixApp } from '@fabrix/fabrix'
 import * as App from './'
 
-const app = new FabrixApp(App)
+const server = new FabrixApp(App)
 
-app.start().catch(app.stop)
+server.start()
+  .catch((err: any) => server.stop(err))

@@ -2,10 +2,15 @@
  * Main App Configuration
  * (app.config.main)
  *
- * @see {@link http://fabrix.app/doc/config/main}
+ * @see {@link http://fabrix.app/docs/config/main}
  */
 
 import { resolve } from 'path'
+
+/**
+ * Spools: import spools
+ */
+import { RouterSpool } from '@fabrix/spool-router'
 
 export const main = {
 
@@ -14,6 +19,7 @@ export const main = {
    * requirements.
    */
   spools: [
+    RouterSpool
   ],
 
   /**
