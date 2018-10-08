@@ -15,8 +15,10 @@ import { RouterSpool } from '@fabrix/spool-router'
 export const main = {
 
   /**
-   * Order does *not* matter. Each module is loaded according to its own
-   * requirements.
+   * Order matters. Each module is loaded according to its own
+   * requirements, however, when there are spools
+   * with conflicting configuration, the last spool loaded
+   * takes priority.
    */
   spools: [
     RouterSpool
