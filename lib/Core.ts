@@ -46,7 +46,7 @@ export const Errors = {
 }
 
 export const Core = {
-  // An Exception convenience
+  // An Exception convenience: added v1.5
   BreakException: {},
   // Methods reserved so that they are not autobound
   reservedMethods: [
@@ -59,10 +59,12 @@ export const Core = {
     'methods',
     'config',
     'schema',
+    // Should additional resource types be added to reserved or should this be removed completely?
     'services',
     'models'
   ],
 
+  // Deprecated v1.6
   globals: Object.freeze(Object.assign({
     Service: FabrixService,
     Controller: FabrixController,
@@ -71,6 +73,7 @@ export const Core = {
     Resolver: FabrixResolver
   }, Errors)),
 
+  // Deprecated v1.6
   globalPropertyOptions: Object.freeze({
     writable: false,
     enumerable: false,
@@ -78,6 +81,7 @@ export const Core = {
   }),
 
   /**
+   * Deprecated v1.6
    * Prepare the global namespace with required Fabrix types. Ignore identical
    * values already present; fail on non-matching values.
    *
