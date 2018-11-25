@@ -41,33 +41,34 @@ describe('lib.Core', () => {
     })
   })
 
-  describe('#assignGlobals', () => {
-    it('should assign values to the global namespace', () => {
-      lib.Core.assignGlobals()
-
-      assert(global.Service)
-      assert(global.Controller)
-      assert(global.Model)
-      assert(global.Policy)
-      assert(Service)
-    })
-    it('global variables should be immutable and error if mutation is attempted', () => {
-      delete global.Service
-      assert(global.Service)
-      assert(Service)
-    })
-    it('should ignore conflicts for identical values', () => {
-      const s1 = Service
-      lib.Core.assignGlobals()
-      lib.Core.assignGlobals()
-      lib.Core.assignGlobals()
-      lib.Core.assignGlobals()
-
-      assert(global.Service)
-      assert(Service)
-      assert.equal(s1, Service)
-    })
-  })
+  // Deprecated v1.6
+  // describe('#assignGlobals', () => {
+  //   it('should assign values to the global namespace', () => {
+  //     lib.Core.assignGlobals()
+  //
+  //     assert(global.Service)
+  //     assert(global.Controller)
+  //     assert(global.Model)
+  //     assert(global.Policy)
+  //     assert(Service)
+  //   })
+  //   it('global variables should be immutable and error if mutation is attempted', () => {
+  //     delete global.Service
+  //     assert(global.Service)
+  //     assert(Service)
+  //   })
+  //   it('should ignore conflicts for identical values', () => {
+  //     const s1 = Service
+  //     lib.Core.assignGlobals()
+  //     lib.Core.assignGlobals()
+  //     lib.Core.assignGlobals()
+  //     lib.Core.assignGlobals()
+  //
+  //     assert(global.Service)
+  //     assert(Service)
+  //     assert.equal(s1, Service)
+  //   })
+  // })
   describe('#handlePromiseRejection', () => {
     it('should throw an error and log it', () => {
       assert.throws(() => lib.Core.handlePromiseRejection(new Error('Promise Rejection Test')), Error)

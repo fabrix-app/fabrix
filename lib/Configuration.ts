@@ -39,6 +39,7 @@ export class Configuration extends Map<any, any> {
           && typeof v !== 'function'
         ) {
           // If value is an array, flatten by index and don't try to flatten further
+          // Configs with Array will throw a warning in v2.0 and an error in v3.0
           if (Array.isArray(v)) {
             v.forEach((val, i) => {
               toReturn[`${k}.${i}`] = val
@@ -75,6 +76,7 @@ export class Configuration extends Map<any, any> {
    */
   static initialResources (tree, resources = []) {
     if (tree.hasOwnProperty('main') && tree.main.hasOwnProperty('resources')) {
+      // Configs with Array will throw a warning in v2.0 and an error in v3.0
       if (!isArray(tree.main['resources'])) {
         throw new ConfigValueError('if set, main.resources must be an array')
       }

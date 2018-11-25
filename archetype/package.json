@@ -7,7 +7,7 @@
     "build": "tsc -p ./src/tsconfig.release.json",
     "lint": "tslint -p ./src",
     "watch": "tsc -w -p ./src/tsconfig.release.json",
-    "test": "npm run clean && npm run copy && npm run lint && npm run build && nyc mocha",
+    "test": "npm run compile && nyc mocha",
     "prepublishOnly": "npm run compile",
     "compile": "npm run clean && npm run build && npm run copy",
     "copy": "copyfiles -u 1 src/config/**/*.json dist",
@@ -16,11 +16,11 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "dependencies": {
-    "@fabrix/fabrix": "^1.5",
-    "@fabrix/spool-router": "^1.5"
+    "@fabrix/fabrix": "^1.5.9",
+    "@fabrix/spool-router": "^1.5.1"
   },
   "devDependencies": {
-    "@fabrix/spool-repl": "^1.5",
+    "@fabrix/spool-repl": "^1.5.0",
     "@fabrix/lint": "^1.0.0-alpha.3",
     "@types/node": "~10.3.4",
     "copyfiles": "^2.0.0",

@@ -12,7 +12,7 @@ Fabrix is a strongly typed modern web application framework for Node.js. It buil
 ## Getting Started
 
 #### Install
-Install the Fabrix CLI. This will help you generate a Fabrix app and more quickly.
+Install the Fabrix CLI. This will help you generate a Fabrix app and more.
 
 ```sh
 $ npm install @fabrix/fab-cli -g
