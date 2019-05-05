@@ -7,11 +7,15 @@
 [![Dependency Status][daviddm-image]][daviddm-url]
 [![Follow @FabrixApp on Twitter][twitter-image]][twitter-url]
 
-Fabrix is a strongly typed modern web application framework for Node.js. It builds on the pedigree of [Rails](http://rubyonrails.org/) and [Grails](https://grails.org/) to accelerate development by adhering to a straightforward, convention-based, API-driven design philosophy.
+Fabrix is a strongly typed modern web application framework for Node.js. It builds on the pedigree of [Rails](http://rubyonrails.org/) and [Grails](https://grails.org/) to accelerate development by adhering to a straightforward, convention-based, API-driven design philosophy. 
+
+_Note: Because Fabrix is lightweight and easily extendable, it's also very __very__ fast and well suited for function based environments._
 
 ## Getting Started
 
 #### Install
+_Note: The CLI is under construction, search for example apps in the meantime_
+
 Install the Fabrix CLI. This will help you generate a Fabrix app and more.
 
 ```sh
@@ -65,7 +69,7 @@ $ npm run compile && node dist/server.js
 
 ## Spools
 
-[Spools](https://github.com/fabrix-app/spool) extend the framework's
+[Spools](https://github.com/search?q=topic%3Aspools+org%3Afabrix-app&type=Repositories) extend the framework's
 capabilities and allow developers to leverage existing ecosystem tools through a simple and well-defined API. New features, behavior, APIs, and other functionality can be added to the Fabrix framework through Spools.
 
 Many Fabrix installations will include some of the following Spools:
@@ -88,8 +92,10 @@ See [**fabrix.app/docs**](http://fabrix.app/docs) for complete documentation.
 ## More Resources
 
 #### Tutorials
+Coming soon!
 
 #### Videos
+Coming soon!
 
 #### Support
 - [Live Gitter Chat](https://gitter.im/fabrix-app/Lobby)
