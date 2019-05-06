@@ -18,7 +18,7 @@ Major and minor version releases occur according to a regular calendar schedule,
 
 ## Upcoming Releases
 
-### v2.0 (April 2019)
+### v2.0 (Sept 2019)
 
 Fabrix v2 development takes place on the [v2 branch](https://github.com/fabrix-app/fabrix/tree/v2). Some key changes and additions:
 - Standardize `Policy` interface
