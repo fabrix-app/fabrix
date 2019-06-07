@@ -75,7 +75,7 @@ capabilities and allow developers to leverage existing ecosystem tools through a
 Many Fabrix installations will include some of the following Spools:
 
 - [router](https://github.com/fabrix-app/spool-router)
-- [i81n](https://github.com/fabrix-app/spool-i18n)
+- [i18n](https://github.com/fabrix-app/spool-i18n)
 - [repl](https://github.com/fabrix-app/spool-repl)
 - [express](https://github.com/fabrix-app/spool-express)
 - [sequelize](https://github.com/fabrix-app/spool-sequelize)
