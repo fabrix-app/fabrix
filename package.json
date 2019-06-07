@@ -1,6 +1,6 @@
 {
   "name": "@fabrix/fabrix",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Strongly Typed Modern Web Application Framework for Node.js",
   "keywords": [
     "framework",
@@ -110,7 +110,7 @@
     "typescript": "~3.3.4000"
   },
   "engines": {
-    "node": ">= 7.6.0 =< 10.0.0",
+    "node": ">= 7.6.0 =< 12",
     "npm": ">= 3.10.0"
   },
   "runkitExample": "test/runkitExample.js"
