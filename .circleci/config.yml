@@ -7,11 +7,11 @@ version: 2
 
 defaults: &defaults
   working_directory: ~/fabrix
-  docker:
-    - image: circleci/node:10.0.0
 
 jobs:
   test:
+    docker:
+      - image: circleci/node:10.0.0
     <<: *defaults
     steps:
       - checkout
@@ -51,6 +51,8 @@ jobs:
           root: ~/fabrix
           paths: .
   deploy:
+    docker:
+      - image: circleci/node:12.0.0
     <<: *defaults
     steps:
       - attach_workspace:
@@ -62,11 +64,22 @@ jobs:
           name: Publish package
           command: npm publish
 
+  test-node12:
+    docker:
+      - image: circleci/node:10.0.0
+    <<: *defaults
+    steps:
+      - run: echo "Running node v12"
+
 workflows:
   version: 2
   test-deploy:
     jobs:
       - test:
+          filters:
+            tags:
+              only: /^v.*/
+      - test-node12:
           filters:
             tags:
               only: /^v.*/
