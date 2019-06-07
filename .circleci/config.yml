@@ -70,6 +70,42 @@ jobs:
     <<: *defaults
     steps:
       - run: echo "Running node v12"
+      - checkout
+      - run:
+          name: update-npm
+          command: 'sudo npm install -g npm@5'
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: install-npm-wee
+          command: npm install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: test
+          command: npm test
+      - run:
+          name: test performance
+          command: npm run test-performance
+      - run:
+          name: test archetype
+          command: npm run test-archetype
+      - run:
+          name: code-coverage
+          command: './node_modules/.bin/nyc report --reporter=text-lcov'
+      - store_artifacts:
+          path: test-results.xml
+          prefix: tests
+      - store_artifacts:
+          path: coverage
+          prefix: coverage
+      - store_test_results:
+          path: test-results.xml
+      - persist_to_workspace:
+          root: ~/fabrix
+          paths: .
 
 workflows:
   version: 2
