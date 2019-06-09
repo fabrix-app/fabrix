@@ -1,6 +1,5 @@
 import { union, defaultsDeep, isArray, toArray, mergeWith } from 'lodash'
 import { FabrixApp } from './'
-import * as mkdirp from 'mkdirp'
 import { Templates } from './'
 import {
   ApiNotDefinedError,
@@ -339,17 +338,20 @@ export const Core = {
   },
 
   /**
-   * Create configured paths if they don't exist
+   * Create configured paths if they don't exist and target is Node.js
    */
   async createDefaultPaths (app: FabrixApp) {
     const paths: {[key: string]: string} = app.config.get('main.paths') || { }
-
-    for (const [ , dir ] of Object.entries(paths)) {
-      await mkdirp(dir, null, function (err: Error) {
-        if (err) {
-          app.log.error(err)
-        }
-      })
+    const target: string = app.config.get('main.target') || 'node'
+    if (target !== 'browser') {
+      const mkdirp = await import('mkdirp')
+      for (const [, dir] of Object.entries(paths)) {
+        await mkdirp(dir, null, function (err: Error) {
+          if (err) {
+            app.log.error(err)
+          }
+        })
+      }
     }
   },
 

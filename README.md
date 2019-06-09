@@ -7,7 +7,7 @@
 [![Dependency Status][daviddm-image]][daviddm-url]
 [![Follow @FabrixApp on Twitter][twitter-image]][twitter-url]
 
-Fabrix is a strongly typed modern web application framework for Node.js. It builds on the pedigree of [Rails](http://rubyonrails.org/) and [Grails](https://grails.org/) to accelerate development by adhering to a straightforward, convention-based, API-driven design philosophy. 
+Fabrix is a strongly typed modern web application framework for Node.js or even Browsers. It builds on the pedigree of [Rails](http://rubyonrails.org/) and [Grails](https://grails.org/) to accelerate development by adhering to a straightforward, convention-based, API-driven design philosophy. 
 
 _Note: Because Fabrix is lightweight and easily extendable, it's also very __very__ fast and well suited for function based environments._
 
@@ -115,6 +115,11 @@ information on how our projects are organized and how to get started.
 Fabrix uses a continuous integration process and all tests must pass for Fabrix to release a new version.  CircleCI releases a new version when a PR is merged into master.  For local development, you can download [CircleCI's local development tools](https://circleci.com/docs/2.0/local-cli/#installing-the-circleci-local-cli-on-macos-and-linux-distros) and run local tests before submitting a Pull Request.
 
 Fabrix maintains a high score of coverage tests, any Pull Request should have well written Integration and Unit tests that increase the overall coverage score. 
+
+### Browser Support
+Browser support provided by Webpack is on it's way.
+
+`webpack --config ./test-browser/webpack.config.js`
 
 ## License
 [MIT](https://github.com/fabrix-app/fabrix/blob/master/LICENSE)

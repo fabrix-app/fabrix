@@ -1,6 +1,6 @@
 {
   "name": "@fabrix/fabrix",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "description": "Strongly Typed Modern Web Application Framework for Node.js",
   "keywords": [
     "framework",
@@ -34,7 +34,8 @@
     "prepublishOnly": "npm run compile",
     "compile": "npm run clean && npm run build",
     "clean": "rm -rf dist",
-    "ci": "cd .. && ci"
+    "ci": "cd .. && ci",
+    "webpack": "node_modules/.bin/webpack --config ./test-browser/webpack.config.js"
   },
   "main": "dist/index",
   "typings": "dist/index",
@@ -107,7 +108,9 @@
     "tslint": "~5.14.0",
     "tslint-microsoft-contrib": "~6.1.0",
     "tsutils": "~3.9.1",
-    "typescript": "~3.3.4000"
+    "typescript": "~3.3.4000",
+    "webpack": "^4.33.0",
+    "webpack-cli": "^3.3.3"
   },
   "engines": {
     "node": ">= 7.6.0 =< 12",
