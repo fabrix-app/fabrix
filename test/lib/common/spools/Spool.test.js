@@ -43,6 +43,19 @@ describe('spool', () => {
       spool.log('info', 'hello from spool')
     })
   })
+
+  describe('#log silent', () => {
+    it('is a convenience method that simply invokes app.log', done => {
+      const spool= new Testspool(app)
+
+      app.once('fabrix:log:ignored', (level, [ msg ]) => {
+        done()
+      })
+
+      spool.log('silly', 'hello ignored from spool')
+    })
+  })
+
   describe('#app', () => {
     it('is a convenience method that should show the app', () => {
       const app = new Fabrix(testApp)

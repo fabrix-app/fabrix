@@ -40,11 +40,14 @@ import { FabrixGeneric } from './common/Generic'
 
 export class LoggerProxy extends FabrixGeneric {
   public app: FabrixApp
-  public warn
-  public debug
-  public info
   public error
+  public warn
+  public info
+  public debug
   public silly
+
+  public levelHierarchy = ['silly', 'debug', 'info', 'warn', 'error']
+
   /**
    * Instantiate Proxy; bind log events to default console.log
    */
@@ -79,7 +82,11 @@ export class LoggerProxy extends FabrixGeneric {
    * Emit fabrix:log, pass the "level" parameter to the event handler as the
    * first argument.
    */
-  emitLogEvent (level: string) {
-    return (...msg: any[]) => this.app.emit('fabrix:log', level, msg)
+  emitLogEvent (level: string, current: string = 'silly') {
+    const currentLevel = this.app && this.app.config ? this.app.config.get('log.level') || current : current
+    level = level || current
+
+    const log = this.levelHierarchy.indexOf(currentLevel) <= this.levelHierarchy.indexOf(level) ? 'fabrix:log' : 'fabrix:log:ignored'
+    return (...msg: any[]) => this.app.emit(log, level, msg)
   }
 }
