@@ -34,6 +34,9 @@ const App = {
         testdir: path.resolve(__dirname, 'testdir')
       }
     },
+    log: {
+      level: 'silly'
+    },
     i18n: {
       lng: 'en',
       resources: {

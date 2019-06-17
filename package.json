@@ -1,6 +1,6 @@
 {
   "name": "@fabrix/fabrix",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "Strongly Typed Modern Web Application Framework for Node.js",
   "keywords": [
     "framework",
