@@ -22,7 +22,6 @@ import { FabrixGeneric } from './Generic'
  * Fabrix Model Class.
  */
 export class FabrixModel extends FabrixGeneric {
-  public app: FabrixApp
   private _datastore: any
   private _instance: any
   private _config: {[key: string]: any}
@@ -72,11 +71,12 @@ export class FabrixModel extends FabrixGeneric {
    * Construct the model and bind the Resolver
    */
   constructor (app: FabrixApp, datastore?) {
+    super(app)
+
     if (!(app instanceof EventEmitter)) {
       throw new Error('The "app" argument must be of type EventEmitter')
     }
 
-    super(app)
 
     this._datastore = datastore
 
