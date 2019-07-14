@@ -7,7 +7,8 @@ describe('lib/Service', () => {
   describe('sanity', () => {
     it('should exist', () => {
       assert(Service)
-      assert(global.Service)
+      // Deprecated v1.6
+      // assert(global.Service)
     })
     it('can instantiate without error', () => {
       const app = new Fabrix(testApp)

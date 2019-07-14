@@ -7,7 +7,8 @@ describe('lib/Controller', () => {
   describe('sanity', () => {
     it('should exist', () => {
       assert(Controller)
-      assert(global.Controller)
+      // Deprecated v1.6
+      // assert(global.Controller)
     })
     it('can instantiate without error', () => {
       const app = new Fabrix(testApp)

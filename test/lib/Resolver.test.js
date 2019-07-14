@@ -11,7 +11,8 @@ describe('lib/Resolver', () => {
   describe('sanity', () => {
     it('should exist', () => {
       assert(Resolver)
-      assert(global.Resolver)
+      // Deprecated v1.6
+      // assert(global.Resolver)
     })
     it('can instantiate without error', () => {
       const app = new Fabrix(testApp)

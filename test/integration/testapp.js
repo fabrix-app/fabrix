@@ -19,6 +19,7 @@ module.exports = {
       ]
     },
     log: {
+      level: 'info',
       logger: new smokesignals.Logger('silent')
     }
   },

@@ -21,6 +21,20 @@ describe('lib.LoggerProxy', () => {
     })
     logger.silly('hello')
   })
+  it('should emit fabrix:log:ignored with level=info on invocation of log.silly', done => {
+    emitter.once('fabrix:log:ignored', level => {
+      assert.equal(level, 'silly')
+      done()
+    })
+    emitter.emit('fabrix:log:ignored', 'silly', 'hello')
+  })
+  it('should emit fabrix:log:ignored with level=info on invocation of log.silly', done => {
+
+    emitter.once('fabrix:log:ignored', emitLogEvent => {
+      done()
+    })
+    logger.emitLogEvent('silly', 'info')('hello')
+  })
   it('should emit fabrix:log with level=debug on invocation of log.debug', done => {
     emitter.once('fabrix:log', level => {
       assert.equal(level, 'debug')
