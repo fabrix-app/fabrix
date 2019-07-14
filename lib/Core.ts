@@ -1,6 +1,5 @@
 import { union, defaultsDeep, isArray, toArray, mergeWith } from 'lodash'
 import { FabrixApp } from './'
-import * as mkdirp from 'mkdirp'
 import { Templates } from './'
 import {
   ApiNotDefinedError,
@@ -46,7 +45,7 @@ export const Errors = {
 }
 
 export const Core = {
-  // An Exception convenience
+  // An Exception convenience: added v1.5
   BreakException: {},
   // Methods reserved so that they are not autobound
   reservedMethods: [
@@ -59,10 +58,12 @@ export const Core = {
     'methods',
     'config',
     'schema',
+    // Should additional resource types be added to reserved or should this be removed completely?
     'services',
     'models'
   ],
 
+  // Deprecated v1.6
   globals: Object.freeze(Object.assign({
     Service: FabrixService,
     Controller: FabrixController,
@@ -71,6 +72,7 @@ export const Core = {
     Resolver: FabrixResolver
   }, Errors)),
 
+  // Deprecated v1.6
   globalPropertyOptions: Object.freeze({
     writable: false,
     enumerable: false,
@@ -78,6 +80,7 @@ export const Core = {
   }),
 
   /**
+   * Deprecated v1.6
    * Prepare the global namespace with required Fabrix types. Ignore identical
    * values already present; fail on non-matching values.
    *
@@ -335,17 +338,20 @@ export const Core = {
   },
 
   /**
-   * Create configured paths if they don't exist
+   * Create configured paths if they don't exist and target is Node.js
    */
   async createDefaultPaths (app: FabrixApp) {
     const paths: {[key: string]: string} = app.config.get('main.paths') || { }
-
-    for (const [ , dir ] of Object.entries(paths)) {
-      await mkdirp(dir, null, function (err: Error) {
-        if (err) {
-          app.log.error(err)
-        }
-      })
+    const target: string = app.config.get('main.target') || 'node'
+    if (target !== 'browser') {
+      const mkdirp = await import('mkdirp')
+      for (const [, dir] of Object.entries(paths)) {
+        await mkdirp(dir, null, function (err: Error) {
+          if (err) {
+            app.log.error(err)
+          }
+        })
+      }
     }
   },
 

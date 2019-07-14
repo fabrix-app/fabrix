@@ -1,9 +1,4 @@
-const path = require('path')
-const _ = require('lodash')
-const smokesignals = require('smokesignals')
-const Testspool = require('./testspool')
-
-const AppConfigLocales = {
+export const AppConfigLocales = {
   en: {
     helloworld: 'hello world',
     hello: {
@@ -18,24 +13,18 @@ const AppConfigLocales = {
   }
 }
 
-const App = {
+export const testApp = {
   pkg: {
-    name: 'core-spool-test'
+    name: 'browser-spool-test'
   },
   api: {
     customkey: {}
   },
   config: {
     main: {
-      spools: [
-        Testspool
-      ],
-      paths: {
-        testdir: path.resolve(__dirname, 'testdir')
-      }
-    },
-    log: {
-      level: 'silly'
+      spools: [],
+      paths: {},
+      target: 'browser'
     },
     i18n: {
       lng: 'en',
@@ -52,5 +41,5 @@ const App = {
   locales: AppConfigLocales
 }
 
-_.defaultsDeep(App, smokesignals.FailsafeConfig)
-module.exports = App
+// _.defaultsDeep(App, smokesignals.FailsafeConfig)
+// module.exports.testApp = App

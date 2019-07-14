@@ -1,6 +1,6 @@
 {
   "name": "@fabrix/fabrix",
-  "version": "1.5.9",
+  "version": "1.6.3",
   "description": "Strongly Typed Modern Web Application Framework for Node.js",
   "keywords": [
     "framework",
@@ -34,7 +34,8 @@
     "prepublishOnly": "npm run compile",
     "compile": "npm run clean && npm run build",
     "clean": "rm -rf dist",
-    "ci": "cd .. && ci"
+    "ci": "cd .. && ci",
+    "webpack": "node_modules/.bin/webpack --config ./test-browser/webpack.config.js"
   },
   "main": "dist/index",
   "typings": "dist/index",
@@ -95,22 +96,24 @@
     "@fabrix/lint": "^1.0.0-alpha.3",
     "@types/lodash": "^4.14.109",
     "@types/mkdirp": "^0.5.2",
-    "@types/node": "~10.3.4",
+    "@types/node": "~10.12.10",
     "copyfiles": "^2.0.0",
-    "mocha": "^5",
-    "nyc": "^12.0.2",
+    "mocha": "^6",
+    "nyc": "^14.1.1",
     "pre-commit": "^1.1.3",
-    "proxyquire": "^1.7.11",
+    "proxyquire": "^2.1.0",
     "rimraf": "~2.6.2",
     "smokesignals": "^3",
     "tslib": "~1.9.0",
-    "tslint": "~5.10.0",
-    "tslint-microsoft-contrib": "~5.0.3",
-    "tsutils": "~2.27.1",
-    "typescript": "~2.8.1"
+    "tslint": "~5.14.0",
+    "tslint-microsoft-contrib": "~6.1.0",
+    "tsutils": "~3.9.1",
+    "typescript": "~3.3.4000",
+    "webpack": "^4.33.0",
+    "webpack-cli": "^3.3.3"
   },
   "engines": {
-    "node": ">= 7.6.0 =< 10.0.0",
+    "node": ">= 7.6.0 =< 12",
     "npm": ">= 3.10.0"
   },
   "runkitExample": "test/runkitExample.js"

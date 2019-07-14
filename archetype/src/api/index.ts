@@ -1,13 +1,13 @@
-import * as Controllers from './controllers'
-import * as Models from './models'
-import * as Policies from './policies'
-import * as Services from './services'
-import * as Resolvers from './resolvers'
+import * as controllers from './controllers'
+import * as models from './models'
+import * as policies from './policies'
+import * as services from './services'
+import * as resolvers from './resolvers'
 
 export {
-  Controllers,
-  Models,
-  Policies,
-  Services,
-  Resolvers
+  controllers,
+  models,
+  policies,
+  services,
+  resolvers
 }

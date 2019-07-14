@@ -7,7 +7,8 @@ describe('lib/Policy', () => {
   describe('sanity', () => {
     it('should exist', () => {
       assert(Policy)
-      assert(global.Policy)
+      // Deprecated v1.6
+      // assert(global.Policy)
     })
     it('can instantiate without error', () => {
       const app = new Fabrix(testApp)

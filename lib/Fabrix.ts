@@ -21,7 +21,8 @@ import { MiscSpool } from './common/spools/misc'
 import { enumerable } from './common/decorators/enumerable'
 
 // inject Error and Resource types into the global namespace
-Core.assignGlobals()
+// Deprecate Globals v1.6
+// Core.assignGlobals()
 
 /**
  * The Fabrix Application. Merges the configuration and API resources

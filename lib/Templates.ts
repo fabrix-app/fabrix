@@ -31,9 +31,9 @@ export const Templates = {
       return (
         ` Database Info
           Stores            : ${Object.keys(app.config.get('stores') || { })}
-        Web Server Info
-          Server            : ${app.config.get('web.server') || 'NOT INSTALLED'}
-          Port              : ${app.config.get('web.port') || 'N/A'}
+        Web Servers Info
+          Servers           : ${app.config.get('web.server') || 'NOT INSTALLED'}
+          Ports             : ${app.config.get('web.port') || 'N/A'}
           Routes            : ${(app.routes || new Map()).size}`
       )
     }

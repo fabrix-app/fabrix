@@ -8,7 +8,8 @@ describe('lib/Model', () => {
   describe('sanity', () => {
     it('should exist', () => {
       assert(Model)
-      assert(global.Model)
+      // Deprecated v1.6
+      // assert(global.Model)
     })
     it('can instantiate without error', () => {
       const app = new Fabrix(testApp)
