@@ -1,3 +1,4 @@
+import { EventEmitter } from 'events'
 import { FabrixApp } from '../index'
 
 export interface FabrixGeneric {
@@ -9,9 +10,16 @@ export interface FabrixGeneric {
  * Fabrix Generic Class.
  */
 export class FabrixGeneric {
-  public app: FabrixApp
   public methods: string[] = []
-  constructor (app: FabrixApp) {
+
+  constructor (
+    public app: FabrixApp
+  ) {
+
+    if (!(app instanceof EventEmitter)) {
+      throw new Error('The "app" argument must be of type EventEmitter')
+    }
+
     Object.defineProperties(this, {
       app: {
         value: app,

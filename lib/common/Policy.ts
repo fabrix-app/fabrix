@@ -9,8 +9,6 @@ import { FabrixGeneric } from './Generic'
  * Fabrix Policy Class.
  */
 export class FabrixPolicy extends FabrixGeneric {
-  public app: FabrixApp
-
 
   /**
    * Policy configuration

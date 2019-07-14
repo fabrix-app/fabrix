@@ -14,7 +14,6 @@ export interface Spool {
   [key: string]: any
 }
 export class Spool extends FabrixGeneric {
-  public app: FabrixApp
   private _stage = 'pre'
   private _config: ISpoolConfig
   private _pkg: any // IPkg
@@ -92,7 +91,7 @@ export class Spool extends FabrixGeneric {
       pkg = null,
       config = { },
       api = { }
-    }: { pkg?: any, config?: ISpoolConfig, api?: IApi }
+    }: { pkg?: {[key: string]: any}, config?: ISpoolConfig, api?: IApi }
   ) {
     super(app)
     if (!(app instanceof EventEmitter)) {
