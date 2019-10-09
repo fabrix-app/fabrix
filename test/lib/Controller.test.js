@@ -1,7 +1,7 @@
 const assert = require('assert')
 const Controller = require('../../dist/common').FabrixController
 const Fabrix = require('../../dist').FabrixApp
-const testApp = require('../integration/testapp')
+const testApp = require('../fixtures/testapp')
 
 describe('lib/Controller', () => {
   describe('sanity', () => {

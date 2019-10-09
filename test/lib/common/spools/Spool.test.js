@@ -4,7 +4,7 @@ const smokesignals = require('smokesignals')
 const Testspool = require('./spool')
 
 const Fabrix = require('../../../../dist').FabrixApp
-const testApp = require('../../../integration/testapp')
+const testApp = require('../../../fixtures/testapp')
 
 describe('spool', () => {
   let app

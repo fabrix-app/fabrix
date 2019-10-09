@@ -1,14 +1,15 @@
 const fs = require('fs')
 const path = require('path')
 const assert = require('assert')
-const FabrixApp = require('../../dist').FabrixApp
-const Spool = require('../../dist/common').Spool
-const Controller = require('../../dist/common').FabrixController
-const Testspool = require('./testspool')
-const Testspool2 = require('./testspool2')
-const Testspool3 = require('./testspool3')
-const Testspool4 = require('./testspool4')
-const testAppDefinition = require('./testapp')
+const FabrixApp = require('../../dist/index').FabrixApp
+const Spool = require('../../dist/common/index').Spool
+const Controller = require('../../dist/common/index').FabrixController
+const Testspool = require('../fixtures/testspool')
+const Testspool2 = require('../fixtures/testspool2')
+const Testspool3 = require('../fixtures/testspool3')
+const Testspool4 = require('../fixtures/testspool4')
+const Testspool5 = require('../fixtures/testspool5')
+const testAppDefinition = require('../fixtures/testapp')
 const lib = require('../../dist/index')
 
 describe('Fabrix', () => {
@@ -471,6 +472,102 @@ describe('Fabrix', () => {
           assert(app['customKey'])
         })
 
+
+        it('should have main resources', () => {
+          const def = {
+            pkg: { },
+            api: {
+              tests: [],
+              templates: [],
+              logs: [],
+              events: [],
+            },
+            config: {
+              main: {
+                spools: []
+              }
+            }
+          }
+          const app = new FabrixApp(def)
+          assert.deepEqual(app.config.get('main.resources'), [
+            'tests',
+            'templates',
+            'logs',
+            'events'
+          ])
+        })
+
+        it('should have spool resources even when mixed types', () => {
+          const def = {
+            pkg: { },
+            api: { },
+            config: {
+              main: {
+                spools: [
+                  Testspool5
+                ]
+              }
+            }
+          }
+          const app = new FabrixApp(def)
+          assert.deepEqual(app.config.get('main.resources'), [
+            'tests',
+            'templates'
+          ])
+          assert(!app['controllers'])
+          assert(!app['policies'])
+          assert(!app['models'])
+          assert(!app['services'])
+          assert(!app['resolvers'])
+          assert(app['tests'])
+          assert(app['tests']['TestController'])
+          assert(app['tests']['Test2Controller'])
+          assert(app['tests']['Test5Service'])
+          assert(app['tests']['Test6Service'])
+          assert(app['templates'])
+          assert(app['templates']['TestService'])
+          assert(app['templates']['Test2Service'])
+          assert(app['templates']['Test5Controller'])
+          assert(app['templates']['Test6Controller'])
+        })
+
+        it('should have spool merged resources even when mixed types and overlaps', () => {
+          const def = {
+            pkg: { },
+            api: { },
+            config: {
+              main: {
+                spools: [
+                  Testspool4,
+                  Testspool5
+                ]
+              }
+            }
+          }
+          const app = new FabrixApp(def)
+          assert.deepEqual(app.config.get('main.resources'), [
+            'controllers',
+            'tests',
+            'templates'
+          ])
+          assert(app['controllers'])
+          assert(!app['policies'])
+          assert(!app['models'])
+          assert(!app['services'])
+          assert(!app['resolvers'])
+          assert(app['tests'])
+          assert(app['tests']['TestController'])
+          assert(app['tests']['Test2Controller'])
+          assert(app['tests']['Test5Service'])
+          assert(app['tests']['Test6Service'])
+          assert(app['templates'])
+          assert(app['templates']['TestService'])
+          assert(app['templates']['Test2Service'])
+          assert(app['templates']['Test5Controller'])
+          assert(app['templates']['Test6Controller'])
+        })
+
+        // TODO: resources will be changing to an Object in v2.0
         it('should throw error on incorrectly configured main.resources', () => {
           const def = {
             pkg: { },

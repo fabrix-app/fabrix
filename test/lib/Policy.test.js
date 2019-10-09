@@ -1,7 +1,7 @@
 const assert = require('assert')
 const Policy = require('../../dist/common').FabrixPolicy
 const Fabrix = require('../../dist').FabrixApp
-const testApp = require('../integration/testapp')
+const testApp = require('../fixtures/testapp')
 
 describe('lib/Policy', () => {
   describe('sanity', () => {

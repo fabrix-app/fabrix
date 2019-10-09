@@ -2,7 +2,7 @@ const assert = require('assert')
 const Model = require('../../dist/common').FabrixModel
 const Resolver = require('../../dist/common').FabrixResolver
 const Fabrix = require('../../dist').FabrixApp
-const testApp = require('../integration/testapp')
+const testApp = require('../fixtures/testapp')
 
 describe('lib/Model', () => {
   describe('sanity', () => {

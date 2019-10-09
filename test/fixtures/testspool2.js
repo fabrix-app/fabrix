@@ -1,5 +1,5 @@
-const Spool = require('../../dist/common').Spool
-const Generic = require('../../dist/common').FabrixGeneric
+const Spool = require('../../dist/common/index').Spool
+const Generic = require('../../dist/common/index').FabrixGeneric
 
 module.exports = class Testspool2 extends Spool {
   constructor (app) {

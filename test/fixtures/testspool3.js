@@ -1,11 +1,11 @@
-const Spool = require('../../dist/common').Spool
-const Controller = require('../../dist/common').FabrixController
+const Spool = require('../../dist/common/index').Spool
+const Controller = require('../../dist/common/index').FabrixController
 
-module.exports = class Testspool4 extends Spool {
+module.exports = class Testspool3 extends Spool {
   constructor (app) {
     super(app, {
       pkg: {
-        name: 'spool-test4'
+        name: 'spool-test3'
       },
       config: {
         test: {
@@ -17,23 +17,26 @@ module.exports = class Testspool4 extends Spool {
         controllers: {
           TestController: class TestController extends Controller {
             foo() {
-              return 'barf'
+              return 'baz'
+            }
+            kaz() {
+              return 'ba'
             }
           },
           Test2Controller: class Test2Controller extends Controller {
             foo() {
-              return 'barf'
+              return 'baz'
             }
             kaz() {
-              return 'baf'
+              return 'ba'
             }
           },
-          Test4Controller: class Test4Controller extends Controller {
+          Test3Controller: class Test3Controller extends Controller {
             foo() {
-              return 'barf'
+              return 'baz'
             }
             kaz() {
-              return 'baf'
+              return 'ba'
             }
           }
         }
