@@ -1,6 +1,6 @@
 {
   "name": "@fabrix/fabrix",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "description": "Strongly Typed Modern Web Application Framework for Node.js",
   "keywords": [
     "framework",
@@ -25,6 +25,7 @@
     "graphql"
   ],
   "scripts": {
+    "release": "standard-version",
     "build": "tsc -p ./lib/tsconfig.release.json",
     "lint": "tslint -p ./lib",
     "watch": "tsc -w -p ./lib/tsconfig.release.json",
@@ -104,6 +105,7 @@
     "proxyquire": "^2.1.3",
     "rimraf": "~2.6.2",
     "smokesignals": "^3",
+    "standard-version": "^7.0.0",
     "tslib": "~1.9.0",
     "tslint": "~5.14.0",
     "tslint-microsoft-contrib": "~6.1.0",
