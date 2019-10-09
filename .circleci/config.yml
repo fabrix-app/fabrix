@@ -88,10 +88,10 @@ jobs:
           command: npm test
       - run:
           name: test performance
-          command: npm run test-performance
+          command: npm run test:performance
       - run:
           name: test archetype
-          command: npm run test-archetype
+          command: npm run test:archetype
       - run:
           name: code-coverage
           command: './node_modules/.bin/nyc report --reporter=text-lcov'

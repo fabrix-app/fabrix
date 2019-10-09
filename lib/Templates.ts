@@ -11,7 +11,7 @@ export const Templates = {
     stop: 'Spooling down...',
     initialized: 'All spools are loaded.',
     sane: `Sanity check complete`,
-    ready (app: FabrixApp) {
+    ready (app: FabrixApp): string {
       const baseUrl = app.config.get('web.baseUrl') ||
           `http://${app.config.get('web.host') || 'localhost'}:${app.config.get('web.port') || '80'}`
       return (
@@ -27,7 +27,7 @@ export const Templates = {
   },
 
   debug: {
-    ready (app: FabrixApp) {
+    ready (app: FabrixApp): string {
       return (
         ` Database Info
           Stores            : ${Object.keys(app.config.get('stores') || { })}
@@ -40,7 +40,7 @@ export const Templates = {
   },
 
   silly: {
-    ready (app: FabrixApp) {
+    ready (app: FabrixApp): string {
       const resources = (app.resources || []).map(resource => {
         let prefix = resource.charAt(0).toUpperCase() + resource.slice(1) + (` (${ Object.keys(app.api[resource]).length })`)
         while (prefix.length < 17) { prefix = prefix + ' '}

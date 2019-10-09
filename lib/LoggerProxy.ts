@@ -45,9 +45,16 @@ export class LoggerProxy extends FabrixGeneric {
   public info
   public debug
   public silly
+  public dir
+  public time
+  public timeEnd
+  public trace
+  public assert
 
-  public levelHierarchy = ['silly', 'debug', 'info', 'warn', 'error']
+  public levelHierarchy = ['silly', 'debug', 'dir', 'timeEnd', 'trace', 'assert', 'time', 'info', 'warn', 'error']
 
+  // TODO The proxy is not telling JavaScript compilier that there is a label called timeEnd
+  // TODO the proxy is not allowing a trace
   /**
    * Instantiate Proxy; bind log events to default console.log
    */

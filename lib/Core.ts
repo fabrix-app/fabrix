@@ -267,7 +267,7 @@ export const Core = {
   mergeExtensions (
     app: FabrixApp,
     spool: Spool
-  ) {
+  ): void {
     const extensions = spool.extensions || {}
     for (const ext of Object.keys(extensions)) {
       if (!extensions.hasOwnProperty(ext)) {
@@ -313,7 +313,7 @@ export const Core = {
     return val
   },
 
-  isNotCircular: (obj) => {
+  isNotCircular: (obj): boolean => {
     let stack = [[]]
 
     try {
@@ -340,7 +340,7 @@ export const Core = {
   /**
    * Create configured paths if they don't exist and target is Node.js
    */
-  async createDefaultPaths (app: FabrixApp) {
+  async createDefaultPaths (app: FabrixApp): Promise<any> {
     const paths: {[key: string]: string} = app.config.get('main.paths') || { }
     const target: string = app.config.get('main.target') || 'node'
     if (target !== 'browser') {
@@ -358,7 +358,7 @@ export const Core = {
   /**
    * Bind listeners to fabrix application events
    */
-  bindApplicationListeners (app: FabrixApp) {
+  bindApplicationListeners (app: FabrixApp): void {
     app.once('spool:all:configured', () => {
       if (app.config.get('main.freezeConfig') === false) {
         app.log.warn('freezeConfig is disabled. Configuration will not be frozen.')
@@ -397,8 +397,8 @@ export const Core = {
    */
   bindSpoolPhaseListeners (
     app: FabrixApp,
-    spools: Spool[]
-  ) {
+    spools: Spool[] = []
+  ): void {
     // TODO, eliminate waiting on lifecycle events that will not exist
     // https://github.com/fabrix-app/fabrix/issues/14
     const validatedEvents = spools.map(spool => `spool:${spool.name}:validated`)
@@ -477,7 +477,7 @@ export const Core = {
       .then(() => spool.stage = 'configured')
       .catch(err => this.handlePromiseRejection(app, err))
 
-    app.after('fabrix:start')
+    app.after(['fabrix:start'])
       .then(() => app.log.debug('spool: validating', spool.name))
       .then(() => spool.stage = 'validating')
       .then(() => spool.validate())

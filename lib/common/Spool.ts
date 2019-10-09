@@ -10,9 +10,10 @@ import { FabrixGeneric } from './Generic'
  * @class Spool
  * @see {@link https://fabrix.app/docs/en/ref/spool}
  */
-export interface Spool {
+export interface Spool extends FabrixGeneric {
   [key: string]: any
 }
+
 export class Spool extends FabrixGeneric {
   private _stage = 'pre'
   private _config: ISpoolConfig
