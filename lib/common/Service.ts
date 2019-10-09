@@ -10,12 +10,16 @@ import { FabrixGeneric } from './Generic'
  */
 export class FabrixService extends FabrixGeneric {
 
-  constructor (app: FabrixApp) {
+  constructor (
+    app: FabrixApp
+  ) {
+
     super(app)
 
     if (!(app instanceof EventEmitter)) {
       throw new Error('The "app" argument must be of type EventEmitter')
     }
+
     this.app.emit(`service:${this.id}:constructed`, this)
   }
 

@@ -12,7 +12,7 @@ export class ConfigNotDefinedError extends RangeError {
       })
 
       For more info, see the Fabrix archetypes:
-        - https://git.io/vw845
+        - https://github.com/fabrix-app/fabrix/blob/master/archetype/src/index.ts
         - https://git.io/vw84F
     `)
   }

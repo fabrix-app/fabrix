@@ -17,7 +17,7 @@ export class GraphCompletenessError extends RangeError {
 
       Please check that you have all the Spools correctly installed
       and configured. If you think this is a bug, please file an issue:
-      https://github.com/fabrix/fabrix/issues.
+      https://github.com/fabrix-app/fabrix/issues.
     `)
 
   }

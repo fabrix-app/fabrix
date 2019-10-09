@@ -7,11 +7,6 @@ import { Spool, IApi, IPkg, IConfig, IEnv } from './common'
 import * as Errors from './errors'
 import * as pkg from '../package.json'
 import { FabrixGeneric } from './common/Generic'
-import { FabrixController } from './common/Controller'
-import { FabrixService } from './common/Service'
-import { FabrixPolicy } from './common/Policy'
-import { FabrixModel } from './common/Model'
-import { FabrixResolver } from './common/Resolver'
 import { ServerSpool } from './common/spools/server'
 import { ExtensionSpool } from './common/spools/extension'
 import { DatastoreSpool } from './common/spools/datastore'
@@ -19,6 +14,7 @@ import { SystemSpool } from './common/spools/system'
 import { ToolSpool } from './common/spools/tool'
 import { MiscSpool } from './common/spools/misc'
 import { enumerable } from './common/decorators/enumerable'
+import { IVersions } from './common/interfaces/IVersions'
 
 // inject Error and Resource types into the global namespace
 // Deprecate Globals v1.6
@@ -28,25 +24,28 @@ import { enumerable } from './common/decorators/enumerable'
  * The Fabrix Application. Merges the configuration and API resources
  * loads Spools, initializes logging and event listeners.
  */
-export interface FabrixApp {
+export interface FabrixApp extends EventEmitter {
   [key: string]: any
 }
+
 export class FabrixApp extends EventEmitter {
   private _logger: LoggerProxy
   private _env: IEnv
   private _pkg: any // IPkg
+  private _versions: IVersions
   private _config: Configuration
-  private _versions: {[key: string]: any }
   private _api: IApi
-  private _fabrix: any
+  private _fabrix: FabrixApp
   private _spools: {[key: string]: Spool | ServerSpool | ExtensionSpool | DatastoreSpool | SystemSpool | ToolSpool | MiscSpool }
   private _resources: string[] = [ ]
 
-  public controllers: {[key: string]: FabrixController }
-  public services: {[key: string]: FabrixService }
-  public policies: {[key: string]: FabrixPolicy }
-  public models: {[key: string]: FabrixModel }
-  public resolvers: {[key: string]: FabrixResolver }
+  // Deprecate Globals v1.6
+  // Fabrix can have any namespace of resource as long as it's unique
+  // public controllers: {[key: string]: FabrixController }
+  // public services: {[key: string]: FabrixService }
+  // public policies: {[key: string]: FabrixPolicy }
+  // public models: {[key: string]: FabrixModel }
+  // public resolvers: {[key: string]: FabrixResolver }
 
   /**
    * @param app.pkg The application package.json
@@ -78,6 +77,7 @@ export class FabrixApp extends EventEmitter {
       process.env.NODE_ENV = 'development'
     }
 
+    // ensure process.env is an immutable object
     const processEnv = Object.freeze(Object.assign({}, JSON.parse(JSON.stringify(process.env))))
 
     Object.defineProperties(this, {
@@ -114,15 +114,6 @@ export class FabrixApp extends EventEmitter {
         enumerable: false
       }
     })
-
-    // this._logger = new LoggerProxy(this)
-    // this._env = processEnv
-    // this._pkg = app.pkg
-    // this._versions = process.versions
-    // this._config = new Configuration(app.config, processEnv)
-    // this._spools = {}
-    // this._api = app.api
-    // this._fabrix = pkg
 
     // Set the max listeners from the config
     this.setMaxListeners(this.config.get('main.maxListeners'))
@@ -174,27 +165,27 @@ export class FabrixApp extends EventEmitter {
   }
 
   // @enumerable(false)
-  get logger () {
+  get logger (): LoggerProxy {
     return this._logger
   }
 
   // @enumerable(false)
-  get env () {
+  get env (): IEnv {
     return this._env
   }
 
   // @enumerable(false)
-  get pkg () {
+  get pkg (): IPkg {
     return this._pkg
   }
 
   // @enumerable(false)
-  get versions () {
+  get versions (): IVersions {
     return this._versions
   }
 
   // @enumerable(false)
-  get config () {
+  get config (): Configuration {
     return this._config
   }
 
@@ -202,7 +193,7 @@ export class FabrixApp extends EventEmitter {
    * Gets the package.json of the Fabrix module
    */
   // @enumerable(false)
-  get fabrix () {
+  get fabrix (): FabrixApp {
     return this._fabrix
   }
 
@@ -210,7 +201,7 @@ export class FabrixApp extends EventEmitter {
    * Gets the Spools that have been installed
    */
   // @enumerable(false)
-  get spools () {
+  get spools (): {[key: string]: Spool} {
     return this._spools
   }
 
@@ -218,7 +209,7 @@ export class FabrixApp extends EventEmitter {
    *   Gets the api
    */
   // @enumerable(false)
-  get api () {
+  get api (): {[key: string]: FabrixGeneric | {}} {
     return this._api
   }
 
@@ -227,14 +218,14 @@ export class FabrixApp extends EventEmitter {
    * fires fabrix:log:* log events
    */
   // @enumerable(false)
-  get log () {
+  get log (): LoggerProxy {
     return this.logger
   }
 
   /**
    * Sets available/allowed resources from Api and Spool Apis
    */
-  set resources (values) {
+  set resources (values: string[]) {
     if (!this.config.get('main.lockResources')) {
       this._resources = Object.assign([], Configuration.initialResources(this.config, values))
       this.config.set('main.resources', this._resources)
@@ -245,23 +236,23 @@ export class FabrixApp extends EventEmitter {
    * Gets the Api resources that have been set
    */
   // @enumerable(false)
-  get resources() {
+  get resources(): string[] {
     return this._resources
   }
 
   /**
    * Start the App. Load all Spools.
    */
-  async start (): Promise<any> {
+  async start (): Promise<FabrixApp> {
     this.emit('fabrix:start')
-    await this.after('fabrix:ready')
+    await this.after(['fabrix:ready'])
     return this
   }
 
   /**
    * Shutdown. Unbind listeners, unload spools.
    */
-  async stop (error?): Promise<any> {
+  async stop (error?): Promise<FabrixApp> {
     this.emit('fabrix:stop')
     if (error) {
       this.emit('fabrix:stop:error', error)
@@ -289,7 +280,7 @@ export class FabrixApp extends EventEmitter {
   /**
    * Resolve Promise once ANY of the events in the list have emitted.
    */
-  async onceAny (events: any): Promise<any> {
+  async onceAny (events: string[] = []): Promise<any[]> {
     if (!Array.isArray(events)) {
       events = [events]
     }
@@ -297,14 +288,15 @@ export class FabrixApp extends EventEmitter {
     let resolveCallback: any
 
     return Promise
-      .race(events.map((eventName: any) => {
+      .race(events.map((eventName: string) => {
         return new Promise(resolve => {
           resolveCallback = resolve
           this.once(eventName, resolveCallback)
         })
       }))
-      .then((...args: any[]) => {
-        events.forEach((eventName: any) => this.removeListener(eventName, resolveCallback))
+      .then((...args: string[]) => {
+        args = args.filter(n => n)
+        events.forEach((eventName: string) => this.removeListener(eventName, resolveCallback))
         return args
       })
       .catch(err => {
@@ -317,13 +309,13 @@ export class FabrixApp extends EventEmitter {
    * Resolve Promise once all events in the list have emitted. Also accepts
    * a callback.
    */
-  async after (events: any): Promise<any> {
+  async after (events: string | string[] = []): Promise<any[]> {
     if (!Array.isArray(events)) {
       events = [ events ]
     }
 
     return Promise
-      .all(events.map((eventName: any) => {
+      .all(events.map((eventName: string | string[]) => {
         return new Promise(resolve => {
           if (eventName instanceof Array) {
             resolve(this.onceAny(eventName))

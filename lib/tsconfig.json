@@ -9,6 +9,8 @@
     "moduleResolution": "node",
     "declaration": true,
     "strict": false,
+    "esModuleInterop": false,
+    "sourceMap": true,
     "noImplicitAny": false,
     "typeRoots": [
       "node_modules/@types"

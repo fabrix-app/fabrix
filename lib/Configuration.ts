@@ -240,14 +240,14 @@ export class Configuration extends Map<any, any> {
   /**
    * Prevent changes to the app configuration
    */
-  freeze () {
+  freeze (): void {
     this.immutable = true
   }
 
   /**
    * Allow changes to the app configuration
    */
-  unfreeze () {
+  unfreeze (): void {
     this.immutable = false
   }
 }

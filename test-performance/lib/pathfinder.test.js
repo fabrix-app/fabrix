@@ -13,17 +13,17 @@ describe('lib.Pathfinder', () => {
     const spools = [
       new Spool(app, {
         pkg: {
-          name: 'pack0'
+          name: 'spool0'
         },
         config: {
           lifecycle: {
             configure: {
               listen: [ ],
-              emit: [ 'pack0:configured' ]
+              emit: [ 'spool0:configured' ]
             },
             initialize: {
               listen: [ ],
-              emit: [ 'pack0:initialized' ]
+              emit: [ 'spool0:initialized' ]
             }
           }
         }
@@ -31,16 +31,16 @@ describe('lib.Pathfinder', () => {
 
       new Spool(app, {
         pkg: {
-          name: 'pack1'
+          name: 'spool1'
         },
         config: {
           lifecycle: {
             configure: {
-              listen: [ 'pack0:configured' ],
-              emit: [ 'pack1:configured' ]
+              listen: [ 'spool0:configured' ],
+              emit: [ 'spool1:configured' ]
             },
             initialize: {
-              emit: [ 'pack1:initialized', 'pack1:custom' ]
+              emit: [ 'spool1:initialized', 'spool1:custom' ]
             }
           }
         }
@@ -48,17 +48,17 @@ describe('lib.Pathfinder', () => {
 
       new Spool(app, {
         pkg: {
-           name: 'pack2'
+           name: 'spool2'
         },
         config: {
           lifecycle: {
             configure: {
-              listen: [ 'pack1:configured' ],
-              emit: [ 'pack2:configured' ]
+              listen: [ 'spool1:configured' ],
+              emit: [ 'spool2:configured' ]
             },
             initialize: {
-              listen: [ 'pack1:initialized', 'pack1:custom' ],
-              emit: [ 'pack2:initialized' ]
+              listen: [ 'spool1:initialized', 'spool1:custom' ],
+              emit: [ 'spool2:initialized' ]
             }
           }
         }
@@ -66,17 +66,17 @@ describe('lib.Pathfinder', () => {
 
       new Spool(app, {
         pkg: {
-           name: 'pack3'
+           name: 'spool3'
         },
         config: {
           lifecycle: {
             configure: {
-              listen: [ 'pack2:configured' ],
-              emit: [ 'pack3:configured' ]
+              listen: [ 'spool2:configured' ],
+              emit: [ 'spool3:configured' ]
             },
             initialize: {
-              listen: [ 'pack2:initialized', 'pack1:custom' ],
-              emit: [ 'pack3:initialized' ]
+              listen: [ 'spool2:initialized', 'spool1:custom' ],
+              emit: [ 'spool3:initialized' ]
             }
           }
         }
@@ -84,18 +84,18 @@ describe('lib.Pathfinder', () => {
 
       new Spool(app, {
         pkg: {
-          name: 'pack4'
+          name: 'spool4'
         },
         config: {
           lifecycle: {
             // dependency with no route to source
             configure: {
-              listen: [ 'packX:configured' ],
-              emit: [ 'pack4:configured' ]
+              listen: [ 'spoolX:configured' ],
+              emit: [ 'spool4:configured' ]
             },
             // dependency on spoolwith circular dependency
             initialize: {
-              listen: [ 'pack5:initialized', 'pack0:initialized' ]
+              listen: [ 'spool5:initialized', 'spool0:initialized' ]
             }
           }
         }
@@ -104,17 +104,17 @@ describe('lib.Pathfinder', () => {
       // circular dependency
       new Spool(app, {
         pkg: {
-          name: 'pack5'
+          name: 'spool5'
         },
         config: {
           lifecycle: {
             configure: {
-              listen: [ 'pack5:configured' ],
-              emit: [ 'pack5:configured' ]
+              listen: [ 'spool5:configured' ],
+              emit: [ 'spool5:configured' ]
             },
             initialize: {
-              listen: [ 'pack4:initialized' ],
-              emit: [ 'pack5:initialized' ]
+              listen: [ 'spool4:initialized' ],
+              emit: [ 'spool5:initialized' ]
             }
           }
         }

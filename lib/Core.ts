@@ -267,7 +267,7 @@ export const Core = {
   mergeExtensions (
     app: FabrixApp,
     spool: Spool
-  ) {
+  ): void {
     const extensions = spool.extensions || {}
     for (const ext of Object.keys(extensions)) {
       if (!extensions.hasOwnProperty(ext)) {
@@ -313,7 +313,7 @@ export const Core = {
     return val
   },
 
-  isNotCircular: (obj) => {
+  isNotCircular: (obj): boolean => {
     let stack = [[]]
 
     try {
@@ -340,7 +340,7 @@ export const Core = {
   /**
    * Create configured paths if they don't exist and target is Node.js
    */
-  async createDefaultPaths (app: FabrixApp) {
+  async createDefaultPaths (app: FabrixApp): Promise<any> {
     const paths: {[key: string]: string} = app.config.get('main.paths') || { }
     const target: string = app.config.get('main.target') || 'node'
     if (target !== 'browser') {
@@ -358,7 +358,7 @@ export const Core = {
   /**
    * Bind listeners to fabrix application events
    */
-  bindApplicationListeners (app: FabrixApp) {
+  bindApplicationListeners (app: FabrixApp): void {
     app.once('spool:all:configured', () => {
       if (app.config.get('main.freezeConfig') === false) {
         app.log.warn('freezeConfig is disabled. Configuration will not be frozen.')
@@ -397,30 +397,49 @@ export const Core = {
    */
   bindSpoolPhaseListeners (
     app: FabrixApp,
-    spools: Spool[]
-  ) {
+    spools: Spool[] = []
+  ): void {
+    // TODO, eliminate waiting on lifecycle events that will not exist
+    // https://github.com/fabrix-app/fabrix/issues/14
     const validatedEvents = spools.map(spool => `spool:${spool.name}:validated`)
     const configuredEvents = spools.map(spool => `spool:${spool.name}:configured`)
     const initializedEvents = spools.map(spool => `spool:${spool.name}:initialized`)
     const sanityEvents = spools.map(spool => `spool:${spool.name}:sane`)
 
-    app.after(configuredEvents).then(async () => {
-      await this.createDefaultPaths(app)
-      app.emit('spool:all:configured')
-    })
+    app.after(configuredEvents)
+      .then(async () => {
+        await this.createDefaultPaths(app)
+        app.emit('spool:all:configured')
+      })
+      .catch(err => {
+        app.log.error(err)
+        throw err
+      })
 
     app.after(validatedEvents)
       .then(() => app.emit('spool:all:validated'))
+      .catch(err => {
+        app.log.error(err)
+        throw err
+      })
 
     app.after(initializedEvents)
       .then(() => {
         app.emit('spool:all:initialized')
+      })
+      .catch(err => {
+        app.log.error(err)
+        throw err
       })
 
     app.after(sanityEvents)
       .then(() => {
         app.emit('spool:all:sane')
         app.emit('fabrix:ready')
+      })
+      .catch(err => {
+        app.log.error(err)
+        throw err
       })
   },
 
@@ -440,7 +459,7 @@ export const Core = {
       .then(() => spool.sanity())
       .then(() => app.emit(`spool:${spool.name}:sane`))
       .then(() => spool.stage = 'sane')
-      .catch(this.handlePromiseRejection)
+      .catch(err => this.handlePromiseRejection(app, err))
 
     app.after((lifecycle.initialize.listen).concat('spool:all:configured'))
       .then(() => app.log.debug('spool: initializing', spool.name))
@@ -448,7 +467,7 @@ export const Core = {
       .then(() => spool.initialize())
       .then(() => app.emit(`spool:${spool.name}:initialized`))
       .then(() => spool.stage = 'initialized')
-      .catch(this.handlePromiseRejection)
+      .catch(err => this.handlePromiseRejection(app, err))
 
     app.after((lifecycle.configure.listen).concat('spool:all:validated'))
       .then(() => app.log.debug('spool: configuring', spool.name))
@@ -456,23 +475,25 @@ export const Core = {
       .then(() => spool.configure())
       .then(() => app.emit(`spool:${spool.name}:configured`))
       .then(() => spool.stage = 'configured')
-      .catch(this.handlePromiseRejection)
+      .catch(err => this.handlePromiseRejection(app, err))
 
-    app.after('fabrix:start')
+    app.after(['fabrix:start'])
       .then(() => app.log.debug('spool: validating', spool.name))
       .then(() => spool.stage = 'validating')
       .then(() => spool.validate())
       .then(() => app.emit(`spool:${spool.name}:validated`))
       .then(() => spool.stage = 'validated')
-      .catch(this.handlePromiseRejection)
+      .catch(err => this.handlePromiseRejection(app, err))
   },
 
   /**
    * Handle a promise rejection
    */
-  handlePromiseRejection (err: Error): void {
-    console.error(err)
+  handlePromiseRejection (app: FabrixApp, err: Error): void {
+    app.log.error(err)
     throw err
+
+    return
   }
 
 }

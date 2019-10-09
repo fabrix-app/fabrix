@@ -59,7 +59,7 @@ export const Pathfinder = {
   /**
    *
    */
-  getLifecyclePath (spool: Spool, stageName: string, spools: Spool[], path?: any[]): any {
+  getLifecyclePath (spool: Spool, stageName: string, spools: Spool[], path?: any[]): boolean | {[key: string]: any} {
     const stage = spool.lifecycle[stageName] || { }
 
     if (!path) {
@@ -99,7 +99,7 @@ export const Pathfinder = {
    * Return all spools that produce a given event, but which is not contained
    * in the given "path" list.
    */
-  getEventProducer (eventName: string, stageName: string, spools: Spool[], path: any[] = [ ]): any {
+  getEventProducer (eventName: string, stageName: string, spools: Spool[], path: any[] = [ ]): Error | Spool {
     const producers = spools
       .filter(spool => {
         const stage = spool.lifecycle[stageName]

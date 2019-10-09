@@ -8,13 +8,13 @@ import { FabrixGeneric } from './Generic'
  * Fabrix Controller Class.
  */
 export class FabrixController extends FabrixGeneric {
-  public app: FabrixApp
 
   constructor (app: FabrixApp) {
+    super(app)
+
     if (!(app instanceof EventEmitter)) {
       throw new Error('The "app" argument must be of type EventEmitter')
     }
-    super(app)
     this.app.emit(`controller:${this.id}:constructed`, this)
   }
 
