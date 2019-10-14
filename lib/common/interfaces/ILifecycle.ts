@@ -1,4 +1,8 @@
 export interface ILifecycle {
+  validate?: {
+    listen: string[],
+    emit: string[]
+  },
   configure: {
     listen: string[],
     emit: string[]
@@ -7,7 +11,7 @@ export interface ILifecycle {
     listen: string[],
     emit: string[]
   },
-  sanity: {
+  sanity?: {
     listen: string[],
     emit: string[]
   }

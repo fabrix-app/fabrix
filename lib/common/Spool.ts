@@ -15,6 +15,7 @@ export interface Spool extends FabrixGeneric {
 }
 
 export class Spool extends FabrixGeneric {
+  private _address: string
   private _stage = 'pre'
   private _config: ISpoolConfig
   private _pkg: any // IPkg
@@ -50,6 +51,10 @@ export class Spool extends FabrixGeneric {
    */
   static get defaultLifecycle (): ILifecycle {
     return {
+      validate: {
+        listen: [ ],
+        emit: [ ]
+      },
       configure: {
         listen: [ ],
         emit: [ ]
@@ -65,11 +70,14 @@ export class Spool extends FabrixGeneric {
     }
   }
 
-  static configuredSpoolLifecycle (config) {
+  static configuredSpoolLifecycle (config: ISpoolConfig) {
     const level1 = config.lifecycle || {}
     const level2 = config.spool && config.spool.lifecycle
-      ? config.spool.lifecycle : config.trailpack && config.trailpack.lifecycle
-        ? config.trailpack.lifecycle : {}
+      ? config.spool.lifecycle
+      : config.trailpack && config.trailpack.lifecycle
+        ? config.trailpack.lifecycle
+        : {}
+
     const level3 = Spool.defaultLifecycle
     return defaultsDeep({}, level1, level2, level3)
   }
@@ -147,12 +155,15 @@ export class Spool extends FabrixGeneric {
     this._config = config
   }
 
+  /**
+   * Virtual getter for `pkg`
+   */
   get pkg () {
     return this._pkg
   }
 
   /**
-   * Return a reference to the Fabrix logger
+   * Return a reference to the Fabrix logger, so you can use `this.log` instead of this.app.log
    */
   get log (): FabrixApp['log'] {
     return this.app.log
@@ -194,6 +205,15 @@ export class Spool extends FabrixGeneric {
   }
 
   /**
+   * Once the FabrixApp is bootstrapped and ready, the spool can run additional logic
+   * By defining a function here. However, config is now immutable so this should not
+   * set any configuration.
+   */
+  ready (): any {
+
+  }
+
+  /**
    * Unload this Spool. This method will instruct the spool to perform
    * any necessary cleanup with the expectation that the app will stop or reload
    * soon thereafter. If your spool runs a daemon or any other thing that may
@@ -208,6 +228,8 @@ export class Spool extends FabrixGeneric {
    * Return the name of this Spool. By default, this is the name of the
    * npm module (in package.json). This method can be overridden for spools
    * which do not follow the "spool-" prefix naming convention.
+   * Some Trailpacks will just work in fabrix without modifying anything,
+   * In which case, they will have the "trailpack-" prefix which is also removed
    */
   get name (): string {
     return this.pkg.name
@@ -222,5 +244,12 @@ export class Spool extends FabrixGeneric {
     return this._lifecycle
   }
 
+
+  /**
+   * Vitual Getter for the "address" for this spool if the app is distributed
+   */
+  get address (): string {
+    return this._address
+  }
 
 }

@@ -3,7 +3,7 @@ import { union } from 'lodash'
 import { Core } from './Core'
 import { Configuration } from './Configuration'
 import { LoggerProxy } from './LoggerProxy'
-import { Spool, IApi, IPkg, IConfig, IEnv } from './common'
+import { Spool, IApi, IPkg, IConfig, IEnv, IVersions } from './common'
 import * as Errors from './errors'
 import * as pkg from '../package.json'
 import { FabrixGeneric } from './common/Generic'
@@ -13,8 +13,8 @@ import { DatastoreSpool } from './common/spools/datastore'
 import { SystemSpool } from './common/spools/system'
 import { ToolSpool } from './common/spools/tool'
 import { MiscSpool } from './common/spools/misc'
+
 import { enumerable } from './common/decorators/enumerable'
-import { IVersions } from './common/interfaces/IVersions'
 
 // inject Error and Resource types into the global namespace
 // Deprecate Globals v1.6
@@ -28,15 +28,23 @@ export interface FabrixApp extends EventEmitter {
   [key: string]: any
 }
 
+export interface ISpools {
+  [key: string]: Spool | ServerSpool | ExtensionSpool | DatastoreSpool | SystemSpool | ToolSpool | MiscSpool
+}
+
+export interface IApis {
+  [key: string]: FabrixGeneric | {}
+}
+
 export class FabrixApp extends EventEmitter {
   private _logger: LoggerProxy
   private _env: IEnv
-  private _pkg: any // IPkg
+  private _pkg: IPkg
   private _versions: IVersions
   private _config: Configuration
   private _api: IApi
   private _fabrix: FabrixApp
-  private _spools: {[key: string]: Spool | ServerSpool | ExtensionSpool | DatastoreSpool | SystemSpool | ToolSpool | MiscSpool }
+  private _spools: ISpools
   private _resources: string[] = [ ]
 
   // Deprecate Globals v1.6
@@ -80,6 +88,7 @@ export class FabrixApp extends EventEmitter {
     // ensure process.env is an immutable object
     const processEnv = Object.freeze(Object.assign({}, JSON.parse(JSON.stringify(process.env))))
 
+    // Define some essential properties/methods to the FabrixApp instance
     Object.defineProperties(this, {
       _logger: {
         value: new LoggerProxy(this),
@@ -118,6 +127,9 @@ export class FabrixApp extends EventEmitter {
     // Set the max listeners from the config
     this.setMaxListeners(this.config.get('main.maxListeners'))
 
+    // Emit the event that the fabrix app is constructing
+    this.emit('fabrix:constructing')
+
     // Set the resources from the configuration (this bypasses the setter with the initial config
     // in case the resourceLock is configured)
     this._resources = this.config.get('main.resources')
@@ -125,7 +137,7 @@ export class FabrixApp extends EventEmitter {
     this.resources = union(Object.keys(app.api), this.config.get('main.resources'))
 
     // Set each api resource to make sure it's provided as an object in the app
-    this.resources.forEach(resource => {
+    this.resources.forEach((resource: string) => {
       app.api[resource] = app.api[resource] || (app.api[resource] = { })
     })
 
@@ -148,6 +160,8 @@ export class FabrixApp extends EventEmitter {
       }
       catch (e) {
         console.log(e.stack)
+        // SBW: we may either need to remove the error being thrown and pass it to stop
+        // this.stop(e)
         throw new Errors.SpoolError(Spool, e, 'constructor')
       }
     })
@@ -161,6 +175,7 @@ export class FabrixApp extends EventEmitter {
     // Bind the Phase listeners for the Spool lifecycle
     Core.bindSpoolPhaseListeners(this, Object.values(this.spools))
 
+    // Emit the event that the fabrix app was successfully constructed
     this.emit('fabrix:constructed')
   }
 
@@ -201,7 +216,7 @@ export class FabrixApp extends EventEmitter {
    * Gets the Spools that have been installed
    */
   // @enumerable(false)
-  get spools (): {[key: string]: Spool} {
+  get spools (): ISpools {
     return this._spools
   }
 
@@ -209,7 +224,7 @@ export class FabrixApp extends EventEmitter {
    *   Gets the api
    */
   // @enumerable(false)
-  get api (): {[key: string]: FabrixGeneric | {}} {
+  get api (): IApis {
     return this._api
   }
 

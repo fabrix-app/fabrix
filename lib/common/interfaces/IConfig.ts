@@ -5,5 +5,6 @@ export interface IConfig {
   main: {
     [key: string]: any,
     spools: any[] // typeof Spool[]
+    target?: string
   }
 }

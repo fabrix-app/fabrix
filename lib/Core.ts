@@ -356,7 +356,7 @@ export const Core = {
   },
 
   /**
-   * Bind listeners to fabrix application events
+   * Bind listeners to FabrixApp events
    */
   bindApplicationListeners (app: FabrixApp): void {
     app.once('spool:all:configured', () => {
@@ -386,6 +386,7 @@ export const Core = {
     })
     app.once('fabrix:stop', () => {
       app.log.info(Templates.info.stop)
+      // Unfreezes the config so that modifications can be made before starting again
       app.config.unfreeze()
     })
   },
