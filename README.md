@@ -14,7 +14,7 @@ _Note: Because Fabrix is lightweight and easily extendable, it's also very __ver
 ## Getting Started
 
 #### Install
-_Note: The CLI is under construction, search for example apps in the meantime_
+_Note: The CLI is under construction, search for [example apps](https://github.com/fabrix-app/example-app) in the meantime_
 
 Install the Fabrix CLI. This will help you generate a Fabrix app and more.
 
@@ -65,7 +65,14 @@ Once installation is complete, begin weaving!
 $ npm run compile && node dist/server.js
 ```
 
+or simply
+
+```sh
+$ npm start
+```
+
 #### Sew on and Sew Forth!
+Fabrix is really focused on bringing great libraries together in congruent ways. So if you have something like a web [scrapping library](https://github.com/fabrix-app/spool-scraper), then it's easy to implement that as a Spool and share it with the ever growing fabrix ecosystem. 
 
 ## Spools
 
@@ -75,6 +82,7 @@ capabilities and allow developers to leverage existing ecosystem tools through a
 Many Fabrix installations will include some of the following Spools:
 
 - [router](https://github.com/fabrix-app/spool-router)
+- [errors](https://github.com/fabrix-app/spool-errors)
 - [i18n](https://github.com/fabrix-app/spool-i18n)
 - [repl](https://github.com/fabrix-app/spool-repl)
 - [express](https://github.com/fabrix-app/spool-express)

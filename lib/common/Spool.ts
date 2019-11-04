@@ -15,6 +15,10 @@ export interface Spool extends FabrixGeneric {
 }
 
 export class Spool extends FabrixGeneric {
+  private _address: string
+  private _port: string
+  private _exclusive: boolean
+
   private _stage = 'pre'
   private _config: ISpoolConfig
   private _pkg: any // IPkg
