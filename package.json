@@ -99,7 +99,7 @@
     "@types/mkdirp": "^0.5.2",
     "@types/node": "~10.12.10",
     "copyfiles": "^2.1.1",
-    "mocha": "^6",
+    "mocha": "^10",
     "nyc": "^14.1.1",
     "pre-commit": "^1.2.2",
     "proxyquire": "^2.1.3",
